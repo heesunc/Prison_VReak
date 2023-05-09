@@ -10,14 +10,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] float maximumDivideRate; //공간이 나눠지는 최대 비율
     [SerializeField] private int maximumDepth; //트리의 높이, 높을 수록 방을 더 자세히 나누게 됨
     [SerializeField] private GameObject wallPrefeb; // 방 크기에 맞춰 벽생
-    [SerializeField] private GameObject Plane; //바닥
-    [SerializeField] private GameObject outsidewall; //외벽 생ㅊ
+    //[SerializeField] private GameObject Plane; //바닥
+    [SerializeField] private GameObject outsidewall; //외벽 생성
     [SerializeField] public float wallSpacing = 0.1f;
     [SerializeField] public int wallCounter = 1;
     void Start()
     {
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
-        CreateoutWall();
+        //CreateoutWall();
         Divide(root, 0);
         GenerateRoom(root, 0);
 
@@ -68,9 +68,11 @@ public class MapGenerator : MonoBehaviour
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
             GameObject floor = GameObject.Find("Plane");
-            floor.transform.localScale = new Vector3(10, 1, 10);
-            floor.transform.position = new Vector3(50, 0, 50);
-
+            
+            
+            //floor.transform.localScale = new Vector3(mapSize.x/10, 1, mapSize.y/10);
+            //floor.transform.position = new Vector3(mapSize.x/2, 0, mapSize.y/2);
+            CreateoutWall();
             CreateWalls(rect);
 
         }
@@ -86,24 +88,24 @@ public class MapGenerator : MonoBehaviour
     {
         // wallPrefab을 사용하여 벽을 만듭니다.
         GameObject Wall = Instantiate(wallPrefeb);
-        Wall.transform.localScale = new Vector3(rect.width, 5, rect.height);
+        Wall.transform.localScale = new Vector3(rect.width-2, 5, rect.height-2);
         Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2, rect.y + rect.height / 2f);
 
     }
     private void CreateoutWall()
     {
-        GameObject floor = GameObject.Find("Plane");
+        //GameObject floor = GameObject.Find("Plane");
         GameObject outwall = GameObject.Find("outsidewall");
-        for (int x = 0; x < floor.transform.localScale.x; x++)
+        outwall.transform.localScale = new Vector3(1, 8, 1);
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < floor.transform.localScale.y; y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
-                if (x == 0 || x == floor.transform.localScale.x - 1 || y == 0 || y == floor.transform.localScale.y - 1)
+                if (x == 0 || x == mapSize.x - 1 || y == 0 || y == mapSize.y - 1)
                 {
                     // 테두리 벽 생성
                     Vector3 position = new Vector3(x + wallSpacing, 0, y + wallSpacing);
                     GameObject newWall = Instantiate(outwall, position, Quaternion.identity);
-                    newWall.name = "Wall " + wallCounter.ToString();
 
                     wallCounter++;
                 }
