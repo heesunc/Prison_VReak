@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+//d
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] Vector3Int mapSize; //원하는 맵의 크기
