@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NpcController : MonoBehaviour
 {
+    // NPC zz
+
     public float speed = 5f;
     public float rotationSpeed = 360f;
     public float raycastDistance = 8f;
