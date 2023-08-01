@@ -111,8 +111,8 @@ public class MapGenerator : MonoBehaviour
 
         // wallPrefab을 사용하여 벽을 만듭니다.
         GameObject Wall = Instantiate(wallPrefab);
-        Wall.transform.localScale = new Vector3(rect.width - 1, 5, rect.height - 1);
-        Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.5f, rect.y + rect.height / 2f);
+        Wall.transform.localScale = new Vector3(rect.width - 1, 6, rect.height - 1);
+        Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.0f, rect.y + rect.height / 2f);
 
         string wallName = "wallPrefab" + wallPrefabCounter;
         Wall.name = wallName;
