@@ -197,27 +197,6 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-
-
-    //private void CreateoutWall()
-    //{
-
-    //    GameObject outwall = GameObject.Find("outsidewall");
-    //    outwall.transform.localScale = new Vector3(1, 8, 1);
-    //    for (int x = 0; x < mapSize.x; x++)
-    //    {
-    //        for (int y = 0; y < mapSize.y; y++)
-    //        {
-    //            if (x == 0 || x == mapSize.x - 1 || y == 0 || y == mapSize.y - 1)
-    //            {
-    //                // 테두리 벽 생성
-    //                Vector3 position = new Vector3(x + wallSpacing, 0, y + wallSpacing);
-    //                GameObject newWall = Instantiate(outwall, position, Quaternion.identity);
-
-    //                wallCounter++;
-    //            }
-    //        }
-    //    }
-    //}
+    // 마로 테스트 주석 작성 (23.08.01 16:07)
 }
     
