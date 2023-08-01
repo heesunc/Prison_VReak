@@ -112,5 +112,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+
+    // 마로 테스트 주석 작성 (23.08.01 16:07)
 }
     
