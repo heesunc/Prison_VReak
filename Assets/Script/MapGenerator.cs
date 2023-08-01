@@ -289,8 +289,4 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-<<<<<<< Updated upstream
-=======
 }
->>>>>>> Stashed changes
-    
