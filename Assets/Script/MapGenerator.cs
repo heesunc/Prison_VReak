@@ -24,10 +24,10 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] public int b;
 
     [Header("구조물 리스트")]
-    [SerializeField] private List<GameObject> wallList = new List<GameObject>();
+    [SerializeField]private List<GameObject> wallList = new List<GameObject>();
 
     [Header("rect 좌표 리스트")]
-    [SerializeField] private List<RectInt> rectList = new List<RectInt>();
+    [SerializeField]private List<RectInt> rectList = new List<RectInt>();
 
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
@@ -154,7 +154,7 @@ public class MapGenerator : MonoBehaviour
         System.Random random = new System.Random();
         a = random.Next(1, 16);
         b = random.Next(1, 16);
-        while (a == b)
+        while(a == b)
         {
             b = random.Next(1, 16);
         }
@@ -169,7 +169,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3 wall1_p = Wall.transform.position;
                 Vector3 wall1_s = Wall.transform.localScale;
                 GameObject btn1 = Instantiate(puzzlebtn1);
-                btn1.transform.position = new Vector3(wall1_p.x, 1.0f, wall1_p.z + wall1_s.z * 0.5f);
+                btn1.transform.position = new Vector3(wall1_p.x, 1.0f, wall1_p.z+wall1_s.z * 0.5f);
                 Debug.Log("버튼1번의 포지션 : " + btn1.transform.position);
                 Debug.Log("버튼 1번이 설치된 벽의 포지션 : " + Wall.transform.position);
                 Debug.Log("버튼 1번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
@@ -180,7 +180,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3 wall2_p = Wall.transform.position;
                 Vector3 wall2_s = Wall.transform.localScale;
                 GameObject btn2 = Instantiate(puzzlebtn2);
-                btn2.transform.position = new Vector3(wall2_p.x, 1.0f, wall2_p.z + wall2_s.z * 0.5f);
+                btn2.transform.position = new Vector3(wall2_p.x, 1.0f, wall2_p.z+wall2_s.z * 0.5f);
                 Debug.Log("버튼2번의 포지션 : " + btn2.transform.position);
                 Debug.Log("버튼 2번이 설치된 벽의 포지션 : " + Wall.transform.position);
                 Debug.Log("버튼 2번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
@@ -190,8 +190,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     // 장애물 생성
-    private void GenerateBar()
-    {
+    private void GenerateBar() {
         // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
         Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
         Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
@@ -200,21 +199,21 @@ public class MapGenerator : MonoBehaviour
         Vector3 wallPrefab9BottomPosition = new Vector3(
             wallPrefab9Transform.position.x,
             wallPrefab9Transform.position.y,
-            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f) - 1.0f
+            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
         );
 
         // wallPrefab5의 좌측 위치를 계산합니다.
         Vector3 wallPrefab5LeftPosition = new Vector3(
-            wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f) - 1.0f,
+            wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f)-1.0f,
             wallPrefab5Transform.position.y,
             wallPrefab5Transform.position.z
         );
 
         //
         Vector3 wallPrefab8RightTopPosition = new Vector3(
-            wallPrefab9Transform.position.x - (wallPrefab9Transform.localScale.x / 2.0f) - 2.5f,
+            wallPrefab9Transform.position.x - (wallPrefab9Transform.localScale.x / 2.0f)-2.5f,
             wallPrefab9Transform.position.y,
-            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f) + 95
+            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)+95
         );
 
         // 값을 콘솔창에 출력
@@ -229,17 +228,13 @@ public class MapGenerator : MonoBehaviour
     }
 
     // 각 노드의 모서리 구하기
-    private void CaculateRect()
-    {
+    private void CaculateRect() {
         List<Vector3> lightPositions = new List<Vector3>();
 
-        foreach (RectInt rect in rectList)
-        {
-            for (int listNum = 1; listNum <= 4; listNum++)
-            {
+        foreach(RectInt rect in rectList) {
+            for(int listNum = 1; listNum <= 4; listNum++) {
                 Vector3 position = Vector3.zero;
-                switch (listNum)
-                {
+                switch(listNum){
                     case 1: // (- , -)
                         Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
                         // 좌표 구하기
@@ -280,8 +275,7 @@ public class MapGenerator : MonoBehaviour
 
                         break;
                 }
-                if (!lightPositions.Contains(position))
-                {
+                if (!lightPositions.Contains(position)) {
                     lightPositions.Add(position);
                     GameObject Light = Instantiate(lightPrefab);
                     Light.transform.position = position;
@@ -296,3 +290,4 @@ public class MapGenerator : MonoBehaviour
         }
     }
 }
+    
