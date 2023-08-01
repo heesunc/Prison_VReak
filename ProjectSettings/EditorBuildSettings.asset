@@ -4,5 +4,28 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/ClearScene.unity
+    guid: 2cfce87a34d2eeb46822aa8f506c05b8
+  - enabled: 0
+    path: Assets/Scenes/PuzzleScene_one.unity
+    guid: 055006349443fda40892fde68883a491
+  - enabled: 1
+    path: Assets/Scenes/Stage_1_Scene.unity
+    guid: 24c2fb352b72d8d4892e1436b4582aca
+  - enabled: 1
+    path: Assets/Scenes/Stage_2_Scene.unity
+    guid: 215eaafca51f85e429cf237b554d54c3
+  - enabled: 0
+    path: Assets/Scenes/Stage_2_Scene_Temp.unity
+    guid: a9d24cb62c7f5f14e9023866d3b6a68d
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 82a19a655c6cabb4abc019f58871cb73, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: b72ece08586ceb74da440b1128275e1f, type: 2}
+    com.unity.renderstreaming.settings: {fileID: 11400000, guid: f5c6996e3bf68e54ea06d6a4530f4048, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 673ec95e37b3c2a4b92e05c95c490e8c, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: b9672dedbae27c342938d34119f3f633, type: 2}

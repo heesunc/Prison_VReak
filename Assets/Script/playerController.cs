@@ -7,48 +7,41 @@ public class playerController : MonoBehaviour
     Rigidbody rb;
     float jumpForce = 250.0f;
     float walkForce = 2.0f;
+    float maxSpeed = 5.0f;
+    Transform cameraParent; // 카메라 부모 오브젝트
     CameraFollow cameraFollow;
 
     // Start is called before the first frame update
     void Start()
     {
+        //this.transform.position = new Vector3(-4, 1, 2);
         this.rb = GetComponent<Rigidbody>();
+        this.cameraParent = new GameObject("CameraParent").transform; // 카메라 부모 오브젝트 생성
         this.cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        Camera.main.transform.SetParent(this.cameraParent); // 카메라를 부모 오브젝트에 부착
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && this.rb.velocity.y == 0.0f)
-        {
-            this.rb.AddForce(transform.up * this.jumpForce);
-        }
+    void FixedUpdate()
+{
+    // 이동
+    float moveHorizontal = Input.GetAxis("Horizontal");
+    float moveVertical = Input.GetAxis("Vertical");
 
-        // move
-        Vector3 moveDirection = Vector3.zero;
+    Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
+    moveDirection = Camera.main.transform.TransformDirection(moveDirection);
+    moveDirection.y = 0f;
+    moveDirection.Normalize();
 
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveDirection += this.cameraFollow.transform.right;
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveDirection -= this.cameraFollow.transform.right;
-        }
+    Vector3 desiredVelocity = moveDirection * maxSpeed;
+    Vector3 velocityChange = desiredVelocity - rb.velocity;
+    velocityChange.y = 0f;
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            moveDirection += this.cameraFollow.transform.forward;
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            moveDirection -= this.cameraFollow.transform.forward;
-        }
+    rb.AddForce(velocityChange, ForceMode.VelocityChange);
 
-        if (moveDirection.magnitude > 0)
-        {
-            moveDirection.Normalize();
-            this.rb.AddForce(moveDirection * this.walkForce);
-        }
-    }
+    // 회전
+    float rotateAmount = Input.GetAxis("Mouse X") * 3.0f;
+    this.transform.Rotate(0, rotateAmount, 0);
+}
+
 }
