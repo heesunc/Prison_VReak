@@ -4,12 +4,14 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - cctv
+  - task-wire
   - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ceiling
   - Water
   - UI
   - 

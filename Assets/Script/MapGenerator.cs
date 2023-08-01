@@ -39,11 +39,8 @@ public class MapGenerator : MonoBehaviour
         GenerateRoom(root, 0);
 
         puzzleBtn();
-
         GenerateBar();
-
         CaculateRect();
-
     }
 
     // 노드 나누기
@@ -76,10 +73,7 @@ public class MapGenerator : MonoBehaviour
         tree.rightNode.parNode = tree;
         Divide(tree.leftNode, n + 1); //왼쪽, 오른쪽 자식 노드들도 나눠준다.
         Divide(tree.rightNode, n + 1);//왼쪽, 오른쪽 자식 노드들도 나눠준다.
-
-
     }
-
     // 방 생성하기
     private RectInt GenerateRoom(Node tree, int n)
     {
@@ -100,7 +94,6 @@ public class MapGenerator : MonoBehaviour
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
             GameObject floor = GameObject.Find("Plane");
-
             CreateWalls(rect);
         }
         else
@@ -127,7 +120,6 @@ public class MapGenerator : MonoBehaviour
         wallPrefabCounter++;
         wallList.Add(Wall);
     }
-
     // 장애물 생성
     private void CreateNewBlock5(Vector3 position)
     {
