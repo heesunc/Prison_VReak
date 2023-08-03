@@ -11,9 +11,6 @@ GameObject:
   - component: {fileID: 3012248941630783936}
   - component: {fileID: 1451207285165517511}
   - component: {fileID: 1451207285165517505}
-  - component: {fileID: 1451207285165517508}
-  - component: {fileID: 1451207285165517509}
-  - component: {fileID: 1213835124829856333}
   - component: {fileID: 2622688392746422885}
   m_Layer: 0
   m_Name: npcPrefab
@@ -76,50 +73,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1451207285165517508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201625345774360402}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a6bdd387abb0eb4881e3c6e47feb387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  rotationSpeed: 360
-  raycastDistance: 8
-  raycastAngle: 60
---- !u!114 &1451207285165517509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201625345774360402}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e4eddcb15667b04d94e11091fc3dd8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  anim: {fileID: 7448878045820177597}
---- !u!114 &1213835124829856333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201625345774360402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f835179eb0d38f43b36a6f7b60d616a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  tf_Destination: []
 --- !u!136 &2622688392746422885
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -203,11 +156,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 765e2fde8c84f094e99304c6198491ea, type: 3}
---- !u!95 &7448878045820177597 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9500000, guid: 765e2fde8c84f094e99304c6198491ea, type: 3}
-  m_PrefabInstance: {fileID: 7448878045827545565}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7448878045827932871 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400154, guid: 765e2fde8c84f094e99304c6198491ea, type: 3}

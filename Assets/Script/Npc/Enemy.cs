@@ -98,17 +98,4 @@ public class Enemy : MonoBehaviour
         }
         Debug.Log("Idle상태");
     }
-
-    void FreezeVelocity()
-    {
-        rigid.velocity = Vector3.zero;
-        rigid.angularVelocity = Vector3.zero;
-        // 물리력 (Player와 Enemy의 부딪힘)이 NavAgent 이동을 방해하지 않도록
-        // 없애면 플레이어 띠용~하면서 점프됨 
-    }
-
-    void FixedUpdate()
-    {
-        FreezeVelocity();
-    }
 }

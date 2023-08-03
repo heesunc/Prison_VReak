@@ -40,7 +40,7 @@ public class MapGenerator : MonoBehaviour
 
         puzzleBtn();
         GenerateBar();
-        CaculateRect();
+        //CaculateRect();
     }
 
     // 노드 나누기
