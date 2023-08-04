@@ -24,7 +24,12 @@ MonoBehaviour:
         m_url: ws://13.209.63.39:8080
         m_iceServers:
         - m_urls:
-          - stun:stun.l.google.com:19302
+          - stun:13.209.63.39:3478
           m_username: 
           m_credentialType: 0
           m_credential: 
+        - m_urls:
+          - turn:13.209.63.3478?transport=tcp
+          m_username: canpv
+          m_credentialType: 0
+          m_credential: can1234

@@ -9,15 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
-    path: Assets/Scenes/ClearScene.unity
-    guid: 2cfce87a34d2eeb46822aa8f506c05b8
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/PuzzleScene_one.unity
-    guid: 055006349443fda40892fde68883a491
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 3e9b360cdf0bb5c4194c04ac0e3a0591
   - enabled: 1
     path: Assets/Scenes/Stage_1_Scene.unity
     guid: 24c2fb352b72d8d4892e1436b4582aca
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Stage_2_Scene.unity
     guid: 215eaafca51f85e429cf237b554d54c3
   - enabled: 0

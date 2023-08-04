@@ -112,9 +112,9 @@ public class FixWiringTask : MonoBehaviour
         yield return new WaitForSeconds(1f); // 전환 전 잠시 대기
         // Scene 전환
         PuzzleObject.SetActive(false);
-        while(Door.transform.rotation.y >= 91.95f){
+        while(Door.transform.position.z >= 91.95f){
 
-                Door.transform.Translate(0, 5.05f, 0);
+                Door.transform.Translate(0, 0, -5.05f);
                 yield return null;
         }
     }

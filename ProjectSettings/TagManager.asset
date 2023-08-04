@@ -7,17 +7,18 @@ TagManager:
   - cctv
   - task-wire
   - Obstacle
+  - CinemachineTarget
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - ceiling
+  - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - PlayerModel
+  - Jail
+  - Floor
+  - VRHands
   - 
   - 
   - 
