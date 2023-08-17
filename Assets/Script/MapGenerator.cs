@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Unity.AI.Navigation;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -10,27 +11,26 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] float minimumDivideRate; //공간이 나눠지는 최소 비율
     [SerializeField] float maximumDivideRate; //공간이 나눠지는 최대 비율
     [SerializeField] private int maximumDepth; //트리의 높이, 높을 수록 방을 더 자세히 나누게 됨
-
     [Header("프리팹")]
     [SerializeField] private GameObject wallPrefab; // 노드구조물 프리팹
     [SerializeField] private GameObject barPrefab; // 장애물 프리팹
     [SerializeField] private GameObject puzzlebtn1; // 퍼즐버튼1
     [SerializeField] private GameObject puzzlebtn2; // 퍼즐버튼2
     [SerializeField] private GameObject lightPrefab; // 형광등
-
+    [SerializeField] private GameObject NPCPrefab; // NPC
     [Header("퍼즐 버튼 위치 난수")]
     [SerializeField] private int num = 1;
     [SerializeField] public int a;
     [SerializeField] public int b;
-
     [Header("구조물 리스트")]
     [SerializeField]private List<GameObject> wallList = new List<GameObject>();
-
     [Header("rect 좌표 리스트")]
     [SerializeField]private List<RectInt> rectList = new List<RectInt>();
 
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
+    
+    public NavMeshSurface surface;
 
     void Start()
     {
@@ -39,11 +39,49 @@ public class MapGenerator : MonoBehaviour
         GenerateRoom(root, 0);
 
         puzzleBtn();
-        GenerateBar();
-        //CaculateRect();
-    }
 
-    // 노드 나누기
+        // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
+        Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
+        Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
+
+        // wallPrefab9의 하단 위치를 계산합니다.
+        Vector3 wallPrefab9BottomPosition = new Vector3(
+        wallPrefab9Transform.position.x,
+        wallPrefab9Transform.position.y,
+        wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
+        );
+
+        Vector3 wallPrefab9LeftBottomPosition = new Vector3(
+            wallPrefab9Transform.position.x - (wallPrefab9Transform.localScale.x / 2.0f)-2.5f,
+            wallPrefab9Transform.position.y,
+            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
+            //+ 90f
+        );
+
+        GameObject npcTest = Instantiate(NPCPrefab);
+        npcTest.transform.position = wallPrefab9LeftBottomPosition;
+
+
+        // wallPrefab5의 좌측 위치를 계산합니다.
+        Vector3 wallPrefab5LeftPosition = new Vector3(
+        wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f)-1.0f,
+        wallPrefab5Transform.position.y,
+        wallPrefab5Transform.position.z
+        );
+
+        // 값을 콘솔창에 출력
+        Debug.Log("wallPrefab9BottomPosition: " + wallPrefab9BottomPosition);
+        Debug.Log("wallPrefab5LeftPosition: " + wallPrefab5LeftPosition);
+
+        // 계산된 위치에 새로운 구조물을 생성합니다.
+        CreateNewBlock9(wallPrefab9BottomPosition);
+        CreateNewBlock5(wallPrefab5LeftPosition);
+
+        CaculateRect();
+
+
+        surface.BuildNavMesh();
+    }
     void Divide(Node tree, int n)
     {
         if (n == maximumDepth) return; //내가 원하는 높이에 도달하면 더 나눠주지 않는다.
@@ -74,7 +112,6 @@ public class MapGenerator : MonoBehaviour
         Divide(tree.leftNode, n + 1); //왼쪽, 오른쪽 자식 노드들도 나눠준다.
         Divide(tree.rightNode, n + 1);//왼쪽, 오른쪽 자식 노드들도 나눠준다.
     }
-    // 방 생성하기
     private RectInt GenerateRoom(Node tree, int n)
     {
         RectInt rect;
@@ -94,6 +131,9 @@ public class MapGenerator : MonoBehaviour
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
             GameObject floor = GameObject.Find("Plane");
+            
+            
+            //CreateoutWall();
             CreateWalls(rect);
         }
         else
@@ -104,30 +144,26 @@ public class MapGenerator : MonoBehaviour
         }
         return rect;
     }
-
-    // 내부 구조물 생성
     private void CreateWalls(RectInt rect)
     {
-
         // wallPrefab을 사용하여 벽을 만듭니다.
         GameObject Wall = Instantiate(wallPrefab);
-        Wall.transform.localScale = new Vector3(rect.width - 1, 6, rect.height - 1);
-        Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.0f, rect.y + rect.height / 2f);
-
+        Wall.transform.localScale = new Vector3(rect.width-1, 5, rect.height-1);
+        Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.5f, rect.y + rect.height / 2f);
         string wallName = "wallPrefab" + wallPrefabCounter;
         Wall.name = wallName;
         num++;
         wallPrefabCounter++;
         wallList.Add(Wall);
     }
-    // 장애물 생성
+        // 장애물 생성
     private void CreateNewBlock5(Vector3 position)
     {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "newBlock5";
 
-        newBlock.transform.localScale = new Vector3(2, 5, 2);
+        newBlock.transform.localScale = new Vector3(8, 5, 2);
         newBlock.transform.position = position;
     }
     private void CreateNewBlock9(Vector3 position)
@@ -136,7 +172,7 @@ public class MapGenerator : MonoBehaviour
 
         newBlock.name = "newBlock9";
 
-        newBlock.transform.localScale = new Vector3(2, 5, 2);
+        newBlock.transform.localScale = new Vector3(2, 5, 8);
         newBlock.transform.position = position;
     }
 
@@ -161,7 +197,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3 wall1_p = Wall.transform.position;
                 Vector3 wall1_s = Wall.transform.localScale;
                 GameObject btn1 = Instantiate(puzzlebtn1);
-                btn1.transform.position = new Vector3(wall1_p.x, 1.0f, wall1_p.z+wall1_s.z * 0.5f);
+                btn1.transform.position = new Vector3(wall1_p.x, 1.0f, wall1_p.z+wall1_s.z * 0.5f + 0.2f);
                 Debug.Log("버튼1번의 포지션 : " + btn1.transform.position);
                 Debug.Log("버튼 1번이 설치된 벽의 포지션 : " + Wall.transform.position);
                 Debug.Log("버튼 1번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
@@ -172,7 +208,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3 wall2_p = Wall.transform.position;
                 Vector3 wall2_s = Wall.transform.localScale;
                 GameObject btn2 = Instantiate(puzzlebtn2);
-                btn2.transform.position = new Vector3(wall2_p.x, 1.0f, wall2_p.z+wall2_s.z * 0.5f);
+                btn2.transform.position = new Vector3(wall2_p.x, 1.0f, wall2_p.z+wall2_s.z * 0.5f + 0.2f);
                 Debug.Log("버튼2번의 포지션 : " + btn2.transform.position);
                 Debug.Log("버튼 2번이 설치된 벽의 포지션 : " + Wall.transform.position);
                 Debug.Log("버튼 2번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
@@ -181,94 +217,66 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    // 장애물 생성
-    private void GenerateBar() {
-        // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
-        Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
-        Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
-
-        // wallPrefab9의 하단 위치를 계산합니다.
-        Vector3 wallPrefab9BottomPosition = new Vector3(
-            wallPrefab9Transform.position.x,
-            wallPrefab9Transform.position.y,
-            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
-        );
-
-        // wallPrefab5의 좌측 위치를 계산합니다.
-        Vector3 wallPrefab5LeftPosition = new Vector3(
-            wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f)-1.0f,
-            wallPrefab5Transform.position.y,
-            wallPrefab5Transform.position.z
-        );
-
-        //
-        Vector3 wallPrefab8RightTopPosition = new Vector3(
-            wallPrefab9Transform.position.x - (wallPrefab9Transform.localScale.x / 2.0f)-2.5f,
-            wallPrefab9Transform.position.y,
-            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)+95
-        );
-
-        // 값을 콘솔창에 출력
-        Debug.Log("wallPrefab9BottomPosition: " + wallPrefab9BottomPosition);
-        Debug.Log("wallPrefab5LeftPosition: " + wallPrefab5LeftPosition);
-
-        Debug.Log("wallPrefab8RightTopPosition: " + wallPrefab8RightTopPosition);
-
-        // 계산된 위치에 새로운 구조물을 생성합니다.
-        CreateNewBlock9(wallPrefab9BottomPosition);
-        CreateNewBlock5(wallPrefab5LeftPosition);
-    }
-
     // 각 노드의 모서리 구하기
     private void CaculateRect() {
+
         List<Vector3> lightPositions = new List<Vector3>();
 
         foreach(RectInt rect in rectList) {
             for(int listNum = 1; listNum <= 4; listNum++) {
                 Vector3 position = Vector3.zero;
+
                 switch(listNum){
-                    case 1: // (- , -)
-                        Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                        // 좌표 구하기
-                        currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
+                case 1: // (- , -)
+                Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                // 좌표 구하기
+                currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
 
-                        // 라이트 오브젝트 생성
-                        position = new Vector3(currentRect.x, 5, currentRect.y);
 
-                        break;
+                // 라이트 오브젝트 생성
+                position = new Vector3(currentRect.x, 4.1f, currentRect.y);
 
-                    case 2: // (- , +)
-                        Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                        // 좌표 구하기
-                        currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
 
-                        // 라이트 오브젝트 생성
-                        position = new Vector3(currentRect2.x, 5, currentRect2.y);
+                break;
 
-                        break;
+                case 2: // (- , +)
+                Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                // 좌표 구하기
+                currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
 
-                    case 3: // (+ , -)
-                        Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                        // 좌표 구하기
-                        currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
+                // 라이트 오브젝트 생성
+                position
+                = new Vector3(currentRect2.x, 4.1f, currentRect2.y);
 
-                        // 라이트 오브젝트 생성
-                        position = new Vector3(currentRect3.x, 5, currentRect3.y);
 
-                        break;
+                break;
 
-                    case 4: // (+ , +)
-                        Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                        // 좌표 구하기
-                        currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
+                case 3: // (+ , -)
+                Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                // 좌표 구하기
+                currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
 
-                        // 라이트 오브젝트 생성
-                        position = new Vector3(currentRect4.x, 5, currentRect4.y);
 
-                        break;
+                // 라이트 오브젝트 생성
+                position = new Vector3(currentRect3.x, 4.1f, currentRect3.y);
+
+
+                break;
+
+                case 4: // (+ , +)
+                Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                // 좌표 구하기
+                currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
+
+                // 라이트 오브젝트 생성
+                position
+                = new Vector3(currentRect4.x, 4.1f, currentRect4.y);
+
+                break;
                 }
                 if (!lightPositions.Contains(position)) {
                     lightPositions.Add(position);
+
                     GameObject Light = Instantiate(lightPrefab);
                     Light.transform.position = position;
 
@@ -276,9 +284,12 @@ public class MapGenerator : MonoBehaviour
                     Light.name = lightName;
                     lightPrefabCounter++;
 
+
                     Debug.Log($"x: {position.x}, z: {position.z}");
+
                 }
-            }
+            } 
         }
     }
 }
+    
