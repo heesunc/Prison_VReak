@@ -40,6 +40,8 @@ public class MapGenerator : MonoBehaviour
 
         puzzleBtn();
 
+
+        // 밑에 코드들은 현재 내부 추가생성되는 장애물 2개에 관련된 코드 -> 함수로 빼버릴 예정
         // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
         Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
         Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
@@ -78,14 +80,15 @@ public class MapGenerator : MonoBehaviour
         CreateNewBlock5(wallPrefab5LeftPosition);
 
         CaculateRect();
-
+        // 여기까지 함수로 뺄게요
 
         surface.BuildNavMesh();
     }
+
+    ////////// 맵 생성 관련 함수 //////////
     void Divide(Node tree, int n)
     {
         if (n == maximumDepth) return; //내가 원하는 높이에 도달하면 더 나눠주지 않는다.
-
         //그 외의 경우에는
 
         int maxLength = Mathf.Max(tree.nodeRect.width, tree.nodeRect.height);
@@ -131,9 +134,7 @@ public class MapGenerator : MonoBehaviour
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
             GameObject floor = GameObject.Find("Plane");
-            
-            
-            //CreateoutWall();
+
             CreateWalls(rect);
         }
         else
@@ -156,7 +157,9 @@ public class MapGenerator : MonoBehaviour
         wallPrefabCounter++;
         wallList.Add(Wall);
     }
-        // 장애물 생성
+    //////////////////////////////
+
+    ////////// 장애물 생성 //////////
     private void CreateNewBlock5(Vector3 position)
     {
         GameObject newBlock = Instantiate(barPrefab);
@@ -175,8 +178,9 @@ public class MapGenerator : MonoBehaviour
         newBlock.transform.localScale = new Vector3(2, 5, 8);
         newBlock.transform.position = position;
     }
+    //////////////////////////////
 
-    // 퍼즐 위치 생성
+    ////////// 퍼즐 위치 생성 //////////
     private void selectNum()
     {
         System.Random random = new System.Random();
@@ -216,10 +220,10 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+    //////////////////////////////
 
-    // 각 노드의 모서리 구하기
+    ////////// 각 노드의 모서리 구하기 //////////
     private void CaculateRect() {
-
         List<Vector3> lightPositions = new List<Vector3>();
 
         foreach(RectInt rect in rectList) {
@@ -227,53 +231,40 @@ public class MapGenerator : MonoBehaviour
                 Vector3 position = Vector3.zero;
 
                 switch(listNum){
-                case 1: // (- , -)
-                Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                // 좌표 구하기
-                currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
+                    case 1: // (- , -)
+                    Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                    // 좌표 구하기
+                    currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
+                    // 라이트 오브젝트 위치 선정
+                    position = new Vector3(currentRect.x, 4.1f, currentRect.y);
 
+                    break;
 
-                // 라이트 오브젝트 생성
-                position = new Vector3(currentRect.x, 4.1f, currentRect.y);
+                    case 2: // (- , +)
+                    Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
+                    currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
+                    position = new Vector3(currentRect2.x, 4.1f, currentRect2.y);
 
-                break;
+                    break;
 
-                case 2: // (- , +)
-                Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                // 좌표 구하기
-                currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
+                    case 3: // (+ , -)
+                    Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
-                // 라이트 오브젝트 생성
-                position
-                = new Vector3(currentRect2.x, 4.1f, currentRect2.y);
+                    currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
+                    position = new Vector3(currentRect3.x, 4.1f, currentRect3.y);
 
+                    break;
 
-                break;
+                    case 4: // (+ , +)
+                    Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
-                case 3: // (+ , -)
-                Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                // 좌표 구하기
-                currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
+                    currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
+                    position = new Vector3(currentRect4.x, 4.1f, currentRect4.y);
 
-
-                // 라이트 오브젝트 생성
-                position = new Vector3(currentRect3.x, 4.1f, currentRect3.y);
-
-
-                break;
-
-                case 4: // (+ , +)
-                Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                // 좌표 구하기
-                currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
-
-                // 라이트 오브젝트 생성
-                position
-                = new Vector3(currentRect4.x, 4.1f, currentRect4.y);
-
-                break;
+                    break;
                 }
+
                 if (!lightPositions.Contains(position)) {
                     lightPositions.Add(position);
 
@@ -284,7 +275,6 @@ public class MapGenerator : MonoBehaviour
                     Light.name = lightName;
                     lightPrefabCounter++;
 
-
                     Debug.Log($"x: {position.x}, z: {position.z}");
 
                 }
@@ -292,4 +282,3 @@ public class MapGenerator : MonoBehaviour
         }
     }
 }
-    
