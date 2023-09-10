@@ -33,54 +33,21 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
+        // 맵 생성
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
         Divide(root, 0);
         GenerateRoom(root, 0);
 
+        // 퍼즐버튼 위치 생성
         puzzleBtn();
 
+        // 추가 장애물 생성
+        CreateNewBlocks();
 
-        // 밑에 코드들은 현재 내부 추가생성되는 장애물 2개에 관련된 코드 -> 함수로 빼버릴 예정
-        // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
-        Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
-        Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
-
-        // wallPrefab9의 하단 위치를 계산합니다.
-        Vector3 wallPrefab9BottomPosition = new Vector3(
-        wallPrefab9Transform.position.x,
-        wallPrefab9Transform.position.y,
-        wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
-        );
-
-        Vector3 wallPrefab9LeftBottomPosition = new Vector3(
-            wallPrefab9Transform.position.x - (wallPrefab9Transform.localScale.x / 2.0f)-2.5f,
-            wallPrefab9Transform.position.y,
-            wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
-            //+ 90f
-        );
-
-        GameObject npcTest = Instantiate(NPCPrefab);
-        npcTest.transform.position = wallPrefab9LeftBottomPosition;
-
-
-        // wallPrefab5의 좌측 위치를 계산합니다.
-        Vector3 wallPrefab5LeftPosition = new Vector3(
-        wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f)-1.0f,
-        wallPrefab5Transform.position.y,
-        wallPrefab5Transform.position.z
-        );
-
-        // 값을 콘솔창에 출력
-        Debug.Log("wallPrefab9BottomPosition: " + wallPrefab9BottomPosition);
-        Debug.Log("wallPrefab5LeftPosition: " + wallPrefab5LeftPosition);
-
-        // 계산된 위치에 새로운 구조물을 생성합니다.
-        CreateNewBlock9(wallPrefab9BottomPosition);
-        CreateNewBlock5(wallPrefab5LeftPosition);
-
+        // 라이트 생성
         CaculateRect();
-        // 여기까지 함수로 뺄게요
 
+        // 어... 이건 뭐... material 관련??
         surface.BuildNavMesh();
     }
 
@@ -158,6 +125,33 @@ public class MapGenerator : MonoBehaviour
     //////////////////////////////
 
     ////////// 장애물 생성 //////////
+    private void CreateNewBlocks() {
+        // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
+        Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
+        Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
+
+        // wallPrefab9의 하단 위치를 계산합니다.
+        Vector3 wallPrefab9BottomPosition = new Vector3(
+        wallPrefab9Transform.position.x,
+        wallPrefab9Transform.position.y,
+        wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
+        );
+
+        // wallPrefab5의 좌측 위치를 계산합니다.
+        Vector3 wallPrefab5LeftPosition = new Vector3(
+        wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f)-1.0f,
+        wallPrefab5Transform.position.y,
+        wallPrefab5Transform.position.z
+        );
+
+        // 값을 콘솔창에 출력
+        Debug.Log("wallPrefab9BottomPosition: " + wallPrefab9BottomPosition);
+        Debug.Log("wallPrefab5LeftPosition: " + wallPrefab5LeftPosition);
+
+        // 계산된 위치에 새로운 구조물을 생성합니다.
+        CreateNewBlock9(wallPrefab9BottomPosition);
+        CreateNewBlock5(wallPrefab5LeftPosition);
+    }
     private void CreateNewBlock5(Vector3 position)
     {
         GameObject newBlock = Instantiate(barPrefab);
