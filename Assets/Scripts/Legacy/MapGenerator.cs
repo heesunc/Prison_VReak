@@ -25,12 +25,15 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]private List<GameObject> wallList = new List<GameObject>();
     [Header("rect 좌표 리스트")]
     [SerializeField]private List<RectInt> rectList = new List<RectInt>();
+    [Header("구조물 4면 중앙값 리스트")]
+    [SerializeField]private List<Rect> rectCheckList = new List<Rect>();
 
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     
     public NavMeshSurface surface;
 
+    ////////// Start //////////
     void Start()
     {
         // 맵 생성
@@ -118,6 +121,36 @@ public class MapGenerator : MonoBehaviour
         Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.5f, rect.y + rect.height / 2f);
         string wallName = "wallPrefab" + wallPrefabCounter;
         Wall.name = wallName;
+
+        // 생성되는 wallPrefab(n) 의 4개 면의 중앙값 구하기
+        // position이 소수점으로 나오는 경우도 있어서 RectInt가 아니라 그냥 Rect 사용함
+        Rect wallRect = new Rect(Wall.transform.position.x,
+                                        Wall.transform.position.z,
+                                        Wall.transform.localScale.x,
+                                        Wall.transform.localScale.z);
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 midPoint = Vector3.zero;
+
+            switch(i)
+            {
+                case 0: // Left edge
+                    midPoint = new Vector3(wallRect.x - wallRect.width / 2f, 0, wallRect.y);
+                    break;
+                case 1: // Top edge
+                    midPoint = new Vector3(wallRect.x, 0, wallRect.y + wallRect.height / 2f);
+                    break;
+                case 2: // Right edge
+                    midPoint = new Vector3(wallRect.x + wallRect.width / 2f, 0, wallRect.y);
+                    break;
+                case 3: // Bottom edge
+                    midPoint = new Vector3(wallRect.x, 0, wallRect.y - wallRect.height / 2f);
+                    break;
+            }
+            rectCheckList.Add(new Rect(midPoint.x,midPoint.z ,1 ,1)); // width와 height는 필요없기에 1, 1로 설정
+        }
+
         num++;
         wallPrefabCounter++;
         wallList.Add(Wall);
@@ -144,10 +177,6 @@ public class MapGenerator : MonoBehaviour
         wallPrefab5Transform.position.z
         );
 
-        // 값을 콘솔창에 출력
-        Debug.Log("wallPrefab9BottomPosition: " + wallPrefab9BottomPosition);
-        Debug.Log("wallPrefab5LeftPosition: " + wallPrefab5LeftPosition);
-
         // 계산된 위치에 새로운 구조물을 생성합니다.
         CreateNewBlock9(wallPrefab9BottomPosition);
         CreateNewBlock5(wallPrefab5LeftPosition);
@@ -157,7 +186,6 @@ public class MapGenerator : MonoBehaviour
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "newBlock5";
-
         newBlock.transform.localScale = new Vector3(8, 5, 2);
         newBlock.transform.position = position;
     }
@@ -166,7 +194,6 @@ public class MapGenerator : MonoBehaviour
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "newBlock9";
-
         newBlock.transform.localScale = new Vector3(2, 5, 8);
         newBlock.transform.position = position;
     }
@@ -241,6 +268,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 }
 
+                // lightPositions 내에 해당 position이 없으면 추가 후 라이트 생성!
                 if (!lightPositions.Contains(position)) {
                     lightPositions.Add(position);
 
@@ -250,9 +278,6 @@ public class MapGenerator : MonoBehaviour
                     string lightName = "light" + lightPrefabCounter;
                     Light.name = lightName;
                     lightPrefabCounter++;
-
-                    Debug.Log($"x: {position.x}, z: {position.z}");
-
                 }
             } 
         }
