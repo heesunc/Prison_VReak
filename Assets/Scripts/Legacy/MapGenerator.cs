@@ -15,7 +15,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject wallPrefab; // 노드구조물 프리팹
     [SerializeField] private GameObject barPrefab; // 장애물 프리팹
     [SerializeField] private GameObject puzzlebtn1; // 퍼즐버튼1
-    [SerializeField] private GameObject puzzlebtn2; // 퍼즐버튼2
     [SerializeField] private GameObject lightPrefab; // 형광등
     [SerializeField] private GameObject NPCPrefab; // NPC
     [Header("퍼즐 버튼 위치 난수")]
@@ -133,7 +132,6 @@ public class MapGenerator : MonoBehaviour
             int y = rect.y + Random.Range(2, rect.height - height - 2);
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
-            GameObject floor = GameObject.Find("Plane");
 
             CreateWalls(rect);
         }
@@ -185,11 +183,6 @@ public class MapGenerator : MonoBehaviour
     {
         System.Random random = new System.Random();
         a = random.Next(1, 16);
-        b = random.Next(1, 16);
-        while(a == b)
-        {
-            b = random.Next(1, 16);
-        }
     }
     private void puzzleBtn()
     {
@@ -206,17 +199,6 @@ public class MapGenerator : MonoBehaviour
                 Debug.Log("버튼 1번이 설치된 벽의 포지션 : " + Wall.transform.position);
                 Debug.Log("버튼 1번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
                 Debug.Log("설치된 번호 표시 : " + Wall.name + "에 a버튼 생성");
-            }
-            else if (Wall.name == wallPrefab.name + b) // wallPrefab의 이름에 (Clone)과 b를 더한 이름과 비교
-            {
-                Vector3 wall2_p = Wall.transform.position;
-                Vector3 wall2_s = Wall.transform.localScale;
-                GameObject btn2 = Instantiate(puzzlebtn2);
-                btn2.transform.position = new Vector3(wall2_p.x, 1.0f, wall2_p.z+wall2_s.z * 0.5f + 0.2f);
-                Debug.Log("버튼2번의 포지션 : " + btn2.transform.position);
-                Debug.Log("버튼 2번이 설치된 벽의 포지션 : " + Wall.transform.position);
-                Debug.Log("버튼 2번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
-                Debug.Log("설치된 번호 표시 : " + Wall.name + "에 b버튼 생성");
             }
         }
     }
