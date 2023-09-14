@@ -25,8 +25,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]private List<GameObject> wallList = new List<GameObject>();
     [Header("rect 좌표 리스트")]
     [SerializeField]private List<RectInt> rectList = new List<RectInt>();
-    [Header("구조물 4면 중앙값 리스트")]
+    [Header("구조물 4면 중앙값 리스트 - 좌상우하 순서")]
     [SerializeField]private List<Rect> rectCheckList = new List<Rect>();
+    [Header("장애물 동적 생성을 위한 리스트")]
+    [SerializeField]private List<Rect> leftBlockList = new List<Rect>();
+    [SerializeField]private List<Rect> topBlockList = new List<Rect>();
+    [SerializeField]private List<Rect> rightBlockList = new List<Rect>();
+    [SerializeField]private List<Rect> bottomBlockList = new List<Rect>();
+
 
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
@@ -44,11 +50,11 @@ public class MapGenerator : MonoBehaviour
         // 퍼즐버튼 위치 생성
         puzzleBtn();
 
-        // 추가 장애물 생성
-        CreateNewBlocks();
-
         // 라이트 생성
         CaculateRect();
+
+        // 장애물 동적 생성 - 테스트 중
+        CreateRandomBlocks();
 
         // 어... 이건 뭐... material 관련??
         surface.BuildNavMesh();
@@ -81,6 +87,7 @@ public class MapGenerator : MonoBehaviour
         }
         tree.leftNode.parNode = tree; //자식노드들의 부모노드를 나누기전 노드로 설정
         tree.rightNode.parNode = tree;
+
         Divide(tree.leftNode, n + 1); //왼쪽, 오른쪽 자식 노드들도 나눠준다.
         Divide(tree.rightNode, n + 1);//왼쪽, 오른쪽 자식 노드들도 나눠준다.
     }
@@ -154,48 +161,6 @@ public class MapGenerator : MonoBehaviour
         num++;
         wallPrefabCounter++;
         wallList.Add(Wall);
-    }
-    //////////////////////////////
-
-    ////////// 장애물 생성 //////////
-    private void CreateNewBlocks() {
-        // wallPrefab9 및 wallPrefab5의 Transform 컴포넌트를 가져옵니다.
-        Transform wallPrefab9Transform = GameObject.Find("wallPrefab9").transform;
-        Transform wallPrefab5Transform = GameObject.Find("wallPrefab5").transform;
-
-        // wallPrefab9의 하단 위치를 계산합니다.
-        Vector3 wallPrefab9BottomPosition = new Vector3(
-        wallPrefab9Transform.position.x,
-        wallPrefab9Transform.position.y,
-        wallPrefab9Transform.position.z - (wallPrefab9Transform.localScale.z / 2.0f)-1.0f
-        );
-
-        // wallPrefab5의 좌측 위치를 계산합니다.
-        Vector3 wallPrefab5LeftPosition = new Vector3(
-        wallPrefab5Transform.position.x - (wallPrefab5Transform.localScale.x / 2.0f)-1.0f,
-        wallPrefab5Transform.position.y,
-        wallPrefab5Transform.position.z
-        );
-
-        // 계산된 위치에 새로운 구조물을 생성합니다.
-        CreateNewBlock9(wallPrefab9BottomPosition);
-        CreateNewBlock5(wallPrefab5LeftPosition);
-    }
-    private void CreateNewBlock5(Vector3 position)
-    {
-        GameObject newBlock = Instantiate(barPrefab);
-
-        newBlock.name = "newBlock5";
-        newBlock.transform.localScale = new Vector3(8, 5, 2);
-        newBlock.transform.position = position;
-    }
-    private void CreateNewBlock9(Vector3 position)
-    {
-        GameObject newBlock = Instantiate(barPrefab);
-
-        newBlock.name = "newBlock9";
-        newBlock.transform.localScale = new Vector3(2, 5, 8);
-        newBlock.transform.position = position;
     }
     //////////////////////////////
 
@@ -282,4 +247,83 @@ public class MapGenerator : MonoBehaviour
             } 
         }
     }
+    //////////////////////////////
+
+    ////////// 노드 정보 출력 //////////
+    void SaveNodeInfo(Node node)
+    {
+    Debug.Log("노드 좌표: " + node.nodeRect);
+    }
+    //////////////////////////////
+
+    ////////// 장애물 동적 생성 //////////
+    private void CreateRandomBlocks() {
+        Vector3 checkPosition = Vector3.zero;
+
+        foreach(Rect rectPosition in rectCheckList) {
+            Vector3 position = Vector3.zero;
+            checkPosition = new Vector3(rectPosition.x, 1, rectPosition.y);
+
+            if (checkPosition.x == 2.5f) {
+                leftBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
+            }
+            else if (checkPosition.z == 97.5f) {
+                topBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
+            }
+            else if (checkPosition.x == 97.5f) {
+                rightBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
+            }
+            else if (checkPosition.z == 2.5f) {
+                bottomBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
+            }
+
+        }
+
+        // 좌측 테두리 장애물 생성
+        Rect leftRect = leftBlockList[Random.Range(0, leftBlockList.Count)];
+        Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.5f, leftRect.y);
+        CreateLeftBlock(leftPosition);
+
+        // 상단 테두리 장애물 생성
+        Rect topRect = topBlockList[Random.Range(0, topBlockList.Count)];
+        Vector3 topPosition = new Vector3(topRect.x, 2.5f, topRect.y + 1);
+        CreateTopBlock(topPosition);
+        // 우측 테두리 장애물 생성
+        Rect rightRect = rightBlockList[Random.Range(0, rightBlockList.Count)];
+        Vector3 rightPosition = new Vector3(rightRect.x + 1, 2.5f, rightRect.y);
+        CreateRightBlock(rightPosition);
+        // 하단 테두리 장애물 생성
+        Rect bottomRect = bottomBlockList[Random.Range(0, bottomBlockList.Count)];
+        Vector3 bottomPosition = new Vector3(bottomRect.x, 2.5f, bottomRect.y - 1);
+        CreateBottomBlock(bottomPosition);
+    }
+    private void CreateLeftBlock(Vector3 position) {
+        GameObject newBlock = Instantiate(barPrefab);
+
+        newBlock.name = "leftNewBlock";
+        newBlock.transform.localScale = new Vector3(8, 5, 2);
+        newBlock.transform.position = position;
+    }
+    private void CreateTopBlock(Vector3 position) {
+            GameObject newBlock = Instantiate(barPrefab);
+
+            newBlock.name = "topNewBlock";
+            newBlock.transform.localScale = new Vector3(2, 5, 8);
+            newBlock.transform.position = position;
+    }
+    private void CreateRightBlock(Vector3 position) {
+            GameObject newBlock = Instantiate(barPrefab);
+
+            newBlock.name = "rightNewBlock";
+            newBlock.transform.localScale = new Vector3(8, 5, 2);
+            newBlock.transform.position = position;
+    }
+    private void CreateBottomBlock(Vector3 position) {
+            GameObject newBlock = Instantiate(barPrefab);
+
+            newBlock.name = "bottomNewBlock";
+            newBlock.transform.localScale = new Vector3(2, 5, 8);
+            newBlock.transform.position = position;
+    }
+    //////////////////////////////
 }
