@@ -53,7 +53,7 @@ public class MapGenerator : MonoBehaviour
         // 라이트 생성
         CaculateRect();
 
-        // 장애물 동적 생성 - 테스트 중
+        // 장애물 동적 생성
         CreateRandomBlocks();
 
         // 어... 이건 뭐... material 관련??
@@ -258,32 +258,31 @@ public class MapGenerator : MonoBehaviour
 
     ////////// 장애물 동적 생성 //////////
     private void CreateRandomBlocks() {
+        // 변수 초기화
         Vector3 checkPosition = Vector3.zero;
 
+        // rectCheckList에 있는 값들로 foreach 돌림
         foreach(Rect rectPosition in rectCheckList) {
-            Vector3 position = Vector3.zero;
             checkPosition = new Vector3(rectPosition.x, 1, rectPosition.y);
 
-            if (checkPosition.x == 2.5f) {
+            if (checkPosition.x == 2.5f) { // 좌측 테두리 후보 리스트에 추가
                 leftBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 97.5f) {
+            else if (checkPosition.z == 97.5f) { // 상단 테두리 후보 리스트에 추가
                 topBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.x == 97.5f) {
+            else if (checkPosition.x == 97.5f) { // 우측 테두리 후보 리스트에 추가
                 rightBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 2.5f) {
+            else if (checkPosition.z == 2.5f) { // 하단 테두리 후보 리스트에 추가
                 bottomBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-
         }
 
         // 좌측 테두리 장애물 생성
-        Rect leftRect = leftBlockList[Random.Range(0, leftBlockList.Count)];
-        Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.5f, leftRect.y);
-        CreateLeftBlock(leftPosition);
-
+        Rect leftRect = leftBlockList[Random.Range(0, leftBlockList.Count)]; // 후보 중 랜덤한 값을 고름
+        Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.5f, leftRect.y); // 값들에 -1 혹은 +1을 한 이유 -> 그냥 생성하니깐 복도 끝에 안붙어서 해줬어요... 왜 안되는지는 몰?루
+        CreateLeftBlock(leftPosition); // 함수 실행
         // 상단 테두리 장애물 생성
         Rect topRect = topBlockList[Random.Range(0, topBlockList.Count)];
         Vector3 topPosition = new Vector3(topRect.x, 2.5f, topRect.y + 1);
@@ -297,14 +296,15 @@ public class MapGenerator : MonoBehaviour
         Vector3 bottomPosition = new Vector3(bottomRect.x, 2.5f, bottomRect.y - 1);
         CreateBottomBlock(bottomPosition);
     }
-    private void CreateLeftBlock(Vector3 position) {
+
+    private void CreateLeftBlock(Vector3 position) { // 이전에 5번, 9번 노드에 고정적으로 생성하던 방식과 똑같음
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "leftNewBlock";
         newBlock.transform.localScale = new Vector3(8, 5, 2);
         newBlock.transform.position = position;
     }
-    private void CreateTopBlock(Vector3 position) {
+    private void CreateTopBlock(Vector3 position) { // 상단과 하단 장애물은 복도에 맞게 방향을 바꿔주었음, 귀찮아서 rotate 안하고 그냥 scale 바꿈...
             GameObject newBlock = Instantiate(barPrefab);
 
             newBlock.name = "topNewBlock";
