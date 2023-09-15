@@ -99,17 +99,19 @@ public class NpcTest : MonoBehaviour
             state = State.Run;
             //이렇게 state값을 바꿨다고 animation까지 바뀔까? no! 동기화를 해줘야한다.
             anim.SetTrigger("Run");
+            anim.ResetTrigger("Idle");
         }
         else
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
+            anim.ResetTrigger("Run");
 
             currentDestinationIndex = 0;
             agent.SetDestination(wayPoints[currentDestinationIndex]);
         }
 
-        //Debug.Log("NPC UpdateIdle");
+        Debug.Log("NPC UpdateIdle");
     }
 
     private void UpdateRun()
@@ -120,11 +122,13 @@ public class NpcTest : MonoBehaviour
         {
             state = State.Attack;
             anim.SetTrigger("Attack");
+            anim.ResetTrigger("Run");
         }
         else if (distance > 10f) // 멀어지면 다시 Idle 상태로
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
+            anim.ResetTrigger("Run");
         }
 
         //타겟 방향으로 이동하다가
@@ -144,53 +148,22 @@ public class NpcTest : MonoBehaviour
         {
             state = State.Run;
             anim.SetTrigger("Run");
+            anim.ResetTrigger("Attack");
         }
-        else if (distance > 10f)
+        /*else if (distance > 10f)
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
-        }
-        else
+            anim.ResetTrigger("Attack");
+        }*/
+        /*else
         {
             anim.SetTrigger("Attack");
-        }
+            anim.ResetTrigger("Run");
+            anim.ResetTrigger("Idle");
+        }*/
         Debug.Log("NPC UpdateAttack");
     }
-
-    /*private bool isAttacking = false;
-    private float attackDuration = 2.0f; // Attack 애니메이션의 재생 시간
-
-    private void UpdateAttack()
-    {
-        agent.speed = 0;
-        float distance = Vector3.Distance(transform.position, target.transform.position);
-
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            anim.SetTrigger("Attack");
-
-            // attackDuration 이후에 StopAttacking 함수를 호출하여 "Run" 상태로 전환
-            Invoke("StopAttacking", attackDuration);
-        }
-
-        if (distance > 10f)
-        {
-            state = State.Idle;
-            anim.SetTrigger("Idle");
-        }
-
-        Debug.Log("NPC UpdateAttack");
-    }
-
-    private void StopAttacking()
-    {
-        isAttacking = false;
-        state = State.Run;
-        anim.SetTrigger("Run");
-    }*/
-
-
 
     void FreezeVelocity()
     {
