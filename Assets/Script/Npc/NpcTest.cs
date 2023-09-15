@@ -99,7 +99,7 @@ public class NpcTest : MonoBehaviour
             state = State.Run;
             //이렇게 state값을 바꿨다고 animation까지 바뀔까? no! 동기화를 해줘야한다.
             anim.SetTrigger("Run");
-            //anim.ResetTrigger("Idle");
+            anim.ResetTrigger("Idle");
         }
         else
         {
@@ -111,7 +111,7 @@ public class NpcTest : MonoBehaviour
             agent.SetDestination(wayPoints[currentDestinationIndex]);
         }
 
-        Debug.Log("NPC UpdateIdle");
+        //Debug.Log("NPC UpdateIdle");
     }
 
     private void UpdateRun()
@@ -137,7 +137,7 @@ public class NpcTest : MonoBehaviour
         //if (state == State.Run)
         agent.destination = target.transform.position;
 
-        Debug.Log("NPC UpdateRun");
+        //Debug.Log("NPC UpdateRun");
     }
 
     private void UpdateAttack()
@@ -150,19 +150,19 @@ public class NpcTest : MonoBehaviour
             anim.SetTrigger("Run");
             anim.ResetTrigger("Attack");
         }
-        else if (distance > 10f)
+        /*else if (distance > 10f)
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
             anim.ResetTrigger("Attack");
-        }
+        }*/
         else
         {
             anim.SetTrigger("Attack");
             anim.ResetTrigger("Run");
             anim.ResetTrigger("Idle");
         }
-        Debug.Log("NPC UpdateAttack");
+        //Debug.Log("NPC UpdateAttack");
     }
 
     void FreezeVelocity()
