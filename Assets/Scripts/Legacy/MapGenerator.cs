@@ -22,17 +22,19 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] public int a;
     [SerializeField] public int b;
     [Header("구조물 리스트")]
-    [SerializeField]private List<GameObject> wallList = new List<GameObject>();
+    [SerializeField] private List<GameObject> wallList = new List<GameObject>();
     [Header("rect 좌표 리스트")]
-    [SerializeField]private List<RectInt> rectList = new List<RectInt>();
+    [SerializeField] private List<RectInt> rectList = new List<RectInt>();
     [Header("구조물 4면 중앙값 리스트 - 좌상우하 순서")]
-    [SerializeField]private List<Rect> rectCheckList = new List<Rect>();
+    [SerializeField] private List<Rect> rectCheckList = new List<Rect>();
     [Header("장애물 동적 생성을 위한 리스트")]
-    [SerializeField]private List<Rect> leftBlockList = new List<Rect>();
-    [SerializeField]private List<Rect> topBlockList = new List<Rect>();
-    [SerializeField]private List<Rect> rightBlockList = new List<Rect>();
-    [SerializeField]private List<Rect> bottomBlockList = new List<Rect>();
-    [SerializeField]private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정
+    [SerializeField] private List<Rect> leftBlockList = new List<Rect>();
+    [SerializeField] private List<Rect> topBlockList = new List<Rect>();
+    [SerializeField] private List<Rect> rightBlockList = new List<Rect>();
+    [SerializeField] private List<Rect> bottomBlockList = new List<Rect>();
+    [Header("퍼즐 버튼 생성을 위한 리스트")]
+    [SerializeField] private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정
+
     List<Vector3> collidedSurfacePositions = new List<Vector3>();
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
@@ -51,7 +53,7 @@ public class MapGenerator : MonoBehaviour
         puzzleBtn();
 
         // 라이트 생성
-        CaculateRect();
+        CalculateRect();
 
         // 장애물 동적 생성
         CreateRandomBlocks();
@@ -194,7 +196,7 @@ public class MapGenerator : MonoBehaviour
     //////////////////////////////
 
     ////////// 각 노드의 모서리 구하기 //////////
-    private void CaculateRect() {
+    private void CalculateRect() {
         List<Vector3> lightPositions = new List<Vector3>();
 
         foreach(RectInt rect in rectList) {
