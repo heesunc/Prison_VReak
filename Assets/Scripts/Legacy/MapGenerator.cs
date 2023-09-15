@@ -32,8 +32,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]private List<Rect> topBlockList = new List<Rect>();
     [SerializeField]private List<Rect> rightBlockList = new List<Rect>();
     [SerializeField]private List<Rect> bottomBlockList = new List<Rect>();
-
-
+    [SerializeField]private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정
+    List<Vector3> collidedSurfacePositions = new List<Vector3>();
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     
@@ -44,7 +44,7 @@ public class MapGenerator : MonoBehaviour
     {
         // 맵 생성
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
-        Divide(root, 0);
+        Divide(root, 0, nodeList);
         GenerateRoom(root, 0);
 
         // 퍼즐버튼 위치 생성
@@ -58,14 +58,16 @@ public class MapGenerator : MonoBehaviour
 
         // 어... 이건 뭐... material 관련??
         surface.BuildNavMesh();
+
+        CreateButton();
     }
 
     ////////// 맵 생성 관련 함수 //////////
-    void Divide(Node tree, int n)
+    void Divide(Node tree, int n, List<RectInt> nodeList)
     {
         if (n == maximumDepth) return; //내가 원하는 높이에 도달하면 더 나눠주지 않는다.
         //그 외의 경우에는
-
+        
         int maxLength = Mathf.Max(tree.nodeRect.width, tree.nodeRect.height);
         //가로와 세로중 더 긴것을 구한후, 가로가 길다면 위 좌, 우로 세로가 더 길다면 위, 아래로 나눠주게 될 것이다.
         int split = Mathf.RoundToInt(Random.Range(maxLength * minimumDivideRate, maxLength * maximumDivideRate));
@@ -87,9 +89,10 @@ public class MapGenerator : MonoBehaviour
         }
         tree.leftNode.parNode = tree; //자식노드들의 부모노드를 나누기전 노드로 설정
         tree.rightNode.parNode = tree;
-
-        Divide(tree.leftNode, n + 1); //왼쪽, 오른쪽 자식 노드들도 나눠준다.
-        Divide(tree.rightNode, n + 1);//왼쪽, 오른쪽 자식 노드들도 나눠준다.
+        SaveNodeInfo(tree.leftNode, nodeList);
+        Divide(tree.leftNode, n + 1, nodeList); // 왼쪽 자식 노드를 먼저 나눈다.
+        Divide(tree.rightNode, n + 1, nodeList);
+        
     }
     private RectInt GenerateRoom(Node tree, int n)
     {
@@ -250,10 +253,15 @@ public class MapGenerator : MonoBehaviour
     //////////////////////////////
 
     ////////// 노드 정보 출력 //////////
-    void SaveNodeInfo(Node node)
+    private void SaveNodeInfo(Node node, List<RectInt> nodeList)
     {
-    Debug.Log("노드 좌표: " + node.nodeRect);
+        // 여기에서 node 변수를 사용하여 원하는 정보를 추출하거나 저장할 수 있습니다.
+        // 예를 들어, 노드의 위치와 크기를 출력하는 방법은 다음과 같습니다.
+        // 노드의 사이즈로 위치를 잡아서 리스트에 담아
+        Debug.Log("노드 좌표 : " + node.nodeRect.size);
+        nodeList.Add(node.nodeRect);
     }
+    
     //////////////////////////////
 
     ////////// 장애물 동적 생성 //////////
@@ -325,5 +333,16 @@ public class MapGenerator : MonoBehaviour
             newBlock.transform.localScale = new Vector3(2, 5, 8);
             newBlock.transform.position = position;
     }
-    //////////////////////////////
+    /////////////////////////////////
+    ///버튼 동적 생성
+    private void CreateButton()
+    {
+        /// 지금 현재로써는 리스트에 첫번째 두번째만 사용되서 그거 두개의 가로 세로 길이만 잡아둔거임 임시
+        RectInt firstNodeRect = nodeList[0];
+        RectInt secondNodeRect = nodeList[1];
+        int firstwidth = firstNodeRect.width;
+        int firstheight = firstNodeRect.height;
+        int secondwidth = secondNodeRect.width;
+        int secondheight = secondNodeRect.height;
+    }
 }
