@@ -33,9 +33,10 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private List<Rect> rightBlockList = new List<Rect>();
     [SerializeField] private List<Rect> bottomBlockList = new List<Rect>();
     [Header("퍼즐 버튼 생성을 위한 리스트")]
-    [SerializeField] private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정
+    [SerializeField] private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정보
 
     List<Vector3> collidedSurfacePositions = new List<Vector3>();
+
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     
@@ -290,7 +291,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         // 좌측 테두리 장애물 생성
-        Rect leftRect = leftBlockList[Random.Range(0, leftBlockList.Count)]; // 후보 중 랜덤한 값을 고름
+        Rect leftRect = leftBlockList[Random.Range(1, leftBlockList.Count)]; // 후보 중 랜덤한 값을 고름 // 1부터 시작하는 이유 -> 1번노드 좌측에 생성될때 감옥 입구를 막는 것 방지
         Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.5f, leftRect.y); // 값들에 -1 혹은 +1을 한 이유 -> 그냥 생성하니깐 복도 끝에 안붙어서 해줬어요... 왜 안되는지는 몰?루
         CreateLeftBlock(leftPosition); // 함수 실행
         // 상단 테두리 장애물 생성
@@ -302,7 +303,7 @@ public class MapGenerator : MonoBehaviour
         Vector3 rightPosition = new Vector3(rightRect.x + 1, 2.5f, rightRect.y);
         CreateRightBlock(rightPosition);
         // 하단 테두리 장애물 생성
-        Rect bottomRect = bottomBlockList[Random.Range(0, bottomBlockList.Count)];
+        Rect bottomRect = bottomBlockList[Random.Range(0, bottomBlockList.Count - 1)]; // Count - 1 한 이유 -> 16번노드 우측에 생성될때 출구를 막는 것 방지
         Vector3 bottomPosition = new Vector3(bottomRect.x, 2.5f, bottomRect.y - 1);
         CreateBottomBlock(bottomPosition);
     }
@@ -315,28 +316,29 @@ public class MapGenerator : MonoBehaviour
         newBlock.transform.position = position;
     }
     private void CreateTopBlock(Vector3 position) { // 상단과 하단 장애물은 복도에 맞게 방향을 바꿔주었음, 귀찮아서 rotate 안하고 그냥 scale 바꿈...
-            GameObject newBlock = Instantiate(barPrefab);
+        GameObject newBlock = Instantiate(barPrefab);
 
-            newBlock.name = "topNewBlock";
-            newBlock.transform.localScale = new Vector3(2, 5, 8);
-            newBlock.transform.position = position;
+        newBlock.name = "topNewBlock";
+        newBlock.transform.localScale = new Vector3(2, 5, 8);
+        newBlock.transform.position = position;
     }
     private void CreateRightBlock(Vector3 position) {
-            GameObject newBlock = Instantiate(barPrefab);
+        GameObject newBlock = Instantiate(barPrefab);
 
-            newBlock.name = "rightNewBlock";
-            newBlock.transform.localScale = new Vector3(8, 5, 2);
-            newBlock.transform.position = position;
+        newBlock.name = "rightNewBlock";
+        newBlock.transform.localScale = new Vector3(8, 5, 2);
+        newBlock.transform.position = position;
     }
     private void CreateBottomBlock(Vector3 position) {
-            GameObject newBlock = Instantiate(barPrefab);
+        GameObject newBlock = Instantiate(barPrefab);
 
-            newBlock.name = "bottomNewBlock";
-            newBlock.transform.localScale = new Vector3(2, 5, 8);
-            newBlock.transform.position = position;
+        newBlock.name = "bottomNewBlock";
+        newBlock.transform.localScale = new Vector3(2, 5, 8);
+        newBlock.transform.position = position;
     }
     /////////////////////////////////
-    ///버튼 동적 생성
+
+    ////////// 버튼 동적 생성 //////////
     private void CreateButton()
     {
         /// 지금 현재로써는 리스트에 첫번째 두번째만 사용되서 그거 두개의 가로 세로 길이만 잡아둔거임 임시
@@ -347,4 +349,5 @@ public class MapGenerator : MonoBehaviour
         int secondwidth = secondNodeRect.width;
         int secondheight = secondNodeRect.height;
     }
+    /////////////////////////////////
 }
