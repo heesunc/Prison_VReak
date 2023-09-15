@@ -84,7 +84,7 @@ public class NpcTest : MonoBehaviour
             currentDestinationIndex = (currentDestinationIndex + 1) % wayPoints.Length;
             agent.SetDestination(wayPoints[currentDestinationIndex]);
         }
-        Debug.Log("NPC Patrol");
+        //Debug.Log("NPC Patrol");
     }
 
     private void UpdateIdle() // 순찰
@@ -109,7 +109,7 @@ public class NpcTest : MonoBehaviour
             agent.SetDestination(wayPoints[currentDestinationIndex]);
         }
 
-        Debug.Log("NPC UpdateIdle");
+        //Debug.Log("NPC UpdateIdle");
     }
 
     private void UpdateRun()
@@ -145,17 +145,52 @@ public class NpcTest : MonoBehaviour
             state = State.Run;
             anim.SetTrigger("Run");
         }
-        /*else if (distance > 10f)
+        else if (distance > 10f)
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
-        }*/
+        }
         else
         {
             anim.SetTrigger("Attack");
         }
         Debug.Log("NPC UpdateAttack");
     }
+
+    /*private bool isAttacking = false;
+    private float attackDuration = 2.0f; // Attack 애니메이션의 재생 시간
+
+    private void UpdateAttack()
+    {
+        agent.speed = 0;
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            anim.SetTrigger("Attack");
+
+            // attackDuration 이후에 StopAttacking 함수를 호출하여 "Run" 상태로 전환
+            Invoke("StopAttacking", attackDuration);
+        }
+
+        if (distance > 10f)
+        {
+            state = State.Idle;
+            anim.SetTrigger("Idle");
+        }
+
+        Debug.Log("NPC UpdateAttack");
+    }
+
+    private void StopAttacking()
+    {
+        isAttacking = false;
+        state = State.Run;
+        anim.SetTrigger("Run");
+    }*/
+
+
 
     void FreezeVelocity()
     {
