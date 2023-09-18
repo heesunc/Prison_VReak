@@ -12,8 +12,8 @@ public class NpcTest : MonoBehaviour
     public Animator anim;
     Rigidbody rigid;
     NavMeshAgent agent;
-    [SerializeField] private Transform[] tf_Destination; // 좌표값
-    private Vector3[] wayPoints;
+    //[SerializeField] private Transform[] tf_Destination; // 좌표값
+    Vector3[] lightPositionsArray; // lightposition 값으로 교도관 순찰
 
     // 열거형으로 정해진 상태값 이용
     enum State
@@ -34,13 +34,40 @@ public class NpcTest : MonoBehaviour
 
         rigid = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-        wayPoints = new Vector3[tf_Destination.Length + 1]; // originPos를 기억하기 위해 +1
 
-        for (int i = 0; i < tf_Destination.Length; i++)
+        // mapgenerator에서 배열로 변환한 빛 위치 정보를 가져옴
+        MapGenerator mapGen = FindObjectOfType<MapGenerator>();
+        lightPositionsArray = mapGen.GetLightPositionsArray();
+
+        // light는 공중에 있어서 y 값을 변경해서 가져와야 함
+        float newYValue = 0.15f;
+        for (int i = 0; i < lightPositionsArray.Length; i++)
         {
-            wayPoints[i] = tf_Destination[i].position;
+            lightPositionsArray[i] = new Vector3(lightPositionsArray[i].x, newYValue, lightPositionsArray[i].z);
         }
-        wayPoints[wayPoints.Length - 1] = transform.position;
+        lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;
+
+        //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPos를 기억하기 위해 +1
+
+        /*for (int i = 0; i < tf_Destination.Length; i++)
+        {
+            lightPositionsArray[i] = tf_Destination[i].position;
+
+        }
+        lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;*/
+    }
+
+    // 포지션 Scene에서 확인하려고 작성한 것.
+    private void OnDrawGizmos()
+    {
+        if (lightPositionsArray != null)
+        {
+            Gizmos.color = Color.yellow;
+            for (int i = 0; i < lightPositionsArray.Length; i++)
+            {
+                Gizmos.DrawSphere(lightPositionsArray[i], 0.2f);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -63,26 +90,18 @@ public class NpcTest : MonoBehaviour
 
     void Patrol()
     {
-        // wayPoints의 지점을 순찰
-        /*for (int i = 0; i < wayPoints.Length; i++)
-        {
-            // 거리가 1보다 작거나 같으면 해당 지점에 도착한 것으로 판단
-            if (Vector3.Distance(transform.position, wayPoints[i]) <= 1f)
-            {
-                // 도착 지점이 마지막 지점이 아닐 경우 다음 wayPoints로 이동
-                if (i != wayPoints.Length - 1)
-                    agent.SetDestination(wayPoints[i + 1]);
-                // 도착 지점이 마지막 지점일 경우 원래 있던 곳으로 이동
-                else
-                    agent.SetDestination(wayPoints[0]);
-            }
-        }*/
         // 에이전트가 현재 순찰 지점에 도달했는지 확인
-        if (Vector3.Distance(transform.position, wayPoints[currentDestinationIndex]) <= 1f)
+        if (Vector3.Distance(transform.position, lightPositionsArray[currentDestinationIndex]) <= 1f)
         {
+            // 디버그 문장 추가
+            Debug.Log("Reached patrol point " + currentDestinationIndex);
+
             // 다음 순찰 지점으로 이동
-            currentDestinationIndex = (currentDestinationIndex + 1) % wayPoints.Length;
-            agent.SetDestination(wayPoints[currentDestinationIndex]);
+            currentDestinationIndex = (currentDestinationIndex + 1) % lightPositionsArray.Length;
+            agent.SetDestination(lightPositionsArray[currentDestinationIndex]);
+
+            // 디버그 문장으로 인덱스 확인
+            Debug.Log("New destination index: " + currentDestinationIndex);
         }
         //Debug.Log("NPC Patrol");
     }
@@ -90,7 +109,8 @@ public class NpcTest : MonoBehaviour
     private void UpdateIdle() // 순찰
     {
         agent.speed = 5;
-        Patrol();        
+
+        Patrol();
 
         // target과의 거리가 10보다 작거나 같으면 Run
         float distance = Vector3.Distance(transform.position, target.transform.position);
@@ -107,10 +127,9 @@ public class NpcTest : MonoBehaviour
             anim.SetTrigger("Idle");
             //anim.ResetTrigger("Run");
 
-            currentDestinationIndex = 0;
-            agent.SetDestination(wayPoints[currentDestinationIndex]);
+            //currentDestinationIndex = 0;
+            agent.SetDestination(lightPositionsArray[currentDestinationIndex]);
         }
-
         //Debug.Log("NPC UpdateIdle");
     }
 
