@@ -137,7 +137,7 @@ public class MapGenerator : MonoBehaviour
         // wallPrefab을 사용하여 벽을 만듭니다.
         GameObject Wall = Instantiate(wallPrefab);
         Wall.transform.localScale = new Vector3(rect.width-1, 5, rect.height-1);
-        Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.3f, rect.y + rect.height / 2f);
+        Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.5f, rect.y + rect.height / 2f);
         string wallName = "wallPrefab" + wallPrefabCounter;
         Wall.name = wallName;
 
@@ -296,19 +296,19 @@ public class MapGenerator : MonoBehaviour
 
         // 좌측 테두리 장애물 생성
         Rect leftRect = leftBlockList[Random.Range(1, leftBlockList.Count - 1)]; // 후보 중 랜덤한 값을 고름 // 1부터 시작하는 이유 -> 1번노드 좌측에 생성될때 감옥 입구를 막는 것 방지
-        Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.3f, leftRect.y); // 값들에 -1 혹은 +1을 한 이유 -> 그냥 생성하니깐 복도 끝에 안붙어서 해줬어요... 왜 안되는지는 몰?루
+        Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.5f, leftRect.y); // 값들에 -1 혹은 +1을 한 이유 -> 그냥 생성하니깐 복도 끝에 안붙어서 해줬어요... 왜 안되는지는 몰?루
         CreateLeftBlock(leftPosition); // 함수 실행
         // 상단 테두리 장애물 생성
         Rect topRect = topBlockList[Random.Range(1, topBlockList.Count - 1)];
-        Vector3 topPosition = new Vector3(topRect.x, 2.3f, topRect.y + 1);
+        Vector3 topPosition = new Vector3(topRect.x, 2.5f, topRect.y + 1);
         CreateTopBlock(topPosition);
         // 우측 테두리 장애물 생성
         Rect rightRect = rightBlockList[Random.Range(1, rightBlockList.Count - 1)];
-        Vector3 rightPosition = new Vector3(rightRect.x + 1, 2.3f, rightRect.y);
+        Vector3 rightPosition = new Vector3(rightRect.x + 1, 2.5f, rightRect.y);
         CreateRightBlock(rightPosition);
         // 하단 테두리 장애물 생성
         Rect bottomRect = bottomBlockList[Random.Range(1, bottomBlockList.Count - 1)]; // Count - 1 한 이유 -> 16번노드 우측에 생성될때 출구를 막는 것 방지
-        Vector3 bottomPosition = new Vector3(bottomRect.x, 2.3f, bottomRect.y - 1);
+        Vector3 bottomPosition = new Vector3(bottomRect.x, 2.5f, bottomRect.y - 1);
         CreateBottomBlock(bottomPosition);
     }
 
