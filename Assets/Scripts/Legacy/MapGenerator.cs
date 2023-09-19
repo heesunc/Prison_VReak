@@ -36,6 +36,12 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정보
 
     List<Vector3> collidedSurfacePositions = new List<Vector3>();
+    List<Vector3> lightPositions = new List<Vector3>();
+    // 리스트를 배열로 변환하여 반환하는 메서드
+    public Vector3[] GetLightPositionsArray()
+    {
+        return lightPositions.ToArray();
+    }
 
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
@@ -198,8 +204,6 @@ public class MapGenerator : MonoBehaviour
 
     ////////// 각 노드의 모서리 구하기 //////////
     private void CalculateRect() {
-        List<Vector3> lightPositions = new List<Vector3>();
-
         foreach(RectInt rect in rectList) {
             for(int listNum = 1; listNum <= 4; listNum++) {
                 Vector3 position = Vector3.zero;
