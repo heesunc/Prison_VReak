@@ -20,7 +20,6 @@ public class MapGenerator : MonoBehaviour
     [Header("퍼즐 버튼 위치 난수")]
     [SerializeField] private int num = 1;
     [SerializeField] public int a;
-    [SerializeField] public int b;
     [Header("구조물 리스트")]
     [SerializeField] private List<GameObject> wallList = new List<GameObject>();
     [Header("rect 좌표 리스트")]
@@ -283,10 +282,10 @@ public class MapGenerator : MonoBehaviour
             if (checkPosition.x == 2.5f) { // 좌측 테두리 후보 리스트에 추가
                 leftBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 97.5f) { // 상단 테두리 후보 리스트에 추가
+            else if (checkPosition.z == 47.5f) { // 상단 테두리 후보 리스트에 추가
                 topBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.x == 97.5f) { // 우측 테두리 후보 리스트에 추가
+            else if (checkPosition.x == 47.5f) { // 우측 테두리 후보 리스트에 추가
                 rightBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
             else if (checkPosition.z == 2.5f) { // 하단 테두리 후보 리스트에 추가
@@ -326,28 +325,28 @@ public class MapGenerator : MonoBehaviour
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "leftNewBlock";
-        newBlock.transform.localScale = new Vector3(8, 5, 2);
+        newBlock.transform.localScale = new Vector3(6, 5, 2);
         newBlock.transform.position = position;
     }
     private void CreateTopBlock(Vector3 position) { // 상단과 하단 장애물은 복도에 맞게 방향을 바꿔주었음, 귀찮아서 rotate 안하고 그냥 scale 바꿈...
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "topNewBlock";
-        newBlock.transform.localScale = new Vector3(2, 5, 8);
+        newBlock.transform.localScale = new Vector3(2, 5, 6);
         newBlock.transform.position = position;
     }
     private void CreateRightBlock(Vector3 position) {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "rightNewBlock";
-        newBlock.transform.localScale = new Vector3(8, 5, 2);
+        newBlock.transform.localScale = new Vector3(6, 5, 2);
         newBlock.transform.position = position;
     }
     private void CreateBottomBlock(Vector3 position) {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "bottomNewBlock";
-        newBlock.transform.localScale = new Vector3(2, 5, 8);
+        newBlock.transform.localScale = new Vector3(2, 5, 6);
         newBlock.transform.position = position;
     }
     /////////////////////////////////
