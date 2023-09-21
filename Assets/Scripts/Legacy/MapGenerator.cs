@@ -65,7 +65,7 @@ public class MapGenerator : MonoBehaviour
         // 장애물 동적 생성
         CreateRandomBlocks();
 
-        // 어... 이건 뭐... material 관련??
+        // npc 관련 navMesh
         surface.BuildNavMesh();
 
         CreateButton();
@@ -297,19 +297,29 @@ public class MapGenerator : MonoBehaviour
         // 좌측 테두리 장애물 생성
         Rect leftRect = leftBlockList[Random.Range(1, leftBlockList.Count - 1)]; // 후보 중 랜덤한 값을 고름 // 1부터 시작하는 이유 -> 1번노드 좌측에 생성될때 감옥 입구를 막는 것 방지
         Vector3 leftPosition = new Vector3(leftRect.x - 1, 2.5f, leftRect.y); // 값들에 -1 혹은 +1을 한 이유 -> 그냥 생성하니깐 복도 끝에 안붙어서 해줬어요... 왜 안되는지는 몰?루
-        CreateLeftBlock(leftPosition); // 함수 실행
+
         // 상단 테두리 장애물 생성
         Rect topRect = topBlockList[Random.Range(1, topBlockList.Count - 1)];
         Vector3 topPosition = new Vector3(topRect.x, 2.5f, topRect.y + 1);
-        CreateTopBlock(topPosition);
+
         // 우측 테두리 장애물 생성
         Rect rightRect = rightBlockList[Random.Range(1, rightBlockList.Count - 1)];
         Vector3 rightPosition = new Vector3(rightRect.x + 1, 2.5f, rightRect.y);
-        CreateRightBlock(rightPosition);
+
         // 하단 테두리 장애물 생성
         Rect bottomRect = bottomBlockList[Random.Range(1, bottomBlockList.Count - 1)]; // Count - 1 한 이유 -> 16번노드 우측에 생성될때 출구를 막는 것 방지
         Vector3 bottomPosition = new Vector3(bottomRect.x, 2.5f, bottomRect.y - 1);
-        CreateBottomBlock(bottomPosition);
+
+        // 1~16 중 랜덤 수를 뽑아서 짝수면 "좌우", 홀수면 "상하" 장애물 생성
+        selectNum();
+        if (a % 2 == 0) {
+            CreateLeftBlock(leftPosition);
+            CreateRightBlock(rightPosition);
+        }
+        else {
+            CreateTopBlock(topPosition);
+            CreateBottomBlock(bottomPosition);
+        }
     }
 
     private void CreateLeftBlock(Vector3 position) { // 이전에 5번, 9번 노드에 고정적으로 생성하던 방식과 똑같음
