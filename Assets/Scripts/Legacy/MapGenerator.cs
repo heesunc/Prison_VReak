@@ -108,16 +108,16 @@ public class MapGenerator : MonoBehaviour
         if (n == maximumDepth) //해당 노드가 리프노드라면 방을 만들어 줄 것이다.
         {
             rect = tree.nodeRect;
-            int width = Mathf.Max(rect.width - 4, 3);
+            int width = Mathf.Max(rect.width - 2, 2);
             //방의 가로 최소 크기는 노드의 가로길이의 절반, 최대 크기는 가로길이보다 1 작게 설정한 후 그 사이 값중 랜덤한 값을 구해준다.
-            int height = Mathf.Max(rect.height - 4, 3);
+            int height = Mathf.Max(rect.height - 2, 2);
             //높이도 위와 같다.
 
             rectList.Add(rect);
 
-            int x = rect.x + Random.Range(2, rect.width - width - 2);
+            int x = rect.x + Random.Range(1, rect.width - width);
             //방의 x좌표이다. 만약 0이 된다면 붙어 있는 방과 합쳐지기 때문에,최솟값은 1로 해주고, 최댓값은 기존 노드의 가로에서 방의 가로길이를 빼 준 값이다.
-            int y = rect.y + Random.Range(2, rect.height - height - 2);
+            int y = rect.y + Random.Range(1, rect.height - height);
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
 
@@ -279,16 +279,16 @@ public class MapGenerator : MonoBehaviour
         foreach(Rect rectPosition in rectCheckList) {
             checkPosition = new Vector3(rectPosition.x, 1, rectPosition.y);
 
-            if (checkPosition.x == 2.5f) { // 좌측 테두리 후보 리스트에 추가
+            if (checkPosition.x == 1.5f) { // 좌측 테두리 후보 리스트에 추가
                 leftBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 47.5f) { // 상단 테두리 후보 리스트에 추가
+            else if (checkPosition.z == 48.5f) { // 상단 테두리 후보 리스트에 추가
                 topBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.x == 47.5f) { // 우측 테두리 후보 리스트에 추가
+            else if (checkPosition.x == 48.5f) { // 우측 테두리 후보 리스트에 추가
                 rightBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 2.5f) { // 하단 테두리 후보 리스트에 추가
+            else if (checkPosition.z == 1.5f) { // 하단 테두리 후보 리스트에 추가
                 bottomBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
         }
@@ -325,28 +325,28 @@ public class MapGenerator : MonoBehaviour
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "leftNewBlock";
-        newBlock.transform.localScale = new Vector3(6, 5, 2);
+        newBlock.transform.localScale = new Vector3(4, 5, 2);
         newBlock.transform.position = position;
     }
     private void CreateTopBlock(Vector3 position) { // 상단과 하단 장애물은 복도에 맞게 방향을 바꿔주었음, 귀찮아서 rotate 안하고 그냥 scale 바꿈...
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "topNewBlock";
-        newBlock.transform.localScale = new Vector3(2, 5, 6);
+        newBlock.transform.localScale = new Vector3(2, 5, 4);
         newBlock.transform.position = position;
     }
     private void CreateRightBlock(Vector3 position) {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "rightNewBlock";
-        newBlock.transform.localScale = new Vector3(6, 5, 2);
+        newBlock.transform.localScale = new Vector3(4, 5, 2);
         newBlock.transform.position = position;
     }
     private void CreateBottomBlock(Vector3 position) {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "bottomNewBlock";
-        newBlock.transform.localScale = new Vector3(2, 5, 6);
+        newBlock.transform.localScale = new Vector3(2, 5, 4);
         newBlock.transform.position = position;
     }
     /////////////////////////////////
