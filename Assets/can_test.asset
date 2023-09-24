@@ -21,7 +21,7 @@ MonoBehaviour:
     - rid: 8286218259642712066
       type: {class: WebSocketSignalingSettings, ns: Unity.RenderStreaming, asm: Unity.RenderStreaming}
       data:
-        m_url: ws://13.209.63.39:8080
+        m_url: wss://13.209.63.39:8081
         m_iceServers:
         - m_urls:
           - stun:13.209.63.39:3478

@@ -33,7 +33,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private List<Rect> bottomBlockList = new List<Rect>();
     [Header("퍼즐 버튼 생성을 위한 리스트")]
     [SerializeField] private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정보
-
     List<Vector3> collidedSurfacePositions = new List<Vector3>();
     List<Vector3> lightPositions = new List<Vector3>();
     // 리스트를 배열로 변환하여 반환하는 메서드
@@ -41,7 +40,7 @@ public class MapGenerator : MonoBehaviour
     {
         return lightPositions.ToArray();
     }
-
+    public RectInt camera5;
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     
@@ -361,6 +360,8 @@ public class MapGenerator : MonoBehaviour
         int firstheight = firstNodeRect.height;
         int secondwidth = secondNodeRect.width;
         int secondheight = secondNodeRect.height;
+        camera5 = nodeList[1];
+        Debug.Log("dggegw" + camera5);
     }
     /////////////////////////////////
 }
