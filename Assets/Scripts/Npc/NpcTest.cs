@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class NpcTest : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float idleSpeed;
+    [SerializeField] private float runSpeed;
     private int currentDestinationIndex = 0;
 
     public Transform target; // 목적지
@@ -115,7 +116,7 @@ public class NpcTest : MonoBehaviour
         {
             anim.SetTrigger("Attack");
         }
-        agent.speed = (state == State.Idle) ? 5f : ((state == State.Run) ? 3.5f : 0f); // 상태에 따라 에이전트 속도 설정
+        agent.speed = (state == State.Idle) ? idleSpeed : ((state == State.Run) ? runSpeed : 0f); // 상태에 따라 에이전트 속도 설정
     }
 
     void Patrol()
@@ -138,7 +139,7 @@ public class NpcTest : MonoBehaviour
 
     private void UpdateIdle() // 순찰
     {
-        agent.speed = 5;
+        agent.speed = idleSpeed;
 
         Patrol();
 
@@ -181,7 +182,7 @@ public class NpcTest : MonoBehaviour
         }
 
         //타겟 방향으로 이동하다가
-        agent.speed = 3.5f;
+        agent.speed = runSpeed;
         //요원에게 목적지를 알려준다.
         //if (state == State.Run)
         agent.destination = target.transform.position;
