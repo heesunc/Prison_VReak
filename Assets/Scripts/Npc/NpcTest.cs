@@ -12,8 +12,9 @@ public class NpcTest : MonoBehaviour
     public Animator anim;
     Rigidbody rigid;
     NavMeshAgent agent;
-    //[SerializeField] private Transform[] tf_Destination; // 좌표값
     Vector3[] lightPositionsArray; // lightposition 값으로 교도관 순찰
+
+    private bool isFrozen = false; // NPC가 얼려진 상태인지 여부를 나타내는 플래그
 
     // 열거형으로 정해진 상태값 이용
     enum State
@@ -48,13 +49,6 @@ public class NpcTest : MonoBehaviour
         lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;
 
         //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPos를 기억하기 위해 +1
-
-        /*for (int i = 0; i < tf_Destination.Length; i++)
-        {
-            lightPositionsArray[i] = tf_Destination[i].position;
-
-        }
-        lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;*/
     }
 
     // 포지션 Scene에서 확인하려고 작성한 것.
@@ -73,19 +67,55 @@ public class NpcTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //만약 state가 idle이라면
+        if (!isFrozen) // NPC가 얼려진 상태가 아닌 경우에만 업데이트
+        {
+            if (state == State.Idle)
+            {
+                UpdateIdle();
+            }
+            else if (state == State.Run)
+            {
+                UpdateRun();
+            }
+            else if (state == State.Attack)
+            {
+                UpdateAttack();
+            }
+        }
+
+        // P 키를 누르면 NPC를 얼린다.
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(FreezeNPC());
+            Debug.Log("필살기!!!!!!!!!!!!!!!!!!!");
+        }
+    }
+
+    IEnumerator FreezeNPC()
+    {
+        // 애니메이션을 멈추고 에이전트를 멈춘다.
+        anim.enabled = false;
+        agent.speed = 0;
+        isFrozen = true;
+
+        yield return new WaitForSeconds(5f); // 5초 대기
+
+        // 5초 후에 애니메이션을 다시 실행하고 에이전트를 원래 상태로 돌림
+        isFrozen = false;
+        anim.enabled = true;
         if (state == State.Idle)
         {
-            UpdateIdle();
+            anim.SetTrigger("Idle");
         }
         else if (state == State.Run)
         {
-            UpdateRun();
+            anim.SetTrigger("Run");
         }
         else if (state == State.Attack)
         {
-            UpdateAttack();
+            anim.SetTrigger("Attack");
         }
+        agent.speed = (state == State.Idle) ? 5f : ((state == State.Run) ? 3.5f : 0f); // 상태에 따라 에이전트 속도 설정
     }
 
     void Patrol()
@@ -94,14 +124,14 @@ public class NpcTest : MonoBehaviour
         if (Vector3.Distance(transform.position, lightPositionsArray[currentDestinationIndex]) <= 1f)
         {
             // 디버그 문장 추가
-            Debug.Log("Reached patrol point " + currentDestinationIndex);
+            // Debug.Log("Reached patrol point " + currentDestinationIndex);
 
             // 다음 순찰 지점으로 이동
             currentDestinationIndex = (currentDestinationIndex + 1) % lightPositionsArray.Length;
             agent.SetDestination(lightPositionsArray[currentDestinationIndex]);
 
             // 디버그 문장으로 인덱스 확인
-            Debug.Log("New destination index: " + currentDestinationIndex);
+            // Debug.Log("New destination index: " + currentDestinationIndex);
         }
         //Debug.Log("NPC Patrol");
     }
