@@ -12,7 +12,6 @@ public class NpcTest : MonoBehaviour
     public Animator anim;
     Rigidbody rigid;
     NavMeshAgent agent;
-    //[SerializeField] private Transform[] tf_Destination; // 좌표값
     Vector3[] lightPositionsArray; // lightposition 값으로 교도관 순찰
 
     // 열거형으로 정해진 상태값 이용
@@ -48,13 +47,6 @@ public class NpcTest : MonoBehaviour
         lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;
 
         //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPos를 기억하기 위해 +1
-
-        /*for (int i = 0; i < tf_Destination.Length; i++)
-        {
-            lightPositionsArray[i] = tf_Destination[i].position;
-
-        }
-        lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;*/
     }
 
     // 포지션 Scene에서 확인하려고 작성한 것.
