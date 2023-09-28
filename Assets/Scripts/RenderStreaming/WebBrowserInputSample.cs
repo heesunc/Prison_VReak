@@ -2,33 +2,62 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.RenderStreaming.Samples;
 using Unity.RenderStreaming;
+using System.Threading;
+
 
 namespace Unity.RenderStreaming.Samples
 {
     class WebBrowserInputSample : MonoBehaviour
     {
         [SerializeField] SignalingManager renderStreaming;
-        [SerializeField] Transform[] cameras;
-
+        [SerializeField] private AudioSource receiveAudioSource;
+        [SerializeField] private AudioStreamReceiver audioStreamReceiver;
+        [SerializeField] private SingleConnection singleConnection;
+        UserInfoContainer userInfoContainer;
+        private string connectionId;
         RenderStreamingSettings settings;
 
         private void Awake()
         {
-            settings = SampleManager.Instance.Settings;
+            audioStreamReceiver.targetAudioSource = receiveAudioSource;
+            audioStreamReceiver.OnUpdateReceiveAudioSource += source =>
+            {
+                source.Play();
+            };
+            userInfoContainer = FindObjectOfType<UserInfoContainer>();
+            if (userInfoContainer != null)
+            {
+                UserInfo loadedUserInfo = userInfoContainer.GetUserInfo();
+
+                // 필요한 값 사용
+                string userCode = loadedUserInfo.userCode;
+                string nickname = loadedUserInfo.nickname;
+
+                connectionId = userCode;
+                Debug.Log(connectionId);
+            }
+            
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
+            
+            settings = SampleManager.Instance.Settings;
 
             if (renderStreaming.runOnAwake)
                 return;
 
-           /*  if (settings != null)
+            if (settings != null)
                 renderStreaming.useDefaultSettings = settings.UseDefaultSettings;
             if (settings?.SignalingSettings != null)
-                renderStreaming.SetSignalingSettings(settings.SignalingSettings); */
+                renderStreaming.SetSignalingSettings(settings.SignalingSettings); 
             renderStreaming.Run();
+            
+            Thread.Sleep(1000);
+            
+
+            singleConnection.CreateConnection(connectionId);
         }
     }
 }
