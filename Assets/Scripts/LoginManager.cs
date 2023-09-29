@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using TMPro;
+using UnityEngine.XR.Interaction.Toolkit.UI;
 
 public class LoginManager : MonoBehaviour
 {
     [SerializeField] public TMP_InputField InputField_ID;
     [SerializeField] public TMP_InputField InputField_PW;
     public SceneTransitionManager sceneController;
+    public TrackedDeviceGraphicRaycaster loginCanvasRaycaster;
+    public GameObject msgCanvas;
+    public TMP_Text msgText;
     // public Text loginStatusText;
 
     private string loginUrl = "https://prisonvreak.store/auth/vr_login_process"; // 로그인 처리를 수행하는 서버 스크립트의 URL을 지정해야 합니다.
@@ -20,6 +24,13 @@ public class LoginManager : MonoBehaviour
         string pwd = InputField_PW.text;
 
         StartCoroutine(LoginRequest(id, pwd));
+    }
+
+    public void OpenMessageWindow(string msg)
+    {
+        msgCanvas.SetActive(true);
+        msgText.SetText(msg);
+        loginCanvasRaycaster.enabled = false;
     }
 
     private IEnumerator LoginRequest(string id, string pwd)
@@ -36,6 +47,7 @@ public class LoginManager : MonoBehaviour
             {
                 Debug.LogError("로그인 요청 실패: " + www.error);
                 // loginStatusText.text = "로그인 요청 실패";
+                OpenMessageWindow("로그인 요청 실패: " + www.error);
             }
             else
             {
@@ -45,11 +57,13 @@ public class LoginManager : MonoBehaviour
                 {
                     Debug.Log("로그인 정보가 일치하지 않습니다.");
                     // loginStatusText.text = "로그인 정보가 일치하지 않습니다.";
+                    OpenMessageWindow("로그인 정보가 일치하지 않습니다.");
                 }
                 else if (responseText.Equals("아이디와 비밀번호를 입력하세요."))
                 {
                     Debug.Log("아이디와 비밀번호를 입력하세요.");
                     // loginStatusText.text = "아이디와 비밀번호를 입력하세요.";
+                    OpenMessageWindow("아이디와 비밀번호를 입력하세요.");
                 }
                 else
                 {
