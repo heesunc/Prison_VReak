@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
 public class LoginManager : MonoBehaviour
 {
-    [SerializeField] public TMP_InputField InputField_ID;
+    [SerializeField] public TMP_InputField InputField_UserCode;
     [SerializeField] public TMP_InputField InputField_PW;
     public SceneTransitionManager sceneController;
     public TrackedDeviceGraphicRaycaster loginCanvasRaycaster;
@@ -18,12 +18,12 @@ public class LoginManager : MonoBehaviour
 
     private string loginUrl = "https://prisonvreak.store/auth/vr_login_process"; // 로그인 처리를 수행하는 서버 스크립트의 URL을 지정해야 합니다.
 
-    public void OnLoginButtonClicked()
+    public vouserCode OnLoginButtonClicked()
     {
-        string id = InputField_ID.text;
+        string userCode = InputField_UserCode.text;
         string pwd = InputField_PW.text;
 
-        StartCoroutine(LoginRequest(id, pwd));
+        StartCoroutine(LoginRequest(userCode, pwd));
     }
 
     public void OpenMessageWindow(string msg)
@@ -36,7 +36,7 @@ public class LoginManager : MonoBehaviour
     private IEnumerator LoginRequest(string id, string pwd)
     {
         WWWForm form = new WWWForm();
-        form.AddField("id", id);
+        form.AddField("userCode", userCode);
         form.AddField("pwd", pwd);
 
         using (UnityWebRequest www = UnityWebRequest.Post(loginUrl, form))
