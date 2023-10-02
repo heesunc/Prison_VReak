@@ -18,7 +18,7 @@ public class LoginManager : MonoBehaviour
 
     private string loginUrl = "https://prisonvreak.store/auth/vr_login_process"; // 로그인 처리를 수행하는 서버 스크립트의 URL을 지정해야 합니다.
 
-    public vouserCode OnLoginButtonClicked()
+    public void OnLoginButtonClicked()
     {
         string userCode = InputField_UserCode.text;
         string pwd = InputField_PW.text;
@@ -33,7 +33,7 @@ public class LoginManager : MonoBehaviour
         loginCanvasRaycaster.enabled = false;
     }
 
-    private IEnumerator LoginRequest(string id, string pwd)
+    private IEnumerator LoginRequest(string userCode, string pwd)
     {
         WWWForm form = new WWWForm();
         form.AddField("userCode", userCode);
@@ -52,6 +52,7 @@ public class LoginManager : MonoBehaviour
             else
             {
                 string responseText = www.downloadHandler.text;
+                Debug.Log(responseText);
 
                 if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
                 {
