@@ -14,7 +14,6 @@ public class MapGenerator : MonoBehaviour
     [Header("프리팹")]
     [SerializeField] private GameObject wallPrefab; // 노드구조물 프리팹
     [SerializeField] private GameObject barPrefab; // 장애물 프리팹
-    [SerializeField] private GameObject puzzlebtn1; // 퍼즐버튼1
     [SerializeField] private GameObject lightPrefab; // 형광등
     [SerializeField] private GameObject NPCPrefab; // NPC
     [Header("퍼즐 버튼 위치 난수")]
@@ -40,7 +39,7 @@ public class MapGenerator : MonoBehaviour
     {
         return lightPositions.ToArray();
     }
-    public RectInt camera5;
+    public RectInt camera_p;
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     
@@ -53,10 +52,6 @@ public class MapGenerator : MonoBehaviour
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
         Divide(root, 0, nodeList);
         GenerateRoom(root, 0);
-
-        // 퍼즐버튼 위치 생성
-        puzzleBtn();
-
         // 라이트 생성
         CalculateRect();
 
@@ -66,7 +61,7 @@ public class MapGenerator : MonoBehaviour
         // npc 관련 navMesh
         surface.BuildNavMesh();
 
-        CreateButton();
+        CreateCameraPosition();
     }
 
     ////////// 맵 생성 관련 함수 //////////
@@ -174,32 +169,6 @@ public class MapGenerator : MonoBehaviour
     }
     //////////////////////////////
 
-    ////////// 퍼즐 위치 생성 //////////
-    private void selectNum()
-    {
-        System.Random random = new System.Random();
-        a = random.Next(1, 16);
-    }
-    private void puzzleBtn()
-    {
-        selectNum();
-        foreach (GameObject Wall in wallList)
-        {
-            if (Wall.name == wallPrefab.name + a) // wallPrefab의 이름에 (Clone)과 a를 더한 이름과 비교
-            {
-                Vector3 wall1_p = Wall.transform.position;
-                Vector3 wall1_s = Wall.transform.localScale;
-                GameObject btn1 = Instantiate(puzzlebtn1);
-                btn1.transform.position = new Vector3(wall1_p.x, 1.0f, wall1_p.z+wall1_s.z * 0.5f + 0.2f);
-                Debug.Log("버튼1번의 포지션 : " + btn1.transform.position);
-                Debug.Log("버튼 1번이 설치된 벽의 포지션 : " + Wall.transform.position);
-                Debug.Log("버튼 1번이 설치된 벽의 스케일 : " + Wall.transform.localScale);
-                Debug.Log("설치된 번호 표시 : " + Wall.name + "에 a버튼 생성");
-            }
-        }
-    }
-    //////////////////////////////
-
     ////////// 각 노드의 모서리 구하기 //////////
     private void CalculateRect() {
         foreach(RectInt rect in rectList) {
@@ -263,12 +232,19 @@ public class MapGenerator : MonoBehaviour
         // 여기에서 node 변수를 사용하여 원하는 정보를 추출하거나 저장할 수 있습니다.
         // 예를 들어, 노드의 위치와 크기를 출력하는 방법은 다음과 같습니다.
         // 노드의 사이즈로 위치를 잡아서 리스트에 담아
-        Debug.Log("노드 좌표 : " + node.nodeRect.size);
         nodeList.Add(node.nodeRect);
     }
     
     //////////////////////////////
-
+    
+    ////////// 장애물 위치 고를때 사용 //////////
+    private void selectNum()
+    {
+        System.Random random = new System.Random();
+        a = random.Next(1, 16);
+    }
+    //////////////////////////////
+    
     ////////// 장애물 동적 생성 //////////
     private void CreateRandomBlocks() {
         // 변수 초기화
@@ -350,18 +326,10 @@ public class MapGenerator : MonoBehaviour
     }
     /////////////////////////////////
 
-    ////////// 버튼 동적 생성 //////////
-    private void CreateButton()
+    ////////// CCTV 5, 6번 위치 변수 //////////
+    private void CreateCameraPosition()
     {
-        /// 지금 현재로써는 리스트에 첫번째 두번째만 사용되서 그거 두개의 가로 세로 길이만 잡아둔거임 임시
-        RectInt firstNodeRect = nodeList[0];
-        RectInt secondNodeRect = nodeList[1];
-        int firstwidth = firstNodeRect.width;
-        int firstheight = firstNodeRect.height;
-        int secondwidth = secondNodeRect.width;
-        int secondheight = secondNodeRect.height;
-        camera5 = nodeList[1];
-        Debug.Log("dggegw" + camera5);
+        camera_p = nodeList[1];
     }
     /////////////////////////////////
 }
