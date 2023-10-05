@@ -27,8 +27,8 @@ public class CctvController : MonoBehaviour
 
         if (aScript != null)
         {
-            // MapGenerator 스크립트의 camera5 변수에 접근하여 사용할 수 있습니다.
-            RectInt bRect = aScript.camera5;
+            // MapGenerator 스크립트의 camera_p 변수에 접근하여 사용할 수 있습니다.
+            RectInt bRect = aScript.camera_p;
             camera_po_width = bRect.width;
             camera_po_height = bRect.height;
         }
