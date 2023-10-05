@@ -87,9 +87,14 @@ public class NpcTest : MonoBehaviour
         // P 키를 누르면 NPC를 얼린다.
         if (Input.GetKeyDown(KeyCode.P))
         {
-            StartCoroutine(FreezeNPC());
-            Debug.Log("필살기!!!!!!!!!!!!!!!!!!!");
+            FreezeNPCFun();
         }
+    }
+
+    public void FreezeNPCFun()
+    {
+        StartCoroutine(FreezeNPC());
+        Debug.Log("필살기!!!!!!!!!!!!!!!!!!!");
     }
 
     IEnumerator FreezeNPC()
