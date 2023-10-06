@@ -1623,10 +1623,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputField_UserCode: {fileID: 1108603978}
   InputField_PW: {fileID: 168504344}
+  InputField_PartnerUserCode: {fileID: 0}
   sceneController: {fileID: 374859645}
+  loginCanvas: {fileID: 1232197436}
   loginCanvasRaycaster: {fileID: 1232197437}
   msgCanvas: {fileID: 632008996}
   msgText: {fileID: 1775724944}
+  matchingCanvas: {fileID: 563410957}
 --- !u!4 &469406098
 Transform:
   m_ObjectHideFlags: 0
@@ -2219,30 +2222,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: Stage_1_Scene
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1232197436}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 563410957}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &566242765
 MonoBehaviour:
@@ -4404,7 +4383,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1249375050}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 469406097}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: OnMatchingButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1249375050
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,13 +10,19 @@ public class LoginManager : MonoBehaviour
 {
     [SerializeField] public TMP_InputField InputField_UserCode;
     [SerializeField] public TMP_InputField InputField_PW;
+    [SerializeField] public TMP_InputField InputField_PartnerUserCode;
     public SceneTransitionManager sceneController;
+    public GameObject loginCanvas;
+    //추후 제거예정
     public TrackedDeviceGraphicRaycaster loginCanvasRaycaster;
+    //
     public GameObject msgCanvas;
     public TMP_Text msgText;
+    public GameObject matchingCanvas;
     // public Text loginStatusText;
 
-    private string loginUrl = "https://prisonvreak.store/auth/vr_login_process"; // 로그인 처리를 수행하는 서버 스크립트의 URL을 지정해야 합니다.
+    private string loginUrl = "http://localhost:8080/auth/vr_login_process"; // 로그인 처리를 수행하는 서버 스크립트의 URL을 지정해야 합니다.
+    private string matchingUrl = "http://localhost:8080/vrCreateOrJoinRoom";
 
     public void OnLoginButtonClicked()
     {
@@ -24,6 +30,14 @@ public class LoginManager : MonoBehaviour
         string pwd = InputField_PW.text;
 
         StartCoroutine(LoginRequest(userCode, pwd));
+    }
+    public void OnMatchingButtonClicked()
+    {
+        
+        string userCode = InputField_UserCode.text;
+        string p_userCode = InputField_PartnerUserCode.text;
+
+        StartCoroutine(MatchingRequest(p_userCode, userCode));
     }
 
     public void OpenMessageWindow(string msg)
@@ -77,12 +91,63 @@ public class LoginManager : MonoBehaviour
 
                     Debug.Log("로그인 성공");
 
+                    loginCanvas.SetActive(false);
+                    matchingCanvas.SetActive(true);
                     // 씬 전환
-                    sceneController.GoToScene(1);
+                    // sceneController.GoToScene(1);
                     // loginStatusText.text = "로그인 성공";
                     // 로그인 성공 시 처리
                 }
             }
         }
     }
+
+    private IEnumerator MatchingRequest(string p_userCode, string userCode)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("user_code", p_userCode);
+        form.AddField("connectionId", userCode);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(matchingUrl, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("매칭 실패: " + www.error);
+                // loginStatusText.text = "로그인 요청 실패";
+                OpenMessageWindow("매칭 실패: " + www.error);
+            }
+            else
+            {
+                string responseText = www.downloadHandler.text;
+                Debug.Log(responseText);
+
+                if (responseText.Equals("존재하지 않는 유저코드입니다."))
+                {
+                    Debug.Log("로그인 정보가 일치하지 않습니다.");
+                    // loginStatusText.text = "로그인 정보가 일치하지 않습니다.";
+                    OpenMessageWindow("존재하지 않는 유저코드입니다.");
+                }
+                else if (responseText.Equals("파트너 코드를 입력하세요."))
+                {
+                    // loginStatusText.text = "아이디와 비밀번호를 입력하세요.";
+                    OpenMessageWindow("파트너 코드를 입력하세요.");
+                }
+                else
+                {
+                    // 이창현 부분
+
+                    loginCanvas.SetActive(false);
+                    matchingCanvas.SetActive(true);
+                    // 씬 전환
+                    // sceneController.GoToScene(1);
+                    // loginStatusText.text = "로그인 성공";
+                    // 로그인 성공 시 처리
+                }
+            }
+        }
+    }
+
+    
 }
