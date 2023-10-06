@@ -31,24 +31,11 @@ public class CctvController : MonoBehaviour
             RectInt bRect = aScript.camera5;
             camera_po_width = bRect.width;
             camera_po_height = bRect.height;
+            cctv_5_po = new Vector3(camera_po_width, 2, camera_po_height - 2);
+            cctv_6_po = new Vector3(camera_po_width, 2, camera_po_height + 2);
         }
-        cctvtransform();
     }
-    //카메라 위치 회전 지정
-    public void cctvtransform(){
-    cctv_1_po = new Vector3(-0.8f, 2.7f, -0.8f);
-    cctv_2_po = new Vector3(-0.8f, 2.7f, 50.5f);
-    cctv_3_po = new Vector3(50.5f, 2.7f, 50.5f);
-    cctv_4_po = new Vector3(50.5f, 2.7f, -0.8f);
-    cctv_5_po = new Vector3(camera_po_width, 2, camera_po_height - 2);
-    cctv_6_po = new Vector3(camera_po_width, 2, camera_po_height + 2);
-    cctv_1_ro = new Vector3(31, 44, 0);
-    cctv_2_ro = new Vector3(31, 135, 0);
-    cctv_3_ro = new Vector3(31, -135, 0);
-    cctv_4_ro = new Vector3(31, -45, 0);
-    cctv_5_ro = new Vector3(31, 0, 0);
-    cctv_6_ro = new Vector3(31, 180, 0);
-    }
+
     public void MoveCCTV1()
     {
         transform.position = cctv_1_po;
