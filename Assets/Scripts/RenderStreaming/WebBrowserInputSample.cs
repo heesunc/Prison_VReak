@@ -30,10 +30,9 @@ namespace Unity.RenderStreaming.Samples
                 UserInfo loadedUserInfo = userInfoContainer.GetUserInfo();
 
                 // 필요한 값 사용
-                string userCode = loadedUserInfo.userCode;
-                string nickname = loadedUserInfo.nickname;
+                string vr_userCode = loadedUserInfo.vr_userCode;
 
-                connectionId = userCode;
+                connectionId = vr_userCode;
                 Debug.Log(connectionId);
             }
             

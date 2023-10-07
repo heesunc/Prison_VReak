@@ -77,35 +77,26 @@ public class LoginManager : MonoBehaviour
             else
             {
                 string responseText = www.downloadHandler.text;
-                UserInfo userInfo = JsonUtility.FromJson<UserInfo>(responseText);
                 Debug.Log(responseText);
 
-                if (userInfo.message.Equals("로그인 정보가 일치하지 않습니다."))
+                if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
                 {
                     Debug.Log("로그인 정보가 일치하지 않습니다.");
                     OpenMessageWindow("로그인 정보가 일치하지 않습니다.", loginCanvas);
                 }
                 // 추후 이 부분 제거, 유니티에서 자체적으로 빈칸 검증하게끔/////////////////
-                else if (userInfo.message.Equals("아이디와 비밀번호를 입력하세요."))
+                else if (responseText.Equals("아이디와 비밀번호를 입력하세요."))
                 {
                     Debug.Log("아이디와 비밀번호를 입력하세요.");
                     OpenMessageWindow("아이디와 비밀번호를 입력하세요.", loginCanvas);
                 }
                 //////////////////////////////////////////
-                else if(userInfo.message.Equals("로그인 성공"))
+                else if(responseText.Equals("로그인 성공"))
                 {
-                    
-
-                    // 로그인 후 받아온 정보를 다음 씬에 전달
-                    GameObject userInfoObject = new GameObject("UserInfoObject");
-                    DontDestroyOnLoad(userInfoObject);
-                    userInfoObject.AddComponent<UserInfoContainer>().SetUserInfo(userInfo);
-
                     Debug.Log("로그인 성공");
 
                     loginCanvas.SetActive(false);
                     matchingCanvas.SetActive(true);
-
                 }
                 else
                 {
@@ -167,6 +158,9 @@ public class LoginManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("web_userCode", p_userCode);
         form.AddField("vr_userCode", userCode);
+        UserInfo userInfo = new UserInfo();
+        userInfo.web_userCode = p_userCode;
+        userInfo.vr_userCode = userCode;
 
         
             bool isMatchingSuccess = false;
@@ -189,6 +183,10 @@ public class LoginManager : MonoBehaviour
                         {
                             Debug.Log("매칭 성공");
                             isMatchingSuccess = true;
+                            // 매칭 성공 후 정보를 다음 씬에 전달
+                            GameObject userInfoObject = new GameObject("UserInfoObject");
+                            DontDestroyOnLoad(userInfoObject);
+                            userInfoObject.AddComponent<UserInfoContainer>().SetUserInfo(userInfo);
                         }
                         yield return new WaitForSeconds(1f);
                     }
