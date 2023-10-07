@@ -9,39 +9,42 @@ public class NpcTest : MonoBehaviour
     [SerializeField] private float runSpeed;
     private int currentDestinationIndex = 0;
 
-    public Transform target; // ¸ñÀûÁö
+    public Transform target; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public Animator anim;
     Rigidbody rigid;
     NavMeshAgent agent;
-    Vector3[] lightPositionsArray; // lightposition °ªÀ¸·Î ±³µµ°ü ¼øÂû
+    Vector3[] lightPositionsArray; // lightposition ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    private bool isFrozen = false; // NPC°¡ ¾ó·ÁÁø »óÅÂÀÎÁö ¿©ºÎ¸¦ ³ªÅ¸³»´Â ÇÃ·¡±×
-
-    // ¿­°ÅÇüÀ¸·Î Á¤ÇØÁø »óÅÂ°ª ÀÌ¿ë
+    private bool isFrozen = false; // NPCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½
+    [Header("ê²Œì„ ì‹œì‘ ì „ ì¤€ë¹„")]
+    public GameObject Prison_door; // Unity Inspectorì—ì„œ ê°ì˜¥ ì…êµ¬ë¥¼ í• ë‹¹
+    int door_speed = 0;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Ì¿ï¿½
     enum State
     {
-        Idle, // Player¸¦ Ã£´Â´Ù, Ã£¾ÒÀ¸¸é Run»óÅÂ·Î ÀüÀÌÇÏ°í ½Í´Ù.
-        Run, // Å¸°Ù¹æÇâÀ¸·Î ÀÌµ¿(¿ä¿ø)
-        Attack // ÀÏÁ¤ ½Ã°£¸¶´Ù °ø°İ
+        Idle, // Playerï¿½ï¿½ Ã£ï¿½Â´ï¿½, Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Runï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Í´ï¿½.
+        Run, // Å¸ï¿½Ù¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½(ï¿½ï¿½ï¿½)
+        Attack // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
-    //»óÅÂ Ã³¸®
+    //ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
     State state;
 
     // Start is called before the first frame update
     void Start()
     {
-        //»ı¼º½Ã »óÅÂ¸¦ Idle·Î ÇÑ´Ù.
+        isFrozen = true;
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ Idleï¿½ï¿½ ï¿½Ñ´ï¿½.
         state = State.Idle;
         target = GameObject.FindGameObjectWithTag("Player").transform;
 
         rigid = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
 
-        // mapgenerator¿¡¼­ ¹è¿­·Î º¯È¯ÇÑ ºû À§Ä¡ Á¤º¸¸¦ °¡Á®¿È
+        // mapgeneratorï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         MapGenerator mapGen = FindObjectOfType<MapGenerator>();
         lightPositionsArray = mapGen.GetLightPositionsArray();
 
-        // light´Â °øÁß¿¡ ÀÖ¾î¼­ y °ªÀ» º¯°æÇØ¼­ °¡Á®¿Í¾ß ÇÔ
+        // lightï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Ö¾î¼­ y ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½ ï¿½ï¿½
         float newYValue = 0.15f;
         for (int i = 0; i < lightPositionsArray.Length; i++)
         {
@@ -49,10 +52,10 @@ public class NpcTest : MonoBehaviour
         }
         lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;
 
-        //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPos¸¦ ±â¾ïÇÏ±â À§ÇØ +1
+        //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPosï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ +1
     }
 
-    // Æ÷Áö¼Ç Scene¿¡¼­ È®ÀÎÇÏ·Á°í ÀÛ¼ºÇÑ °Í.
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Sceneï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½.
     private void OnDrawGizmos()
     {
         if (lightPositionsArray != null)
@@ -68,7 +71,7 @@ public class NpcTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isFrozen) // NPC°¡ ¾ó·ÁÁø »óÅÂ°¡ ¾Æ´Ñ °æ¿ì¿¡¸¸ ¾÷µ¥ÀÌÆ®
+        if (!isFrozen) // NPCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         {
             if (state == State.Idle)
             {
@@ -84,7 +87,7 @@ public class NpcTest : MonoBehaviour
             }
         }
 
-        // P Å°¸¦ ´©¸£¸é NPC¸¦ ¾ó¸°´Ù.
+        // P Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NPCï¿½ï¿½ ï¿½ó¸°´ï¿½.
         if (Input.GetKeyDown(KeyCode.P))
         {
             FreezeNPCFun();
@@ -94,19 +97,19 @@ public class NpcTest : MonoBehaviour
     public void FreezeNPCFun()
     {
         StartCoroutine(FreezeNPC());
-        Debug.Log("ÇÊ»ì±â!!!!!!!!!!!!!!!!!!!");
+        Debug.Log("ï¿½Ê»ï¿½ï¿½!!!!!!!!!!!!!!!!!!!");
     }
 
     IEnumerator FreezeNPC()
     {
-        // ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ¸ØÃß°í ¿¡ÀÌÀüÆ®¸¦ ¸ØÃá´Ù.
+        // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
         anim.enabled = false;
         agent.speed = 0;
         isFrozen = true;
 
-        yield return new WaitForSeconds(5f); // 5ÃÊ ´ë±â
+        yield return new WaitForSeconds(5f); // 5ï¿½ï¿½ ï¿½ï¿½ï¿½
 
-        // 5ÃÊ ÈÄ¿¡ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ´Ù½Ã ½ÇÇàÇÏ°í ¿¡ÀÌÀüÆ®¸¦ ¿ø·¡ »óÅÂ·Î µ¹¸²
+        // 5ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
         isFrozen = false;
         anim.enabled = true;
         if (state == State.Idle)
@@ -121,39 +124,39 @@ public class NpcTest : MonoBehaviour
         {
             anim.SetTrigger("Attack");
         }
-        agent.speed = (state == State.Idle) ? idleSpeed : ((state == State.Run) ? runSpeed : 0f); // »óÅÂ¿¡ µû¶ó ¿¡ÀÌÀüÆ® ¼Óµµ ¼³Á¤
+        agent.speed = (state == State.Idle) ? idleSpeed : ((state == State.Run) ? runSpeed : 0f); // ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     void Patrol()
     {
-        // ¿¡ÀÌÀüÆ®°¡ ÇöÀç ¼øÂû ÁöÁ¡¿¡ µµ´ŞÇß´ÂÁö È®ÀÎ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (Vector3.Distance(transform.position, lightPositionsArray[currentDestinationIndex]) <= 1f)
         {
-            // µğ¹ö±× ¹®Àå Ãß°¡
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
             // Debug.Log("Reached patrol point " + currentDestinationIndex);
 
-            // ´ÙÀ½ ¼øÂû ÁöÁ¡À¸·Î ÀÌµ¿
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
             currentDestinationIndex = (currentDestinationIndex + 1) % lightPositionsArray.Length;
             agent.SetDestination(lightPositionsArray[currentDestinationIndex]);
 
-            // µğ¹ö±× ¹®ÀåÀ¸·Î ÀÎµ¦½º È®ÀÎ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ È®ï¿½ï¿½
             // Debug.Log("New destination index: " + currentDestinationIndex);
         }
         //Debug.Log("NPC Patrol");
     }
 
-    private void UpdateIdle() // ¼øÂû
+    private void UpdateIdle() // ï¿½ï¿½ï¿½ï¿½
     {
         agent.speed = idleSpeed;
 
         Patrol();
 
-        // target°úÀÇ °Å¸®°¡ 10º¸´Ù ÀÛ°Å³ª °°À¸¸é Run
+        // targetï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ 10ï¿½ï¿½ï¿½ï¿½ ï¿½Û°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Run
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= 10f)
         {
             state = State.Run;
-            //ÀÌ·¸°Ô state°ªÀ» ¹Ù²å´Ù°í animation±îÁö ¹Ù²ğ±î? no! µ¿±âÈ­¸¦ ÇØÁà¾ßÇÑ´Ù.
+            //ï¿½Ì·ï¿½ï¿½ï¿½ stateï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½Ù°ï¿½ animationï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½? no! ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
             anim.SetTrigger("Run");
             anim.ResetTrigger("Idle");
         }
@@ -171,7 +174,7 @@ public class NpcTest : MonoBehaviour
 
     private void UpdateRun()
     {
-        // RunÇÏ´Ù°¡ ³²Àº °Å¸®°¡ 2¹ÌÅÍ¶ó¸é °ø°İÇÑ´Ù.
+        // Runï¿½Ï´Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½Í¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= 2f)
         {
@@ -179,16 +182,16 @@ public class NpcTest : MonoBehaviour
             anim.SetTrigger("Attack");
             anim.ResetTrigger("Run");
         }
-        else if (distance > 10f) // ¸Ö¾îÁö¸é ´Ù½Ã Idle »óÅÂ·Î
+        else if (distance > 10f) // ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ Idle ï¿½ï¿½ï¿½Â·ï¿½
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
             anim.ResetTrigger("Run");
         }
 
-        //Å¸°Ù ¹æÇâÀ¸·Î ÀÌµ¿ÇÏ´Ù°¡
+        //Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï´Ù°ï¿½
         agent.speed = runSpeed;
-        //¿ä¿ø¿¡°Ô ¸ñÀûÁö¸¦ ¾Ë·ÁÁØ´Ù.
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ø´ï¿½.
         //if (state == State.Run)
         agent.destination = target.transform.position;
 
@@ -224,12 +227,38 @@ public class NpcTest : MonoBehaviour
     {
         rigid.velocity = Vector3.zero;
         rigid.angularVelocity = Vector3.zero;
-        // ¹°¸®·Â (Player¿Í EnemyÀÇ ºÎµúÈû)ÀÌ NavAgent ÀÌµ¿À» ¹æÇØÇÏÁö ¾Êµµ·Ï
-        // ¾ø¾Ö¸é ÇÃ·¹ÀÌ¾î ¶ì¿ë~ÇÏ¸é¼­ Á¡ÇÁµÊ 
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Playerï¿½ï¿½ Enemyï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½)ï¿½ï¿½ NavAgent ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½Ö¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½~ï¿½Ï¸é¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
     }
 
     void FixedUpdate()
     {
         FreezeVelocity();
     }
+    ///////////////////////
+    ////// ì—¬ê¸°ì„œë¶€í„°ëŠ” ì›¹ì—ì„œ ì‹œì‘í•˜ê¸° ìœ„í•œ ì¤€ë¹„ê³¼ì • ////////
+    ////////// ì‹œì‘í• ë•Œ NPCì™€ ì¶œêµ¬ë¥¼ ë‹«ê³  ì›¹ì—ì„œ ëˆŒëŸ¬ì£¼ë©´ ë¬¸ì—´ë¦¬ê³  NPCì´ë™ê°€ëŠ¥ //////////
+    public void web_Start()
+    {
+            StartCoroutine(RotatePrisonDoor());
+            isFrozen = false;
+    }
+
+    private IEnumerator RotatePrisonDoor()
+    {
+
+        if (door_speed == 0)
+        {
+            while (door_speed < 72)
+            {
+                Prison_door.transform.rotation = Quaternion.Euler(0, door_speed + 180, 0);
+                door_speed += 2;
+
+                yield return new WaitForSeconds(0.001f); // 0.1ì´ˆ ëŒ€ê¸°
+            }
+        }
+    }
+
+
+    ///////////////////////
 }
