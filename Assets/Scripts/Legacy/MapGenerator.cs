@@ -34,6 +34,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private List<RectInt> nodeList = new List<RectInt>();//나눌때 위치정보
     List<Vector3> collidedSurfacePositions = new List<Vector3>();
     List<Vector3> lightPositions = new List<Vector3>();
+
+  
     // 리스트를 배열로 변환하여 반환하는 메서드
     public Vector3[] GetLightPositionsArray()
     {
@@ -42,12 +44,13 @@ public class MapGenerator : MonoBehaviour
     public RectInt camera_p;
     private int wallPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
     private int lightPrefabCounter = 1; // prefab에 번호를 붙이기 위해 만듬
-    
+
     public NavMeshSurface surface;
 
     ////////// Start //////////
     void Start()
     {
+
         // 맵 생성
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
         Divide(root, 0, nodeList);
@@ -62,14 +65,15 @@ public class MapGenerator : MonoBehaviour
         surface.BuildNavMesh();
 
         CreateCameraPosition();
-    }
 
+
+    }
     ////////// 맵 생성 관련 함수 //////////
     void Divide(Node tree, int n, List<RectInt> nodeList)
     {
         if (n == maximumDepth) return; //내가 원하는 높이에 도달하면 더 나눠주지 않는다.
-        //그 외의 경우에는
-        
+                                       //그 외의 경우에는
+
         int maxLength = Mathf.Max(tree.nodeRect.width, tree.nodeRect.height);
         //가로와 세로중 더 긴것을 구한후, 가로가 길다면 위 좌, 우로 세로가 더 길다면 위, 아래로 나눠주게 될 것이다.
         int split = Mathf.RoundToInt(Random.Range(maxLength * minimumDivideRate, maxLength * maximumDivideRate));
@@ -94,7 +98,7 @@ public class MapGenerator : MonoBehaviour
         SaveNodeInfo(tree.leftNode, nodeList);
         Divide(tree.leftNode, n + 1, nodeList); // 왼쪽 자식 노드를 먼저 나눈다.
         Divide(tree.rightNode, n + 1, nodeList);
-        
+
     }
     private RectInt GenerateRoom(Node tree, int n)
     {
@@ -129,7 +133,7 @@ public class MapGenerator : MonoBehaviour
     {
         // wallPrefab을 사용하여 벽을 만듭니다.
         GameObject Wall = Instantiate(wallPrefab);
-        Wall.transform.localScale = new Vector3(rect.width-1, 5, rect.height-1);
+        Wall.transform.localScale = new Vector3(rect.width - 1, 5, rect.height - 1);
         Wall.transform.position = new Vector3(rect.x + rect.width / 2f, 2.5f, rect.y + rect.height / 2f);
         string wallName = "wallPrefab" + wallPrefabCounter;
         Wall.name = wallName;
@@ -145,7 +149,7 @@ public class MapGenerator : MonoBehaviour
         {
             Vector3 midPoint = Vector3.zero;
 
-            switch(i)
+            switch (i)
             {
                 case 0: // Left edge
                     midPoint = new Vector3(wallRect.x - wallRect.width / 2f, 0, wallRect.y);
@@ -160,7 +164,7 @@ public class MapGenerator : MonoBehaviour
                     midPoint = new Vector3(wallRect.x, 0, wallRect.y - wallRect.height / 2f);
                     break;
             }
-            rectCheckList.Add(new Rect(midPoint.x,midPoint.z ,1 ,1)); // width와 height는 필요없기에 1, 1로 설정
+            rectCheckList.Add(new Rect(midPoint.x, midPoint.z, 1, 1)); // width와 height는 필요없기에 1, 1로 설정
         }
 
         num++;
@@ -170,48 +174,53 @@ public class MapGenerator : MonoBehaviour
     //////////////////////////////
 
     ////////// 각 노드의 모서리 구하기 //////////
-    private void CalculateRect() {
-        foreach(RectInt rect in rectList) {
-            for(int listNum = 1; listNum <= 4; listNum++) {
+    private void CalculateRect()
+    {
+        foreach (RectInt rect in rectList)
+        {
+            for (int listNum = 1; listNum <= 4; listNum++)
+            {
                 Vector3 position = Vector3.zero;
 
-                switch(listNum){
+                switch (listNum)
+                {
                     case 1: // (- , -)
-                    Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
-                    // 좌표 구하기
-                    currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
-                    // 라이트 오브젝트 위치 선정
-                    position = new Vector3(currentRect.x, 4.1f, currentRect.y);
+                        Rect currentRect = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                        // 좌표 구하기
+                        currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
+                        // 라이트 오브젝트 위치 선정
+                        position = new Vector3(currentRect.x, 4.1f, currentRect.y);
 
-                    break;
+                        break;
 
                     case 2: // (- , +)
-                    Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                        Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
-                    currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
-                    position = new Vector3(currentRect2.x, 4.1f, currentRect2.y);
+                        currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
+                        position = new Vector3(currentRect2.x, 4.1f, currentRect2.y);
 
-                    break;
+                        break;
 
                     case 3: // (+ , -)
-                    Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                        Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
-                    currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
-                    position = new Vector3(currentRect3.x, 4.1f, currentRect3.y);
+                        currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
+                        position = new Vector3(currentRect3.x, 4.1f, currentRect3.y);
 
-                    break;
+                        break;
 
                     case 4: // (+ , +)
-                    Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
+                        Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
-                    currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
-                    position = new Vector3(currentRect4.x, 4.1f, currentRect4.y);
+                        currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
+                        position = new Vector3(currentRect4.x, 4.1f, currentRect4.y);
 
-                    break;
+                        break;
                 }
 
                 // lightPositions 내에 해당 position이 없으면 추가 후 라이트 생성!
-                if (!lightPositions.Contains(position)) {
+                if (!lightPositions.Contains(position))
+                {
                     lightPositions.Add(position);
 
                     GameObject Light = Instantiate(lightPrefab);
@@ -221,7 +230,7 @@ public class MapGenerator : MonoBehaviour
                     Light.name = lightName;
                     lightPrefabCounter++;
                 }
-            } 
+            }
         }
     }
     //////////////////////////////
@@ -234,9 +243,9 @@ public class MapGenerator : MonoBehaviour
         // 노드의 사이즈로 위치를 잡아서 리스트에 담아
         nodeList.Add(node.nodeRect);
     }
-    
+
     //////////////////////////////
-    
+
     ////////// 장애물 위치 고를때 사용 //////////
     private void selectNum()
     {
@@ -244,26 +253,32 @@ public class MapGenerator : MonoBehaviour
         a = random.Next(1, 16);
     }
     //////////////////////////////
-    
+
     ////////// 장애물 동적 생성 //////////
-    private void CreateRandomBlocks() {
+    private void CreateRandomBlocks()
+    {
         // 변수 초기화
         Vector3 checkPosition = Vector3.zero;
 
         // rectCheckList에 있는 값들로 foreach 돌림
-        foreach(Rect rectPosition in rectCheckList) {
+        foreach (Rect rectPosition in rectCheckList)
+        {
             checkPosition = new Vector3(rectPosition.x, 1, rectPosition.y);
 
-            if (checkPosition.x == 1.5f) { // 좌측 테두리 후보 리스트에 추가
+            if (checkPosition.x == 1.5f)
+            { // 좌측 테두리 후보 리스트에 추가
                 leftBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 48.5f) { // 상단 테두리 후보 리스트에 추가
+            else if (checkPosition.z == 48.5f)
+            { // 상단 테두리 후보 리스트에 추가
                 topBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.x == 48.5f) { // 우측 테두리 후보 리스트에 추가
+            else if (checkPosition.x == 48.5f)
+            { // 우측 테두리 후보 리스트에 추가
                 rightBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
-            else if (checkPosition.z == 1.5f) { // 하단 테두리 후보 리스트에 추가
+            else if (checkPosition.z == 1.5f)
+            { // 하단 테두리 후보 리스트에 추가
                 bottomBlockList.Add(new Rect(checkPosition.x, checkPosition.z, 1, 1));
             }
         }
@@ -286,38 +301,44 @@ public class MapGenerator : MonoBehaviour
 
         // 1~16 중 랜덤 수를 뽑아서 짝수면 "좌우", 홀수면 "상하" 장애물 생성
         selectNum();
-        if (a % 2 == 0) {
+        if (a % 2 == 0)
+        {
             CreateLeftBlock(leftPosition);
             CreateRightBlock(rightPosition);
         }
-        else {
+        else
+        {
             CreateTopBlock(topPosition);
             CreateBottomBlock(bottomPosition);
         }
     }
 
-    private void CreateLeftBlock(Vector3 position) { // 이전에 5번, 9번 노드에 고정적으로 생성하던 방식과 똑같음
+    private void CreateLeftBlock(Vector3 position)
+    { // 이전에 5번, 9번 노드에 고정적으로 생성하던 방식과 똑같음
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "leftNewBlock";
         newBlock.transform.localScale = new Vector3(4, 5, 2);
         newBlock.transform.position = position;
     }
-    private void CreateTopBlock(Vector3 position) { // 상단과 하단 장애물은 복도에 맞게 방향을 바꿔주었음, 귀찮아서 rotate 안하고 그냥 scale 바꿈...
+    private void CreateTopBlock(Vector3 position)
+    { // 상단과 하단 장애물은 복도에 맞게 방향을 바꿔주었음, 귀찮아서 rotate 안하고 그냥 scale 바꿈...
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "topNewBlock";
         newBlock.transform.localScale = new Vector3(2, 5, 4);
         newBlock.transform.position = position;
     }
-    private void CreateRightBlock(Vector3 position) {
+    private void CreateRightBlock(Vector3 position)
+    {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "rightNewBlock";
         newBlock.transform.localScale = new Vector3(4, 5, 2);
         newBlock.transform.position = position;
     }
-    private void CreateBottomBlock(Vector3 position) {
+    private void CreateBottomBlock(Vector3 position)
+    {
         GameObject newBlock = Instantiate(barPrefab);
 
         newBlock.name = "bottomNewBlock";
@@ -332,4 +353,6 @@ public class MapGenerator : MonoBehaviour
         camera_p = nodeList[1];
     }
     /////////////////////////////////
+
+
 }
