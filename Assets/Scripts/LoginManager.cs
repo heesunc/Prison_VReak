@@ -77,23 +77,24 @@ public class LoginManager : MonoBehaviour
             else
             {
                 string responseText = www.downloadHandler.text;
+                UserInfo userInfo = JsonUtility.FromJson<UserInfo>(responseText);
                 Debug.Log(responseText);
 
-                if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
+                if (userInfo.message.Equals("로그인 정보가 일치하지 않습니다."))
                 {
                     Debug.Log("로그인 정보가 일치하지 않습니다.");
                     OpenMessageWindow("로그인 정보가 일치하지 않습니다.", loginCanvas);
                 }
                 // 추후 이 부분 제거, 유니티에서 자체적으로 빈칸 검증하게끔/////////////////
-                else if (responseText.Equals("아이디와 비밀번호를 입력하세요."))
+                else if (userInfo.message.Equals("아이디와 비밀번호를 입력하세요."))
                 {
                     Debug.Log("아이디와 비밀번호를 입력하세요.");
                     OpenMessageWindow("아이디와 비밀번호를 입력하세요.", loginCanvas);
                 }
                 //////////////////////////////////////////
-                else if(responseText.Equals("로그인 성공"))
+                else if(userInfo.message.Equals("로그인 성공"))
                 {
-                    UserInfo userInfo = JsonUtility.FromJson<UserInfo>(responseText);
+                    
 
                     // 로그인 후 받아온 정보를 다음 씬에 전달
                     GameObject userInfoObject = new GameObject("UserInfoObject");
@@ -167,55 +168,50 @@ public class LoginManager : MonoBehaviour
         form.AddField("web_userCode", p_userCode);
         form.AddField("vr_userCode", userCode);
 
-        using (UnityWebRequest www = UnityWebRequest.Post(matchingUrl, form))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
+        
+            bool isMatchingSuccess = false;
+            for (int i = 0; i < 5; i++)
             {
-                Debug.LogError("매칭 실패: " + www.error);
-                OpenMessageWindow("매칭 실패: " + www.error, matchingCanvas);
-            }
-            else
-            {
-                string responseText = www.downloadHandler.text;
-                Debug.Log(responseText);
+                using (UnityWebRequest www = UnityWebRequest.Post(matchingUrl, form)){
+                    yield return www.SendWebRequest();
 
-                if (responseText.Equals("매칭 프로세스 실행"))
-                {
-                    bool isMatchingSuccess = false;
-                    for (int i = 0; i < 5; i++)
+                    if (www.result != UnityWebRequest.Result.Success)
                     {
-                        string m_responseText = www.downloadHandler.text;
-                        Debug.Log(m_responseText);
+                        Debug.LogError("매칭 실패: " + www.error);
+                        OpenMessageWindow("매칭 실패: " + www.error, matchingCanvas);
+                    }
+                    else
+                    {
+                        string responseText = www.downloadHandler.text;
+                        Debug.Log(responseText);
+
                         if (responseText.Equals("매칭 성공") && !isMatchingSuccess)
                         {
                             Debug.Log("매칭 성공");
                             isMatchingSuccess = true;
                         }
                         yield return new WaitForSeconds(1f);
-
                     }
-                    if (isMatchingSuccess)
-                    {
-                        CloseLoadingWindow();
-                        OpenMessageWindow("매칭 성공!", matchingCanvas);
-                        Debug.Log("씬넘어가유~");
-                        sceneController.GoToScene(1);
-                    }
-                    else
-                    {
-                        CloseLoadingWindow();
-                        OpenMessageWindow("매칭 실패: TimeOut", matchingCanvas);
-                    }
-                }
-                else
-                {
-                    Debug.Log("알 수 없는 예외");
-                    OpenMessageWindow("알 수 없는 예외:RMR2", matchingCanvas);
                 }
             }
-        }
+            if (isMatchingSuccess)
+            {
+                CloseLoadingWindow();
+                OpenMessageWindow("매칭 성공!", matchingCanvas);
+                Debug.Log("씬넘어가유~");
+                sceneController.GoToScene(1);
+            }
+             else
+            {
+                CloseLoadingWindow();
+                OpenMessageWindow("매칭 실패: TimeOut", matchingCanvas);
+            }
+                
+        
+        /* else
+        {
+            Debug.Log("알 수 없는 예외");
+            OpenMessageWindow("알 수 없는 예외:RMR2", matchingCanvas);
+        } */  
     }
-
 }
