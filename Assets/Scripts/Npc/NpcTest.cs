@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 public class NpcTest : MonoBehaviour
 {
@@ -242,6 +243,7 @@ public class NpcTest : MonoBehaviour
     {
             StartCoroutine(RotatePrisonDoor());
             isFrozen = false;
+            GameManager.Instance.SetStartTime(DateTime.Now);
     }
 
     private IEnumerator RotatePrisonDoor()
