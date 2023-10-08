@@ -189,7 +189,7 @@ public class MapGenerator : MonoBehaviour
                         // 좌표 구하기
                         currentRect = new Rect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
                         // 라이트 오브젝트 위치 선정
-                        position = new Vector3(currentRect.x, 4.1f, currentRect.y);
+                        position = new Vector3(currentRect.x, 3.13f, currentRect.y);
 
                         break;
 
@@ -197,7 +197,7 @@ public class MapGenerator : MonoBehaviour
                         Rect currentRect2 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
                         currentRect2 = new Rect(currentRect2.x, currentRect2.y + currentRect2.height, currentRect2.width, currentRect2.height);
-                        position = new Vector3(currentRect2.x, 4.1f, currentRect2.y);
+                        position = new Vector3(currentRect2.x, 3.13f, currentRect2.y);
 
                         break;
 
@@ -205,7 +205,7 @@ public class MapGenerator : MonoBehaviour
                         Rect currentRect3 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
                         currentRect3 = new Rect(currentRect3.x + currentRect3.width, currentRect3.y, currentRect3.width, currentRect3.height);
-                        position = new Vector3(currentRect3.x, 4.1f, currentRect3.y);
+                        position = new Vector3(currentRect3.x, 3.13f, currentRect3.y);
 
                         break;
 
@@ -213,7 +213,7 @@ public class MapGenerator : MonoBehaviour
                         Rect currentRect4 = new Rect((float)rect.x, (float)rect.y, (float)rect.width, (float)rect.height);
 
                         currentRect4 = new Rect(currentRect4.x + currentRect4.width, currentRect4.y + currentRect4.height, currentRect4.width, currentRect4.height);
-                        position = new Vector3(currentRect4.x, 4.1f, currentRect4.y);
+                        position = new Vector3(currentRect4.x, 3.13f, currentRect4.y);
 
                         break;
                 }

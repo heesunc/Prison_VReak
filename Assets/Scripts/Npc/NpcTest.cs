@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using System;
 
 public class NpcTest : MonoBehaviour
 {
@@ -10,42 +9,44 @@ public class NpcTest : MonoBehaviour
     [SerializeField] private float runSpeed;
     private int currentDestinationIndex = 0;
 
-    public Transform target; // ������
+    public Transform target; //       
     public Animator anim;
     Rigidbody rigid;
     NavMeshAgent agent;
-    Vector3[] lightPositionsArray; // lightposition ������ ������ ����
+    Vector3[] lightPositionsArray; // lightposition                   
 
-    private bool isFrozen = false; // NPC�� ����� �������� ���θ� ��Ÿ���� �÷���
+    private bool isFrozen = false; // NPC                     θ    Ÿ      ÷   
     [Header("게임 시작 전 준비")]
     public GameObject Prison_door; // Unity Inspector에서 감옥 입구를 할당
     int door_speed = 0;
-    // ���������� ������ ���°� �̿�
+    public GameObject particlePrefab; // 파티클 에셋을 할당할 변수
+    public float yOffset = 1.0f; // Y 축으로 올릴 거리
+    //                      °   ̿ 
     enum State
     {
-        Idle, // Player�� ã�´�, ã������ Run���·� �����ϰ� �ʹ�.
-        Run, // Ÿ�ٹ������� �̵�(���)
-        Attack // ���� �ð����� ����
+        Idle, // Player   ã ´ , ã       Run   ·       ϰ   ʹ .
+        Run, // Ÿ ٹ         ̵ (   )
+        Attack //       ð          
     }
-    //���� ó��
+    //     ó  
     State state;
 
     // Start is called before the first frame update
     void Start()
     {
         isFrozen = true;
-        //������ ���¸� Idle�� �Ѵ�.
+        //          ¸  Idle    Ѵ .
         state = State.Idle;
         target = GameObject.FindGameObjectWithTag("Player").transform;
 
         rigid = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
 
-        // mapgenerator���� �迭�� ��ȯ�� �� ��ġ ������ ������
+        // mapgenerator      迭     ȯ        ġ              
         MapGenerator mapGen = FindObjectOfType<MapGenerator>();
         lightPositionsArray = mapGen.GetLightPositionsArray();
 
-        // light�� ���߿� �־ y ���� �����ؼ� �����;� ��
+        // light      ߿   ־ y           ؼ       ;    
         float newYValue = 0.15f;
         for (int i = 0; i < lightPositionsArray.Length; i++)
         {
@@ -53,10 +54,10 @@ public class NpcTest : MonoBehaviour
         }
         lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;
 
-        //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPos�� ����ϱ� ���� +1
+        //lightPositionsArray = new Vector3[tf_Destination.Length + 1]; // originPos       ϱ       +1
     }
 
-    // ������ Scene���� Ȯ���Ϸ��� �ۼ��� ��.
+    //        Scene     Ȯ   Ϸ     ۼ      .
     private void OnDrawGizmos()
     {
         if (lightPositionsArray != null)
@@ -72,7 +73,7 @@ public class NpcTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isFrozen) // NPC�� ����� ���°� �ƴ� ��쿡�� ������Ʈ
+        if (!isFrozen) // NPC            °   ƴ    쿡         Ʈ
         {
             if (state == State.Idle)
             {
@@ -88,29 +89,34 @@ public class NpcTest : MonoBehaviour
             }
         }
 
-        // P Ű�� ������ NPC�� �󸰴�.
-        if (Input.GetKeyDown(KeyCode.P))
+        // P Ű          NPC    󸰴 .
+         if (Input.GetKeyDown(KeyCode.P))
         {
+            // 파티클을 생성할 위치 설정 (여기에서는 현재 객체의 위치)
+            Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);;
+            // 파티클을 생성
+            Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
             FreezeNPCFun();
         }
     }
+    
 
     public void FreezeNPCFun()
     {
         StartCoroutine(FreezeNPC());
-        Debug.Log("�ʻ��!!!!!!!!!!!!!!!!!!!");
+        Debug.Log(" ʻ  !!!!!!!!!!!!!!!!!!!");
     }
 
     IEnumerator FreezeNPC()
     {
-        // �ִϸ��̼��� ���߰� ������Ʈ�� �����.
+        //  ִϸ  ̼       ߰        Ʈ        .
         anim.enabled = false;
         agent.speed = 0;
         isFrozen = true;
 
-        yield return new WaitForSeconds(5f); // 5�� ���
-
-        // 5�� �Ŀ� �ִϸ��̼��� �ٽ� �����ϰ� ������Ʈ�� ���� ���·� ����
+        yield return new WaitForSeconds(5f); // 5      
+        particle_destroy();
+        // 5    Ŀ   ִϸ  ̼     ٽ       ϰ        Ʈ           ·      
         isFrozen = false;
         anim.enabled = true;
         if (state == State.Idle)
@@ -125,39 +131,39 @@ public class NpcTest : MonoBehaviour
         {
             anim.SetTrigger("Attack");
         }
-        agent.speed = (state == State.Idle) ? idleSpeed : ((state == State.Run) ? runSpeed : 0f); // ���¿� ���� ������Ʈ �ӵ� ����
+        agent.speed = (state == State.Idle) ? idleSpeed : ((state == State.Run) ? runSpeed : 0f); //    ¿             Ʈ  ӵ      
     }
 
     void Patrol()
     {
-        // ������Ʈ�� ���� ���� ������ �����ߴ��� Ȯ��
+        //       Ʈ                         ߴ    Ȯ  
         if (Vector3.Distance(transform.position, lightPositionsArray[currentDestinationIndex]) <= 1f)
         {
-            // ����� ���� �߰�
+            //             ߰ 
             // Debug.Log("Reached patrol point " + currentDestinationIndex);
 
-            // ���� ���� �������� �̵�
+            //                     ̵ 
             currentDestinationIndex = (currentDestinationIndex + 1) % lightPositionsArray.Length;
             agent.SetDestination(lightPositionsArray[currentDestinationIndex]);
 
-            // ����� �������� �ε��� Ȯ��
+            //                 ε    Ȯ  
             // Debug.Log("New destination index: " + currentDestinationIndex);
         }
         //Debug.Log("NPC Patrol");
     }
 
-    private void UpdateIdle() // ����
+    private void UpdateIdle() //     
     {
         agent.speed = idleSpeed;
 
         Patrol();
 
-        // target���� �Ÿ��� 10���� �۰ų� ������ Run
+        // target      Ÿ    10      ۰ų         Run
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= 10f)
         {
             state = State.Run;
-            //�̷��� state���� �ٲ�ٰ� animation���� �ٲ��? no! ����ȭ�� ������Ѵ�.
+            // ̷    state      ٲ ٰ  animation      ٲ  ? no!     ȭ         Ѵ .
             anim.SetTrigger("Run");
             anim.ResetTrigger("Idle");
         }
@@ -175,7 +181,7 @@ public class NpcTest : MonoBehaviour
 
     private void UpdateRun()
     {
-        // Run�ϴٰ� ���� �Ÿ��� 2���Ͷ�� �����Ѵ�.
+        // Run ϴٰ        Ÿ    2   Ͷ        Ѵ .
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= 2f)
         {
@@ -183,16 +189,16 @@ public class NpcTest : MonoBehaviour
             anim.SetTrigger("Attack");
             anim.ResetTrigger("Run");
         }
-        else if (distance > 10f) // �־����� �ٽ� Idle ���·�
+        else if (distance > 10f) //  ־       ٽ  Idle    · 
         {
             state = State.Idle;
             anim.SetTrigger("Idle");
             anim.ResetTrigger("Run");
         }
 
-        //Ÿ�� �������� �̵��ϴٰ�
+        //Ÿ             ̵  ϴٰ 
         agent.speed = runSpeed;
-        //������� �������� �˷��ش�.
+        //                  ˷  ش .
         //if (state == State.Run)
         agent.destination = target.transform.position;
 
@@ -228,8 +234,8 @@ public class NpcTest : MonoBehaviour
     {
         rigid.velocity = Vector3.zero;
         rigid.angularVelocity = Vector3.zero;
-        // ������ (Player�� Enemy�� �ε���)�� NavAgent �̵��� �������� �ʵ���
-        // ���ָ� �÷��̾� ���~�ϸ鼭 ������ 
+        //        (Player   Enemy    ε   )   NavAgent  ̵              ʵ   
+        //    ָ   ÷  ̾     ~ ϸ鼭        
     }
 
     void FixedUpdate()
@@ -243,7 +249,6 @@ public class NpcTest : MonoBehaviour
     {
             StartCoroutine(RotatePrisonDoor());
             isFrozen = false;
-            GameManager.Instance.SetStartTime(DateTime.Now);
     }
 
     private IEnumerator RotatePrisonDoor()
@@ -257,6 +262,20 @@ public class NpcTest : MonoBehaviour
                 door_speed += 2;
 
                 yield return new WaitForSeconds(0.001f); // 0.1초 대기
+            }
+        }
+    }
+    public void particle_destroy()
+    {
+        // 하이어라키에서 모든 게임 오브젝트를 가져와서 검사합니다.
+        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            // "Clone"이라는 이름을 포함하는 게임 오브젝트를 찾아서 삭제합니다.
+            if (obj.name.Contains("Clone"))
+            {
+                Destroy(obj);
             }
         }
     }
