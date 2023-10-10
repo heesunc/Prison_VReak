@@ -20,6 +20,12 @@ public class CctvController : MonoBehaviour
     public Vector3 cctv_4_ro;
     public Vector3 cctv_5_ro;
     public Vector3 cctv_6_ro;
+    public GameObject prefab;
+
+    public Vector3 position1;
+    public Vector3 position2;
+    public Quaternion rotation1 = Quaternion.Euler(0f, 90f, 270f);
+    public Quaternion rotation2 = Quaternion.Euler(0f, 270f, 270f);
     public void Start()
     {
         // MapGenerator 스크립트를 가진 게임 오브젝트를 찾습니다.
@@ -33,7 +39,15 @@ public class CctvController : MonoBehaviour
             camera_po_height = bRect.height;
             cctv_5_po = new Vector3(camera_po_width, 2, camera_po_height - 2);
             cctv_6_po = new Vector3(camera_po_width, 2, camera_po_height + 2);
+            position1 = new Vector3(camera_po_width+0.35f, 3.05f, camera_po_height - 2);
+            position2 = new Vector3(camera_po_width+0.35f, 3.05f, camera_po_height + 2);
         }
+        // 첫 번째 프리팹 생성
+        GameObject instance1 = Instantiate(prefab, position1, rotation1);
+        instance1.name = "CCTV5";
+        // 두 번째 프리팹 생성
+        GameObject instance2 = Instantiate(prefab, position2, rotation2);
+        instance2.name = "CCTV6";
     }
 
     public void MoveCCTV1()
