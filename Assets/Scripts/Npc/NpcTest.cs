@@ -5,6 +5,11 @@ using UnityEngine.AI;
 
 public class NpcTest : MonoBehaviour
 {
+    AudioSource audioSource;
+    Rigidbody rigid;
+    NavMeshAgent agent;
+    NpcSound npcSound;
+
     // SerializeField 속성을 사용하여 private 변수를 Inspector에서 노출시킵니다.
     [SerializeField] private float idleSpeed;
     [SerializeField] private float runSpeed;
@@ -12,16 +17,22 @@ public class NpcTest : MonoBehaviour
 
     public Transform target; // 타겟(Transform 객체)을 저장할 변수
     public Animator anim;
-    Rigidbody rigid;
-    NavMeshAgent agent;
+    
     Vector3[] lightPositionsArray; // 라이트의 위치를 저장할 배열
 
     private bool isFrozen = false; // NPC가 움직이는지 여부를 나타내는 변수
+
+    [Header("상태에 따른 오디오")]    
+    public AudioClip audioIdle;
+    public AudioClip audioRun;
+    public AudioClip audioAttack;
+
     [Header("게임 시작 전 준비")]
     public GameObject Prison_door; // 감옥 문을 저장할 변수
     int door_speed = 0;
     public GameObject particlePrefab; // 파티클 프리팹을 저장할 변수
     public float yOffset = 1.0f; // Y 축으로 파티클을 올릴 거리
+    
 
     enum State
     {
@@ -31,9 +42,16 @@ public class NpcTest : MonoBehaviour
     }
     State state; // NPC의 상태를 저장하는 열거형 변수
 
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     // Start 함수는 게임 오브젝트가 활성화될 때 한 번 호출됩니다.
     void Start()
     {
+        npcSound = FindObjectOfType<NpcSound>();
+
         isFrozen = true;
         state = State.Idle; // 게임 시작 시 NPC 상태를 Idle로 초기화
         target = GameObject.FindGameObjectWithTag("Player").transform; // "Player" 태그를 가진 게임 오브젝트를 타겟으로 설정
@@ -76,14 +94,19 @@ public class NpcTest : MonoBehaviour
             if (state == State.Idle)
             {
                 UpdateIdle();
+                PlayAudio(audioIdle, 1.0f);
+                npcSound.PlaySound(0.5f);
             }
             else if (state == State.Run)
             {
                 UpdateRun();
+                PlayAudio(audioRun, 1.0f);
+                npcSound.PlaySound(1.0f);
             }
             else if (state == State.Attack)
             {
                 UpdateAttack();
+                PlayAudio(audioAttack, 1.0f);
             }
         }
 
@@ -94,6 +117,21 @@ public class NpcTest : MonoBehaviour
             // 파티클을 생성
             Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
             FreezeNPCFun();
+        }
+    }
+
+    // 상태에 따라 오디오 재생 함수
+    private void PlayAudio(AudioClip clip, float pitch)
+    {
+        if (audioSource != null && clip != null)
+        {
+            if (!audioSource.isPlaying || audioSource.clip != clip)
+            {
+                audioSource.clip = clip;
+                audioSource.pitch = pitch;
+                //audioSource.PlayOneShot(clip); // 음악 겹칠 수 있도록
+                audioSource.Play();
+            }
         }
     }
 
