@@ -36,12 +36,11 @@ public class Ending_Scene : MonoBehaviour
         // 플레이 타임 계산
         TimeSpan clearTime = endTime - startTime;
 
-        string formattedClearTime = string.Format("{0:D2}:{1:D2}.{2:D3}", 
-        clearTime.Minutes, clearTime.Seconds, clearTime.Milliseconds);
+        string totalMilliseconds = Math.Floor(clearTime.TotalMilliseconds).ToString();
 
-        StartCoroutine(RankInsertRequest(web_userCode, vr_userCode, formattedClearTime));
+        StartCoroutine(RankInsertRequest(web_userCode, vr_userCode, totalMilliseconds));
             
-        Debug.Log("플레이 타임: " + formattedClearTime);
+        Debug.Log("플레이 타임: " + totalMilliseconds);
 
         
     }
