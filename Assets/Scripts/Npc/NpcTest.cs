@@ -20,7 +20,7 @@ public class NpcTest : MonoBehaviour
     
     Vector3[] lightPositionsArray; // 라이트의 위치를 저장할 배열
 
-    private bool isFrozen = false; // NPC가 움직이는지 여부를 나타내는 변수
+    public bool isFrozen = false; // NPC가 움직이는지 여부를 나타내는 변수
 
     [Header("상태에 따른 오디오")]    
     //public AudioClip audioIdle;
@@ -135,6 +135,23 @@ public class NpcTest : MonoBehaviour
         }
     }
 
+    public void AttackAnim()
+    {
+        StartCoroutine(PlayRandomAttackAnimation());
+    }
+
+    // Attack 상태에서 무작위 애니메이션 클립 재생
+    IEnumerator PlayRandomAttackAnimation()
+    {
+        // Only set the AttackIndex once
+        int randomAttackIndex = Random.Range(0, 4);
+        anim.SetInteger("AttackIndex", randomAttackIndex);
+
+        // Exit the coroutine
+        yield break;
+    }
+
+
     // FreezeNPCFun 함수는 NPC를 일시 정지시키는 코루틴을 실행합니다.
     public void FreezeNPCFun()
     {
@@ -210,6 +227,7 @@ public class NpcTest : MonoBehaviour
         {
             state = State.Attack;
             anim.SetTrigger("Attack");
+            AttackAnim();
             anim.ResetTrigger("Run");
         }
         else if (distance > 10f)
