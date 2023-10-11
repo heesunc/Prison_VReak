@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class NpcSound : MonoBehaviour
 {
-    public AudioClip soundClip; // ¼Ò¸® Å¬¸³
+    public AudioClip soundClip; // ì†Œë¦¬ í´ë¦½
     private AudioSource audioSource;
     private Vector3 previousPosition;
-    private float soundInterval = 0.5f; // ¹ßÀÚ±¹ »ç¿îµå Àç»ı °£°İ ¼³Á¤
+    private float soundInterval = 0.5f; // ë°œìêµ­ ì‚¬ìš´ë“œ ì¬ìƒ ê°„ê²© ì„¤ì •
     private float timer = 0f;
 
     void Start()
@@ -16,18 +16,18 @@ public class NpcSound : MonoBehaviour
 
     void Update()
     {
-        // ÇöÀç À§Ä¡°¡ ÀÌÀü À§Ä¡¿Í ´Ù¸¦ ¶§ (¿òÁ÷ÀÏ ¶§)
+        // í˜„ì¬ ìœ„ì¹˜ê°€ ì´ì „ ìœ„ì¹˜ì™€ ë‹¤ë¥¼ ë•Œ (ì›€ì§ì¼ ë•Œ)
         if (transform.position != previousPosition)
         {
-            // Å¸ÀÌ¸Ó º¯¼ö¿¡ °æ°úÇÑ ½Ã°£ ´õÇÏ±â
+            // íƒ€ì´ë¨¸ ë³€ìˆ˜ì— ê²½ê³¼í•œ ì‹œê°„ ë”í•˜ê¸°
             timer += Time.deltaTime;
-            // Å¸ÀÌ¸Ó°¡ ¹ßÀÚ±¹ »ç¿îµå Àç»ı °£°İ ÀÌ»óÀÏ ¶§ ÄÚµå ½ÇÇà
+            // íƒ€ì´ë¨¸ê°€ ë°œìêµ­ ì‚¬ìš´ë“œ ì¬ìƒ ê°„ê²© ì´ìƒì¼ ë•Œ ì½”ë“œ ì‹¤í–‰
             if (timer >= soundInterval)
             {
                 PlaySound(0.5f);
                 timer = 0f;
             }
-            // ÇöÀç À§Ä¡¸¦ ÀÌÀü À§Ä¡·Î ¾÷µ¥ÀÌÆ®
+            // í˜„ì¬ ìœ„ì¹˜ë¥¼ ì´ì „ ìœ„ì¹˜ë¡œ ì—…ë°ì´íŠ¸
             previousPosition = transform.position;
         }
     }
