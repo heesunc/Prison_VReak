@@ -20,10 +20,10 @@ public class NpcTest : MonoBehaviour
     
     Vector3[] lightPositionsArray; // 라이트의 위치를 저장할 배열
 
-    private bool isFrozen = false; // NPC가 움직이는지 여부를 나타내는 변수
+    public bool isFrozen = false; // NPC가 움직이는지 여부를 나타내는 변수
 
     [Header("상태에 따른 오디오")]    
-    public AudioClip audioIdle;
+    //public AudioClip audioIdle;
     public AudioClip audioRun;
     public AudioClip audioAttack;
 
@@ -94,7 +94,7 @@ public class NpcTest : MonoBehaviour
             if (state == State.Idle)
             {
                 UpdateIdle();
-                PlayAudio(audioIdle, 1.0f);
+                //PlayAudio(audioIdle, 1.0f);
                 npcSound.PlaySound(0.5f);
             }
             else if (state == State.Run)
