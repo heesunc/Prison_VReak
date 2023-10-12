@@ -17,22 +17,23 @@ public class NpcTest : MonoBehaviour
 
     public Transform target; // 타겟(Transform 객체)을 저장할 변수
     public Animator anim;
-    
+
     Vector3[] lightPositionsArray; // 라이트의 위치를 저장할 배열
 
     public bool isFrozen = false; // NPC가 움직이는지 여부를 나타내는 변수
 
-    [Header("상태에 따른 오디오")]    
+    [Header("상태에 따른 오디오")]
     //public AudioClip audioIdle;
     public AudioClip audioRun;
     public AudioClip audioAttack;
+    public AudioClip audioFreeze;
 
     [Header("게임 시작 전 준비")]
     public GameObject Prison_door; // 감옥 문을 저장할 변수
     int door_speed = 0;
     public GameObject particlePrefab; // 파티클 프리팹을 저장할 변수
     public float yOffset = 1.0f; // Y 축으로 파티클을 올릴 거리
-    
+
 
     enum State
     {
@@ -165,6 +166,7 @@ public class NpcTest : MonoBehaviour
         // 애니메이션을 비활성화하고 속도를 0으로 설정하여 NPC를 정지시킵니다.
         anim.enabled = false;
         agent.speed = 0;
+        PlayAudio(audioFreeze, 1.0f);
         isFrozen = true;
 
         yield return new WaitForSeconds(5f); // 5초 동안 대기합니다.
