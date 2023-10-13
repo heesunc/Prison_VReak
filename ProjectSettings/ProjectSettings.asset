@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: can_test
+  companyName: DMU_CAN
+  productName: PrisonVReak
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -134,9 +134,14 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.1
+  bundleVersion: 1.0.0
   preloadedAssets:
   - {fileID: 11400000, guid: 9d74cec55c76f764a9335354e7d5c594, type: 2}
+  - {fileID: 11400000, guid: b72ece08586ceb74da440b1128275e1f, type: 2}
+  - {fileID: 11400000, guid: 82a19a655c6cabb4abc019f58871cb73, type: 2}
+  - {fileID: 11400000, guid: f5c6996e3bf68e54ea06d6a4530f4048, type: 2}
+  - {fileID: 4279578955236500260, guid: b9672dedbae27c342938d34119f3f633, type: 2}
+  - {fileID: 8947299486507665471, guid: 673ec95e37b3c2a4b92e05c95c490e8c, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -271,7 +276,14 @@ PlayerSettings:
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: 52cd66ce51b1667409be38666ac1f0d4, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons:
   - m_BuildTarget: iPhone
     m_Icons:

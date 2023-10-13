@@ -56,6 +56,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9174728402710868929, guid: a1f81ff299590724dbc76bed0457b372, type: 3}
+      propertyPath: m_Range
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 9174728402710868929, guid: a1f81ff299590724dbc76bed0457b372, type: 3}
+      propertyPath: m_Intensity
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9174728402710868929, guid: a1f81ff299590724dbc76bed0457b372, type: 3}
       propertyPath: m_Lightmapping
       value: 2
       objectReference: {fileID: 0}
