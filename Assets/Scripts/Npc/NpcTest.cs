@@ -113,10 +113,7 @@ public class NpcTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P)) // P 키를 누르면
         {
-            // 파티클을 생성할 위치 설정
-            Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);
-            // 파티클을 생성
-            Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
+
             FreezeNPCFun();
         }
     }
@@ -156,6 +153,10 @@ public class NpcTest : MonoBehaviour
     // FreezeNPCFun 함수는 NPC를 일시 정지시키는 코루틴을 실행합니다.
     public void FreezeNPCFun()
     {
+        // 파티클을 생성할 위치 설정
+        Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);
+        // 파티클을 생성
+        Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
         StartCoroutine(FreezeNPC());
         Debug.Log("NPC를 일시 정지합니다!!!!!!!!!!!!!!!!!!!");
     }

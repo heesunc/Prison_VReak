@@ -11,16 +11,27 @@ public class PuzzleManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            selectedPuzzle = puzzleList[Random.Range(0, puzzleList.Length)];
+        }
     }
 
     public void ActivatePuzzle()
     {
-        selectedPuzzle = puzzleList[Random.Range(0, puzzleList.Length)];
-        selectedPuzzle.SetActive(true);
+        if (selectedPuzzle == null)
+        {
+            selectedPuzzle = puzzleList[Random.Range(0, puzzleList.Length)];
+        }
+        if (!g_isPuzzleSolved)
+        {
+            selectedPuzzle.SetActive(true);
+        }
     }
     public void PuzzleSolveAfter()
     {
+        g_isPuzzleSolved = true;
         StartCoroutine(PuzzleClose());
     }
 
