@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -142,7 +143,7 @@ public class NpcTest : MonoBehaviour
     IEnumerator PlayRandomAttackAnimation()
     {
         // Only set the AttackIndex once
-        int randomAttackIndex = Random.Range(0, 4);
+        int randomAttackIndex = UnityEngine.Random.Range(0, 4);
         anim.SetInteger("AttackIndex", randomAttackIndex);
 
         // Exit the coroutine
@@ -276,18 +277,26 @@ public class NpcTest : MonoBehaviour
     // 웹에서 게임 시작을 위한 함수
     public void web_Start()
     {
-        StartCoroutine(RotatePrisonDoor());
+        // TODO: 자동 열림이 아니라 상호작용으로 열리게
         isFrozen = false;
+        GameManager.Instance.SetStartTime(DateTime.Now);
+    }
+
+    public void DoorOpen(GameObject doorObj)
+    {
+        // TODO: 인자로 넘겨주는 오브젝트를 회전시키는 방식으로 변경하기(출구 때 재사용하기 위함)
+        StartCoroutine(RotatePrisonDoor(doorObj));
+
     }
 
     // 감옥 문을 회전시키는 코루틴
-    private IEnumerator RotatePrisonDoor()
+    private IEnumerator RotatePrisonDoor(GameObject doorObj)
     {
         if (door_speed == 0)
         {
             while (door_speed < 72)
             {
-                Prison_door.transform.rotation = Quaternion.Euler(0, door_speed + 180, 0);
+                doorObj.transform.rotation = Quaternion.Euler(0, door_speed + 180, 0);
                 door_speed += 2;
                 yield return new WaitForSeconds(0.001f);
             }
