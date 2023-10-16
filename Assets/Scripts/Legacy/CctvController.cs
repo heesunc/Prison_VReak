@@ -37,8 +37,8 @@ public class CctvController : MonoBehaviour
             RectInt bRect = aScript.camera_p;
             camera_po_width = bRect.width;
             camera_po_height = bRect.height;
-            cctv_5_po = new Vector3(camera_po_width, 2, camera_po_height - 2);
-            cctv_6_po = new Vector3(camera_po_width, 2, camera_po_height + 2);
+            cctv_5_po = new Vector3(camera_po_width, 3, camera_po_height - 2);
+            cctv_6_po = new Vector3(camera_po_width, 3, camera_po_height + 2);
             position1 = new Vector3(camera_po_width+0.35f, 3.05f, camera_po_height - 2);
             position2 = new Vector3(camera_po_width+0.35f, 3.05f, camera_po_height + 2);
         }

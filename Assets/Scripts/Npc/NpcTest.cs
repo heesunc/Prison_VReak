@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,6 +35,8 @@ public class NpcTest : MonoBehaviour
     public GameObject particlePrefab; // 파티클 프리팹을 저장할 변수
     public float yOffset = 1.0f; // Y 축으로 파티클을 올릴 거리
 
+    
+    bool isWebUnlockDoor = false;
 
     enum State
     {
@@ -113,10 +116,7 @@ public class NpcTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P)) // P 키를 누르면
         {
-            // 파티클을 생성할 위치 설정
-            Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);
-            // 파티클을 생성
-            Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
+
             FreezeNPCFun();
         }
     }
@@ -145,7 +145,7 @@ public class NpcTest : MonoBehaviour
     IEnumerator PlayRandomAttackAnimation()
     {
         // Only set the AttackIndex once
-        int randomAttackIndex = Random.Range(0, 4);
+        int randomAttackIndex = UnityEngine.Random.Range(0, 4);
         anim.SetInteger("AttackIndex", randomAttackIndex);
 
         // Exit the coroutine
@@ -156,6 +156,10 @@ public class NpcTest : MonoBehaviour
     // FreezeNPCFun 함수는 NPC를 일시 정지시키는 코루틴을 실행합니다.
     public void FreezeNPCFun()
     {
+        // 파티클을 생성할 위치 설정
+        Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);
+        // 파티클을 생성
+        Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
         StartCoroutine(FreezeNPC());
         Debug.Log("NPC를 일시 정지합니다!!!!!!!!!!!!!!!!!!!");
     }
@@ -275,18 +279,29 @@ public class NpcTest : MonoBehaviour
     // 웹에서 게임 시작을 위한 함수
     public void web_Start()
     {
-        StartCoroutine(RotatePrisonDoor());
+        // TODO: 자동 열림이 아니라 상호작용으로 열리게
         isFrozen = false;
+        isWebUnlockDoor = true;
+        GameManager.Instance.SetStartTime(DateTime.Now);
+    }
+
+    public void DoorOpen(GameObject doorObj)
+    {
+        if (isWebUnlockDoor) 
+        {
+            // TODO: 인자로 넘겨주는 오브젝트를 회전시키는 방식으로 변경하기(출구 때 재사용하기 위함)
+            StartCoroutine(RotatePrisonDoor(doorObj));
+        }
     }
 
     // 감옥 문을 회전시키는 코루틴
-    private IEnumerator RotatePrisonDoor()
+    private IEnumerator RotatePrisonDoor(GameObject doorObj)
     {
         if (door_speed == 0)
         {
             while (door_speed < 72)
             {
-                Prison_door.transform.rotation = Quaternion.Euler(0, door_speed + 180, 0);
+                doorObj.transform.rotation = Quaternion.Euler(0, door_speed + 180, 0);
                 door_speed += 2;
                 yield return new WaitForSeconds(0.001f);
             }
