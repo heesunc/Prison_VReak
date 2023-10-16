@@ -35,6 +35,8 @@ public class NpcTest : MonoBehaviour
     public GameObject particlePrefab; // 파티클 프리팹을 저장할 변수
     public float yOffset = 1.0f; // Y 축으로 파티클을 올릴 거리
 
+    
+    bool isWebUnlockDoor = false;
 
     enum State
     {
@@ -279,14 +281,17 @@ public class NpcTest : MonoBehaviour
     {
         // TODO: 자동 열림이 아니라 상호작용으로 열리게
         isFrozen = false;
+        isWebUnlockDoor = true;
         GameManager.Instance.SetStartTime(DateTime.Now);
     }
 
     public void DoorOpen(GameObject doorObj)
     {
-        // TODO: 인자로 넘겨주는 오브젝트를 회전시키는 방식으로 변경하기(출구 때 재사용하기 위함)
-        StartCoroutine(RotatePrisonDoor(doorObj));
-
+        if (isWebUnlockDoor) 
+        {
+            // TODO: 인자로 넘겨주는 오브젝트를 회전시키는 방식으로 변경하기(출구 때 재사용하기 위함)
+            StartCoroutine(RotatePrisonDoor(doorObj));
+        }
     }
 
     // 감옥 문을 회전시키는 코루틴

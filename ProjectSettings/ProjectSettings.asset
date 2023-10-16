@@ -134,9 +134,14 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0.0
+  bundleVersion: 1.0.1
   preloadedAssets:
   - {fileID: 11400000, guid: 9d74cec55c76f764a9335354e7d5c594, type: 2}
+  - {fileID: 11400000, guid: b72ece08586ceb74da440b1128275e1f, type: 2}
+  - {fileID: 11400000, guid: 82a19a655c6cabb4abc019f58871cb73, type: 2}
+  - {fileID: 11400000, guid: f5c6996e3bf68e54ea06d6a4530f4048, type: 2}
+  - {fileID: 4279578955236500260, guid: b9672dedbae27c342938d34119f3f633, type: 2}
+  - {fileID: 8947299486507665471, guid: 673ec95e37b3c2a4b92e05c95c490e8c, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -176,7 +181,7 @@ PlayerSettings:
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
-  StripUnusedMeshComponents: 1
+  StripUnusedMeshComponents: 0
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
   iOSTargetOSVersionString: 11.0
