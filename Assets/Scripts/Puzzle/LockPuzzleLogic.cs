@@ -30,12 +30,12 @@ public class LockPuzzleLogic : MonoBehaviour
 
         if (randomValue == 0)
         {
-            Image1.SetActive(true); // È°¼ºÈ­
+            Image1.SetActive(true); // í™œì„±í™”
             image2.SetActive(true);
         }
         else if(randomValue == 1)
         {
-            Image1.SetActive(false); // ºñÈ°¼ºÈ­
+            Image1.SetActive(false); // ë¹„í™œì„±í™”
             image2.SetActive(true);
         }
         else if(randomValue == 2)
@@ -69,7 +69,7 @@ public class LockPuzzleLogic : MonoBehaviour
         clickCount1++;
         Remain1 = (int)(clickCount1 % 10);
 
-        //Debug.Log("Å¬¸¯ Ä«¿îÆ®: " + clickCount1 + ", ³ª¸ÓÁö: " + Remain1);
+        //Debug.Log("í´ë¦­ ì¹´ìš´íŠ¸: " + clickCount1 + ", ë‚˜ë¨¸ì§€: " + Remain1);
 
         if(Image1.activeSelf && image2.activeSelf)
         {
@@ -130,7 +130,7 @@ public class LockPuzzleLogic : MonoBehaviour
         clickCount2++;
         Remain2 = (int)(clickCount2 % 10);
 
-        //Debug.Log("Å¬¸¯ Ä«¿îÆ®: " + clickCount2 + ", ³ª¸ÓÁö: " + Remain2);
+        //Debug.Log("í´ë¦­ ì¹´ìš´íŠ¸: " + clickCount2 + ", ë‚˜ë¨¸ì§€: " + Remain2);
 
         if(image3.activeSelf)
         {
@@ -175,8 +175,8 @@ public class LockPuzzleLogic : MonoBehaviour
 
     public void OnClickSquareButton()
     {
-        CheckPuzzleSolved();                                               // ÆÛÁñ »óÅÂ Ã¼Å©
-        puzzleMainFrame.SetLightCoverUI(isPuzzleSolved);
+        CheckPuzzleSolved();                                               // í¼ì¦ ìƒíƒœ ì²´í¬
+        PuzzleManager.instance.PuzzleJudge(isPuzzleSolved);
     }
 
 

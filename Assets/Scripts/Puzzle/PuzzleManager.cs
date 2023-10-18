@@ -11,6 +11,8 @@ public class PuzzleManager : MonoBehaviour
     private GameObject selectedPuzzle;
     public GameObject exitDoor;
     public GameObject puzzleButton;
+    public AudioClip correctSound;
+    public AudioClip incorrectSound;
     int door_speed = 0;
 
     private void Awake()
@@ -29,6 +31,32 @@ public class PuzzleManager : MonoBehaviour
         puzzleButton.GetComponent<XRSimpleInteractable>().enabled= false;
     }
 
+    public void PuzzleJudge(bool isPuzzleSolved)
+    {
+        GameObject redLightCoverUI = GameObject.Find("Red Light Cover");
+        GameObject greenLightCoverUI = GameObject.Find("Green Light Cover");
+        AudioSource puzzleAudio = puzzleButton.GetComponent<AudioSource>();
+        if (isPuzzleSolved)
+        {
+            redLightCoverUI.SetActive(true);
+            greenLightCoverUI.SetActive(false);
+            Debug.Log("퍼즐 해결");
+            // TODO 해결 사운드 실행
+            puzzleAudio.clip= correctSound;
+            puzzleAudio.Play();
+            PuzzleSolveAfter();
+        }
+        else
+        {
+            redLightCoverUI.SetActive(false);
+            greenLightCoverUI.SetActive(true);
+            Debug.Log("퍼즐 틀림");
+            // TODO 오답 사운드 실행
+            puzzleAudio.clip = incorrectSound;
+            puzzleAudio.Play();
+        }
+    }
+
     public void ActivatePuzzle()
     {
         if (selectedPuzzle == null)
@@ -43,8 +71,18 @@ public class PuzzleManager : MonoBehaviour
     public void PuzzleSolveAfter()
     {
         g_isPuzzleSolved = true;
+        exitDoor.GetComponent<XRSimpleInteractable>().enabled = true;
         StartCoroutine(PuzzleClose());
-        StartCoroutine(RotateDoor(exitDoor));
+    }
+
+    public void ExitDoorOpen(GameObject doorObj)
+    {
+        if (g_isPuzzleSolved)
+        {
+            doorObj.GetComponent<AudioSource>().Play();
+            StartCoroutine(RotateDoor(doorObj));
+            doorObj.GetComponent<XRSimpleInteractable>().enabled = false;
+        }
     }
 
     private IEnumerator PuzzleClose()

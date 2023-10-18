@@ -139,6 +139,6 @@ public class SliderPuzzleLogic : MonoBehaviour
     public void OnClickSquareButton()
     {
         //CheckPuzzleSolved();                                               // 퍼즐 상태 체크
-        puzzleMainFrame.SetLightCoverUI(isClear);
+        PuzzleManager.instance.PuzzleJudge(isClear);
     }
 }

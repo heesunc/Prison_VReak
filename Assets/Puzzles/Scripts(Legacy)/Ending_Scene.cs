@@ -7,6 +7,7 @@ using System;
 
 public class Ending_Scene : MonoBehaviour
 {
+    public SceneTransitionManager sceneController;
 
     UserInfoContainer userInfoContainer;
     private string createRankURL = "https://prisonvreak.store/createRank";
@@ -67,8 +68,8 @@ public class Ending_Scene : MonoBehaviour
 
                 if (responseText.Equals("등록 완료"))
                 {
-                    string nextSceneName = "Ending_Scene";
-                    SceneManager.LoadScene(nextSceneName);
+                    userInfoContainer.SetClearTime(clearTime);
+                    sceneController.GoToScene(0);
                     Debug.Log("탈출!!");
                 }
                 else if (responseText.Equals("정상적인 방이 아닙니다"))
