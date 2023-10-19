@@ -115,15 +115,18 @@ public class NpcTest : MonoBehaviour
             {
                 UpdateAttack();
                 PlayAudio(audioAttack, 1.0f);
+                // 발소리 끄기
+                rigid.velocity = Vector3.zero;
+                rigid.angularVelocity = Vector3.zero;
                 isGameOver = true;
                 gameOverCanvas.SetActive(true);
                 playerXRObject.GetComponent<ContinuousMoveProviderBase>().enabled = false;
+            
             }
         }
 
         if (Input.GetKeyDown(KeyCode.P)) // P 키를 누르면
         {
-
             FreezeNPCFun();
         }
     }
