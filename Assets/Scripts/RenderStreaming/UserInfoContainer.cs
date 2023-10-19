@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,5 +15,10 @@ public class UserInfoContainer : MonoBehaviour
     public UserInfo GetUserInfo()
     {
         return userInfo;
+    }
+
+    public void SetClearTime(string clearTime)
+    {
+        userInfo.clearTime = clearTime;
     }
 }

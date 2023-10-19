@@ -5,20 +5,20 @@ using UnityEngine.UI;
 
 public class MazePuzzleLogic : MonoBehaviour
 {
-    public int upCount = 0;                                         //È­»ìÇ¥ Å¬¸¯ È½¼ö ¼ıÀÚ Ä«¿îÆ®
+    public int upCount = 0;                                         //í™”ì‚´í‘œ í´ë¦­ íšŸìˆ˜ ìˆ«ì ì¹´ìš´íŠ¸
     public int downCount = 0;
     public int rightCount = 0;
     public int leftCount = 0;
 
-    public GameObject First;                                       //¹æÇâ ¹Ù²î´Â Á¶°Ç ¼³Á¤
+    public GameObject First;                                       //ë°©í–¥ ë°”ë€ŒëŠ” ì¡°ê±´ ì„¤ì •
     public GameObject Second;
     public GameObject Third;
     public GameObject Fourth;
     public GameObject Fifth;
 
-    public GameObject Wrong;                                      //Á¶°Ç°ú ¸ÂÁö ¾Ê´Â ¹öÆ° Å¬¸¯ ½Ã ¿À´ä Ã³¸®
+    public GameObject Wrong;                                      //ì¡°ê±´ê³¼ ë§ì§€ ì•ŠëŠ” ë²„íŠ¼ í´ë¦­ ì‹œ ì˜¤ë‹µ ì²˜ë¦¬
 
-    public GameObject Mist_U;                                     //Reset ¹öÆ° ´©¸¦ ½Ã ÃÊ±âÈ­ ÇØÁÖ±â À§ÇÔ
+    public GameObject Mist_U;                                     //Reset ë²„íŠ¼ ëˆ„ë¥¼ ì‹œ ì´ˆê¸°í™” í•´ì£¼ê¸° ìœ„í•¨
     public GameObject Mist_D;
     public GameObject Mist_R;
     public GameObject Mist_L;
@@ -66,38 +66,38 @@ public class MazePuzzleLogic : MonoBehaviour
         }
     }
 
-    public void OnClickLeft()                                    //¿ŞÂÊ ¹æÇâÅ° ´­·¶À» ¶§
+    public void OnClickLeft()                                    //ì™¼ìª½ ë°©í–¥í‚¤ ëˆŒë €ì„ ë•Œ
     {
-        if(!Mist_L.activeSelf)                                  //Reset ¹öÆ° ´©¸£¸é leftCount ÃÊ±âÈ­
+        if(!Mist_L.activeSelf)                                  //Reset ë²„íŠ¼ ëˆ„ë¥´ë©´ leftCount ì´ˆê¸°í™”
         {
             leftCount = 0;
         }
-        Mist_L?.SetActive(true);                               //Reset ¼³Á¤ ºñÈ°¼ºÈ­
-        leftCount++;                                           //leftCount ¼ıÀÚ Áõ°¡
+        Mist_L?.SetActive(true);                               //Reset ì„¤ì • ë¹„í™œì„±í™”
+        leftCount++;                                           //leftCount ìˆ«ì ì¦ê°€
 
         if (Red_dot1.activeSelf && Blue_dot1.activeSelf)
         {
-            if (leftCount == 1)                                    //Ã¹ ¹øÂ° Á¶°Ç(¿ŞÂÊÀ¸·Î ÇÑ Ä­) ¿Ï¼º
+            if (leftCount == 1)                                    //ì²« ë²ˆì§¸ ì¡°ê±´(ì™¼ìª½ìœ¼ë¡œ í•œ ì¹¸) ì™„ì„±
             {
                 First?.SetActive(false);
             }
-            if (leftCount == 2 && Second.activeSelf)                //µÎ¹øÂ° Á¶°ÇÀ»(À§·Î ³× Ä­) ¿Ï¼ºÇÏÁö ¾Ê¾Ò´Âµ¥ ¿ŞÂÊ ¹öÆ° Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (leftCount == 2 && Second.activeSelf)                //ë‘ë²ˆì§¸ ì¡°ê±´ì„(ìœ„ë¡œ ë„¤ ì¹¸) ì™„ì„±í•˜ì§€ ì•Šì•˜ëŠ”ë° ì™¼ìª½ ë²„íŠ¼ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            if (leftCount == 2 && !Second.activeSelf)              //¼¼¹øÂ° Á¶°Ç (¿ŞÂÊÀ¸·Î ÇÑ Ä­) ¿Ï¼º
+            if (leftCount == 2 && !Second.activeSelf)              //ì„¸ë²ˆì§¸ ì¡°ê±´ (ì™¼ìª½ìœ¼ë¡œ í•œ ì¹¸) ì™„ì„±
             {
                 Third?.SetActive(false);
             }
-            if (leftCount == 3 && Fourth.activeSelf)                //³×¹øÂ° Á¶°Ç(¾Æ·¡·Î ÇÑ Ä­ ) ¿Ï¼ºÇÏÁö ¾Ê¾Ò´Âµ¥ ¿ŞÂÊ ¹öÆ° Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (leftCount == 3 && Fourth.activeSelf)                //ë„¤ë²ˆì§¸ ì¡°ê±´(ì•„ë˜ë¡œ í•œ ì¹¸ ) ì™„ì„±í•˜ì§€ ì•Šì•˜ëŠ”ë° ì™¼ìª½ ë²„íŠ¼ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            if (leftCount == 4)                                    //´Ù¼¸¹øÂ° Á¶°Ç (¿ŞÂÊÀ¸·Î µÎ Ä­) ¿Ï¼º
+            if (leftCount == 4)                                    //ë‹¤ì„¯ë²ˆì§¸ ì¡°ê±´ (ì™¼ìª½ìœ¼ë¡œ ë‘ ì¹¸) ì™„ì„±
             {
                 Fifth?.SetActive(false);
             }
-            CheckSequence();                                    //ÆÛÁñ ¿Ï¼ºÇß´ÂÁö Ã¼Å©
+            CheckSequence();                                    //í¼ì¦ ì™„ì„±í–ˆëŠ”ì§€ ì²´í¬
         }
 
         if(Red_dot2.activeSelf && Blue_dot2.activeSelf)
@@ -183,30 +183,30 @@ public class MazePuzzleLogic : MonoBehaviour
         }
     }
 
-    public void OnClickUp()                                  //À§ÂÊ ¹æÇâÅ° ´­·¶À» ¶§
+    public void OnClickUp()                                  //ìœ„ìª½ ë°©í–¥í‚¤ ëˆŒë €ì„ ë•Œ
     {
-        if (!Mist_U.activeSelf)                              //Reset ¹öÆ° ´©¸£¸é upCount ÃÊ±âÈ­
+        if (!Mist_U.activeSelf)                              //Reset ë²„íŠ¼ ëˆ„ë¥´ë©´ upCount ì´ˆê¸°í™”
         {
             upCount = 0;
         }
-        Mist_U?.SetActive(true);                               //Reset ¼³Á¤ ºñÈ°¼ºÈ­
-        upCount++;                                            //upCount ¼ıÀÚ Áõ°¡
+        Mist_U?.SetActive(true);                               //Reset ì„¤ì • ë¹„í™œì„±í™”
+        upCount++;                                            //upCount ìˆ«ì ì¦ê°€
 
         if (Red_dot1.activeSelf && Blue_dot1.activeSelf)
         {
-            if (First.activeSelf)                                 //Ã¹¹øÂ° Á¶°ÇÀ»(¿ŞÂÊÀ¸·Î ÇÑ Ä­) ¿Ï¼ºÇÏÁö ¾Ê¾Ò´Âµ¥ À§ÂÊ ¹öÆ° Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (First.activeSelf)                                 //ì²«ë²ˆì§¸ ì¡°ê±´ì„(ì™¼ìª½ìœ¼ë¡œ í•œ ì¹¸) ì™„ì„±í•˜ì§€ ì•Šì•˜ëŠ”ë° ìœ„ìª½ ë²„íŠ¼ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            if (!First.activeSelf && upCount == 4)               //µÎ¹øÂ° Á¶°Ç (À§ÂÊÀ¸·Î ³× Ä­) ¿Ï¼º  
+            if (!First.activeSelf && upCount == 4)               //ë‘ë²ˆì§¸ ì¡°ê±´ (ìœ„ìª½ìœ¼ë¡œ ë„¤ ì¹¸) ì™„ì„±  
             {
                 Second?.SetActive(false);
             }
-            if (upCount == 5)                                     //À§ÂÊ ¹öÆ°À» 5¹ø ÀÌ»ó Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (upCount == 5)                                     //ìœ„ìª½ ë²„íŠ¼ì„ 5ë²ˆ ì´ìƒ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            CheckSequence();                                    //ÆÛÁñ ¿Ï¼ºÇß´ÂÁö Ã¼Å©
+            CheckSequence();                                    //í¼ì¦ ì™„ì„±í–ˆëŠ”ì§€ ì²´í¬
         }
 
         if (Red_dot2.activeSelf && Blue_dot2.activeSelf)
@@ -253,7 +253,7 @@ public class MazePuzzleLogic : MonoBehaviour
 
     public void OnClickDown()
     {
-        if (!Mist_D.activeSelf)                              //Reset ¹öÆ° ´©¸£¸é downCount ÃÊ±âÈ­
+        if (!Mist_D.activeSelf)                              //Reset ë²„íŠ¼ ëˆ„ë¥´ë©´ downCount ì´ˆê¸°í™”
         {
             downCount = 0;
         }
@@ -263,27 +263,27 @@ public class MazePuzzleLogic : MonoBehaviour
         if (Red_dot1.activeSelf && Blue_dot1.activeSelf)
         {
 
-            if (First.activeSelf)                                 //Ã¹¹øÂ° Á¶°ÇÀ»(¿ŞÂÊÀ¸·Î ÇÑ Ä­) ¿Ï¼ºÇÏÁö ¾Ê¾Ò´Âµ¥ À§ÂÊ ¹öÆ° Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (First.activeSelf)                                 //ì²«ë²ˆì§¸ ì¡°ê±´ì„(ì™¼ìª½ìœ¼ë¡œ í•œ ì¹¸) ì™„ì„±í•˜ì§€ ì•Šì•˜ëŠ”ë° ìœ„ìª½ ë²„íŠ¼ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            if (Second.activeSelf)                               //µÎ¹øÂ° Á¶°ÇÀ»(À§·Î ³×Ä­) ¿Ï¼ºÇÏÁö ¾Ê¾Ò´Âµ¥ ¿ŞÂÊ ¹öÆ° Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (Second.activeSelf)                               //ë‘ë²ˆì§¸ ì¡°ê±´ì„(ìœ„ë¡œ ë„¤ì¹¸) ì™„ì„±í•˜ì§€ ì•Šì•˜ëŠ”ë° ì™¼ìª½ ë²„íŠ¼ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            if (Third.activeSelf)                               //¼¼¹øÂ° Á¶°ÇÀ»(¿ŞÂÊ ÇÑÄ­) ¿Ï¼ºÇÏÁö ¾Ê¾Ò´Âµ¥ ¿ŞÂÊ ¹öÆ° Å¬¸¯½Ã ¿À´äÃ³¸®
+            if (Third.activeSelf)                               //ì„¸ë²ˆì§¸ ì¡°ê±´ì„(ì™¼ìª½ í•œì¹¸) ì™„ì„±í•˜ì§€ ì•Šì•˜ëŠ”ë° ì™¼ìª½ ë²„íŠ¼ í´ë¦­ì‹œ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            if (downCount == 1)                                   //³×¹øÂ° Á¶°Ç (¾Æ·¡·Î ÇÑÄ­) ¿Ï¼º
+            if (downCount == 1)                                   //ë„¤ë²ˆì§¸ ì¡°ê±´ (ì•„ë˜ë¡œ í•œì¹¸) ì™„ì„±
             {
                 Fourth?.SetActive(false);
             }
-            if (downCount == 2)                                  //¾Æ·¡ÂÊ ¹öÆ°À» µÎ¹ø ÀÌ»ó ´©¸£¸é ¿À´äÃ³¸®
+            if (downCount == 2)                                  //ì•„ë˜ìª½ ë²„íŠ¼ì„ ë‘ë²ˆ ì´ìƒ ëˆ„ë¥´ë©´ ì˜¤ë‹µì²˜ë¦¬
             {
                 Wrong?.SetActive(false);
             }
-            CheckSequence();                                    //ÆÛÁñ ¿Ï¼ºÇß´ÂÁö Ã¼Å©
+            CheckSequence();                                    //í¼ì¦ ì™„ì„±í–ˆëŠ”ì§€ ì²´í¬
         }
         if(Red_dot2.activeSelf && Blue_dot2.activeSelf)
         {
@@ -347,9 +347,9 @@ public class MazePuzzleLogic : MonoBehaviour
             CheckSequence();
         }
     }
-    public void OnClickRight()                              //¿À¸¥ÂÊ ¹æÇâÅ° ´­·¶À» ¶§´Â ¾ğÁ¦µçÁö ¿À´äÃ³¸®
+    public void OnClickRight()                              //ì˜¤ë¥¸ìª½ ë°©í–¥í‚¤ ëˆŒë €ì„ ë•ŒëŠ” ì–¸ì œë“ ì§€ ì˜¤ë‹µì²˜ë¦¬
     {
-        if (!Mist_R.activeSelf)                              //Reset ¹öÆ° ´©¸£¸é upCount ÃÊ±âÈ­
+        if (!Mist_R.activeSelf)                              //Reset ë²„íŠ¼ ëˆ„ë¥´ë©´ upCount ì´ˆê¸°í™”
         {
             rightCount = 0;
         }
@@ -363,37 +363,37 @@ public class MazePuzzleLogic : MonoBehaviour
         CheckSequence();
     }
 
-    public void OnClickReset()                               //Reset ´­·¶À» ¶§
+    public void OnClickReset()                               //Reset ëˆŒë €ì„ ë•Œ
     {
-        Mist_U?.SetActive(false);                           //upCount ¸®¼Â ½ÃÄÑÁÖ±â À§ÇÔ
-        Mist_D?.SetActive(false);                          //downCount ¸®¼Â ½ÃÄÑÁÖ±â À§ÇÔ
-        Mist_L?.SetActive(false);                          //leftCount ¸®¼Â ½ÃÄÑÁÖ±â À§ÇÔ
-        Mist_R?.SetActive(false);                          //rightCount ¸®¼Â ½ÃÄÑÁÖ±â À§ÇÔ
+        Mist_U?.SetActive(false);                           //upCount ë¦¬ì…‹ ì‹œì¼œì£¼ê¸° ìœ„í•¨
+        Mist_D?.SetActive(false);                          //downCount ë¦¬ì…‹ ì‹œì¼œì£¼ê¸° ìœ„í•¨
+        Mist_L?.SetActive(false);                          //leftCount ë¦¬ì…‹ ì‹œì¼œì£¼ê¸° ìœ„í•¨
+        Mist_R?.SetActive(false);                          //rightCount ë¦¬ì…‹ ì‹œì¼œì£¼ê¸° ìœ„í•¨
 
-        First?.SetActive(true);                            //Ã¹¹øÂ° Á¶°Ç ÁøÇà»óÈ² ¸®¼Â
-        Second?.SetActive(true);                           //µÎ¹øÂ° Á¶°Ç ÁøÇà»óÈ² ¸®¼Â
-        Third?.SetActive(true);                            //¼¼¹øÂ° Á¶°Ç ÁøÇà»óÈ² ¸®¼Â
-        Fourth?.SetActive(true);                           //³×¹øÂ° Á¶°Ç ÁøÇà»óÈ² ¸®¼Â
-        Fifth?.SetActive(true);                            //´Ù¼¸¹øÂ° Á¶°Ç ÁøÇà»óÈ² ¸®¼Â
+        First?.SetActive(true);                            //ì²«ë²ˆì§¸ ì¡°ê±´ ì§„í–‰ìƒí™© ë¦¬ì…‹
+        Second?.SetActive(true);                           //ë‘ë²ˆì§¸ ì¡°ê±´ ì§„í–‰ìƒí™© ë¦¬ì…‹
+        Third?.SetActive(true);                            //ì„¸ë²ˆì§¸ ì¡°ê±´ ì§„í–‰ìƒí™© ë¦¬ì…‹
+        Fourth?.SetActive(true);                           //ë„¤ë²ˆì§¸ ì¡°ê±´ ì§„í–‰ìƒí™© ë¦¬ì…‹
+        Fifth?.SetActive(true);                            //ë‹¤ì„¯ë²ˆì§¸ ì¡°ê±´ ì§„í–‰ìƒí™© ë¦¬ì…‹
 
-        Wrong?.SetActive(true);                            // ¿À´äÃ³¸® ¸®¼Â
+        Wrong?.SetActive(true);                            // ì˜¤ë‹µì²˜ë¦¬ ë¦¬ì…‹
     }
 
-    private bool isPuzzleSolved = false;                  //ÆÛÁñ ÇØ°á ÃÊ±â°ªÀº false
+    private bool isPuzzleSolved = false;                  //í¼ì¦ í•´ê²° ì´ˆê¸°ê°’ì€ false
     private void CheckSequence()
     {
        if(!First.activeSelf && !Second.activeSelf && !Third.activeSelf && !Fourth.activeSelf && !Fifth.activeSelf && Wrong.activeSelf)
        {
-            isPuzzleSolved = true;                                           //¸ğµç Á¶°ÇÀ» ¸¸Á·ÇÏ¸é ÆÛÁñ ÇØ°á°ªÀ» true·Î ¹Ù²Ş
+            isPuzzleSolved = true;                                           //ëª¨ë“  ì¡°ê±´ì„ ë§Œì¡±í•˜ë©´ í¼ì¦ í•´ê²°ê°’ì„ trueë¡œ ë°”ê¿ˆ
        }
         else
         {
             isPuzzleSolved = false;
         }
     }
-    public void OnclickSquareBUtton()                                       //Push ¹öÆ° ´­·¶À» ¶§
+    public void OnclickSquareBUtton()                                       //Push ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
     {
-        CheckSequence();                                                    // isPuzzleSolved °ªÀÌ true¸é ÆÛÁñ ÇØ°á
-        puzzleMainFrame.SetLightCoverUI(isPuzzleSolved);
+        CheckSequence();                                                    // isPuzzleSolved ê°’ì´ trueë©´ í¼ì¦ í•´ê²°
+        PuzzleManager.instance.PuzzleJudge(isPuzzleSolved);
     }
 }

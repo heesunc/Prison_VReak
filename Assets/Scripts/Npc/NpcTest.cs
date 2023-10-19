@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class NpcTest : MonoBehaviour
 {
@@ -30,13 +31,16 @@ public class NpcTest : MonoBehaviour
     public AudioClip audioFreeze;
 
     [Header("게임 시작 전 준비")]
-    public GameObject Prison_door; // 감옥 문을 저장할 변수
+    public GameObject prisonDoor; // 감옥 문을 저장할 변수
     int door_speed = 0;
     public GameObject particlePrefab; // 파티클 프리팹을 저장할 변수
     public float yOffset = 1.0f; // Y 축으로 파티클을 올릴 거리
 
     
     bool isWebUnlockDoor = false;
+    bool isGameOver = false;
+    public GameObject gameOverCanvas;
+    public GameObject playerXRObject;
 
     enum State
     {
@@ -93,7 +97,7 @@ public class NpcTest : MonoBehaviour
     // Update 함수는 매 프레임마다 호출됩니다.
     void Update()
     {
-        if (!isFrozen) // NPC가 움직이지 않는 상태가 아니라면
+        if (!isFrozen && !isGameOver) // NPC가 움직이지 않는 상태가 아니라면
         {
             if (state == State.Idle)
             {
@@ -111,6 +115,9 @@ public class NpcTest : MonoBehaviour
             {
                 UpdateAttack();
                 PlayAudio(audioAttack, 1.0f);
+                isGameOver = true;
+                gameOverCanvas.SetActive(true);
+                playerXRObject.GetComponent<ContinuousMoveProviderBase>().enabled = false;
             }
         }
 
@@ -279,9 +286,9 @@ public class NpcTest : MonoBehaviour
     // 웹에서 게임 시작을 위한 함수
     public void web_Start()
     {
-        // TODO: 자동 열림이 아니라 상호작용으로 열리게
         isFrozen = false;
         isWebUnlockDoor = true;
+        prisonDoor.GetComponent<XRSimpleInteractable>().enabled = true;
         GameManager.Instance.SetStartTime(DateTime.Now);
     }
 
@@ -289,8 +296,9 @@ public class NpcTest : MonoBehaviour
     {
         if (isWebUnlockDoor) 
         {
-            // TODO: 인자로 넘겨주는 오브젝트를 회전시키는 방식으로 변경하기(출구 때 재사용하기 위함)
+            doorObj.GetComponent<AudioSource>().Play();
             StartCoroutine(RotatePrisonDoor(doorObj));
+            doorObj.GetComponent<XRSimpleInteractable>().enabled = false;
         }
     }
 

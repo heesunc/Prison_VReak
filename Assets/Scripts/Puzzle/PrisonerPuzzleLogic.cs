@@ -5,75 +5,76 @@ using UnityEngine.UI;
 
 public class PrisonerPuzzleLogic : MonoBehaviour
 {
-    public GameObject photo;                                          //ÇØ´ç Æú¶ó·ÎÀÌµå »çÁø
-    public GameObject photo1;                                         //Steve »çÁø
-    public GameObject photo2;                                         //Logan »çÁø
-    public GameObject photo3;                                         //Kim »çÁø
-    public GameObject photo4;                                         //Cindy »çÁø
-    public GameObject photo5;                                         //Jack »çÁø
-    public GameObject photo6;                                         //Rachel »çÁø
+    public GameObject photo;                                          //í•´ë‹¹ í´ë¼ë¡œì´ë“œ ì‚¬ì§„
+    public GameObject photo1;                                         //Steve ì‚¬ì§„
+    public GameObject photo2;                                         //Logan ì‚¬ì§„
+    public GameObject photo3;                                         //Kim ì‚¬ì§„
+    public GameObject photo4;                                         //Cindy ì‚¬ì§„
+    public GameObject photo5;                                         //Jack ì‚¬ì§„
+    public GameObject photo6;                                         //Rachel ì‚¬ì§„
 
-    public PuzzleMainFrame puzzleMainFrame;                                   //PUSH°¡ ÀûÇôÀÖ´Â ³×¸ğ³­ ¸ğ¾çÀÇ ¹öÆ° UI
+    public PuzzleMainFrame puzzleMainFrame;                                   //PUSHê°€ ì í˜€ìˆëŠ” ë„¤ëª¨ë‚œ ëª¨ì–‘ì˜ ë²„íŠ¼ UI
 
-    public void OnClickPhoto1()                                      //UI¸¦ Åä±ÛÇÏ°í ÆÛÁñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÇÔ¼ö
+    public void OnClickPhoto1()                                      //UIë¥¼ í† ê¸€í•˜ê³  í¼ì¦ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” í•¨ìˆ˜
     {
         ToggleUI(photo1);
         CheckPuzzleSolved();
     }
 
-    public void OnClickPhoto2()                                      //UI¸¦ Åä±ÛÇÏ°í ÆÛÁñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÇÔ¼ö
+    public void OnClickPhoto2()                                      //UIë¥¼ í† ê¸€í•˜ê³  í¼ì¦ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” í•¨ìˆ˜
     {
         ToggleUI(photo2);
         CheckPuzzleSolved();
     }
 
-    public void OnClickPhoto3()                                      //UI¸¦ Åä±ÛÇÏ°í ÆÛÁñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÇÔ¼ö
+    public void OnClickPhoto3()                                      //UIë¥¼ í† ê¸€í•˜ê³  í¼ì¦ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” í•¨ìˆ˜
     {
         ToggleUI(photo3);
         CheckPuzzleSolved();
     }
 
-    public void OnClickPhoto4()                                      //UI¸¦ Åä±ÛÇÏ°í ÆÛÁñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÇÔ¼ö
+    public void OnClickPhoto4()                                      //UIë¥¼ í† ê¸€í•˜ê³  í¼ì¦ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” í•¨ìˆ˜
     {
         ToggleUI(photo4);
         CheckPuzzleSolved();
     }
 
-    public void OnClickPhoto5()                                      //UI¸¦ Åä±ÛÇÏ°í ÆÛÁñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÇÔ¼ö
+    public void OnClickPhoto5()                                      //UIë¥¼ í† ê¸€í•˜ê³  í¼ì¦ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” í•¨ìˆ˜
     {
         ToggleUI(photo5);
         CheckPuzzleSolved();
     }
 
-    public void OnClickPhoto6()                                      //UI¸¦ Åä±ÛÇÏ°í ÆÛÁñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÇÔ¼ö
+    public void OnClickPhoto6()                                      //UIë¥¼ í† ê¸€í•˜ê³  í¼ì¦ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” í•¨ìˆ˜
     {
         ToggleUI(photo6);
         CheckPuzzleSolved();
     }
 
-    private void ToggleUI(GameObject uiObject)                        //UI Åä±ÛÇÏ´Â ÇÔ¼ö »ı¼º
+    private void ToggleUI(GameObject uiObject)                        //UI í† ê¸€í•˜ëŠ” í•¨ìˆ˜ ìƒì„±
     {
         bool isUIVisible = !uiObject.activeSelf;
         uiObject.SetActive(isUIVisible);
     }
 
-    private bool isPuzzleSolved = false;                            // ÆÛÁñÀÌ ÇØ°áµÇ¾ú´ÂÁö ¿©ºÎ¸¦ ÀúÀåÇÏ´Â º¯¼ö. ÃÊ±â °ªÀº false·Î ¼³Á¤
+    private bool isPuzzleSolved = false;                            // í¼ì¦ì´ í•´ê²°ë˜ì—ˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜. ì´ˆê¸° ê°’ì€ falseë¡œ ì„¤ì •
 
     private void CheckPuzzleSolved()
     {
         if (!photo5.activeSelf && !photo6.activeSelf && photo1.activeSelf && photo2.activeSelf && photo3.activeSelf && photo4.activeSelf)
         {
-            isPuzzleSolved = true;                                    // ÆÛÁñÀÌ ÇØ°áµÇ¾úÀ½À» Ç¥½Ã
+            isPuzzleSolved = true;                                    // í¼ì¦ì´ í•´ê²°ë˜ì—ˆìŒì„ í‘œì‹œ
         }
         else
         {
-            isPuzzleSolved = false;                                   // ÆÛÁñÀÌ ÇØ°áµÇÁö ¾Ê¾ÒÀ½À» Ç¥½Ã
+            isPuzzleSolved = false;                                   // í¼ì¦ì´ í•´ê²°ë˜ì§€ ì•Šì•˜ìŒì„ í‘œì‹œ
         }
     }
 
     public void OnClickSquareButton()
     {
-        CheckPuzzleSolved();                                               // ÆÛÁñ »óÅÂ Ã¼Å©
-        puzzleMainFrame.SetLightCoverUI(isPuzzleSolved);
+        CheckPuzzleSolved();                                               // í¼ì¦ ìƒíƒœ ì²´í¬
+        PuzzleManager.instance.PuzzleJudge(isPuzzleSolved);
+
     }
 }
