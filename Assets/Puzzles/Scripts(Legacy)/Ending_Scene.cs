@@ -13,6 +13,7 @@ public class Ending_Scene : MonoBehaviour
     private string createRankURL = "https://prisonvreak.store/createRank";
     private string web_userCode;
     private string vr_userCode;
+    bool isTriggerEntered = false;
 
     private void Awake()
     {
@@ -28,21 +29,25 @@ public class Ending_Scene : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        // 탈출구 도착 시간 저장
-        DateTime endTime = DateTime.Now;
+        if (!isTriggerEntered)
+        {
+            isTriggerEntered = true;
 
-        // 시작 시간 가져오기
-        DateTime startTime = GameManager.Instance.GetStartTime();
+            // 탈출구 도착 시간 저장
+            DateTime endTime = DateTime.Now;
 
-        // 플레이 타임 계산
-        TimeSpan clearTime = endTime - startTime;
+            // 시작 시간 가져오기
+            DateTime startTime = GameManager.Instance.GetStartTime();
 
-        string totalMilliseconds = Math.Floor(clearTime.TotalMilliseconds).ToString();
+            // 플레이 타임 계산
+            TimeSpan clearTime = endTime - startTime;
 
-        StartCoroutine(RankInsertRequest(web_userCode, vr_userCode, totalMilliseconds));
+            string totalMilliseconds = Math.Floor(clearTime.TotalMilliseconds).ToString();
 
-        Debug.Log("플레이 타임: " + totalMilliseconds);
+            StartCoroutine(RankInsertRequest(web_userCode, vr_userCode, totalMilliseconds));
 
+            Debug.Log("플레이 타임: " + totalMilliseconds);
+        }
 
     }
 

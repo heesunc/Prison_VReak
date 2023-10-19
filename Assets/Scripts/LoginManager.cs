@@ -81,26 +81,19 @@ public class LoginManager : MonoBehaviour
 
                 if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
                 {
-                    Debug.Log("로그인 정보가 일치하지 않습니다.");
                     OpenMessageWindow("로그인 정보가 일치하지 않습니다.", loginCanvas);
                 }
-                // 추후 이 부분 제거, 유니티에서 자체적으로 빈칸 검증하게끔/////////////////
                 else if (responseText.Equals("아이디와 비밀번호를 입력하세요."))
                 {
-                    Debug.Log("아이디와 비밀번호를 입력하세요.");
                     OpenMessageWindow("아이디와 비밀번호를 입력하세요.", loginCanvas);
                 }
-                //////////////////////////////////////////
                 else if(responseText.Equals("로그인 성공"))
                 {
-                    Debug.Log("로그인 성공");
-
                     loginCanvas.SetActive(false);
                     matchingCanvas.SetActive(true);
                 }
                 else
                 {
-                    Debug.Log("알 수 없는 예외");
                     OpenMessageWindow("알 수 없는 예외:LR2", loginCanvas);
                 }
             }
@@ -129,23 +122,18 @@ public class LoginManager : MonoBehaviour
 
                 if (responseText.Equals("존재하지 않는 유저코드입니다."))
                 {
-                    Debug.Log("로그인 정보가 일치하지 않습니다.");
                     OpenMessageWindow("존재하지 않는 유저코드입니다.", matchingCanvas);
                 }
-                // 추후 이 부분 제거, 유니티에서 자체적으로 빈칸 검증하게끔////////////////
                 else if (responseText.Equals("파트너 코드를 입력하세요."))
                 {
-                    Debug.Log("파트너 코드를 입력하세요.");
                     OpenMessageWindow("파트너 코드를 입력하세요.", matchingCanvas);
                 }
-                ////////////////////////////////////////////////////////
                 else if(responseText.Equals("유저코드 유효성 검사 완료"))
                 {
                     OpenLoadingWindow(matchingCanvas);
                     StartCoroutine(RealMatchingRequest(p_userCode, userCode));
                 }
                 else{
-                    Debug.Log("알 수 없는 예외");
                     OpenMessageWindow("알 수 없는 예외:MR2", matchingCanvas);
                 }
             }
@@ -181,7 +169,6 @@ public class LoginManager : MonoBehaviour
 
                         if (responseText.Equals("매칭 성공") && !isMatchingSuccess)
                         {
-                            Debug.Log("매칭 성공");
                             isMatchingSuccess = true;
                             // 매칭 성공 후 정보를 다음 씬에 전달
                             GameObject userInfoObject = new GameObject("UserInfoObject");
@@ -196,7 +183,6 @@ public class LoginManager : MonoBehaviour
             {
                 CloseLoadingWindow();
                 OpenMessageWindow("매칭 성공!", matchingCanvas);
-                Debug.Log("씬넘어가유~");
                 sceneController.GoToScene(1);
             }
              else
@@ -204,12 +190,6 @@ public class LoginManager : MonoBehaviour
                 CloseLoadingWindow();
                 OpenMessageWindow("매칭 실패: TimeOut", matchingCanvas);
             }
-                
-        
-        /* else
-        {
-            Debug.Log("알 수 없는 예외");
-            OpenMessageWindow("알 수 없는 예외:RMR2", matchingCanvas);
-        } */  
+
     }
 }
