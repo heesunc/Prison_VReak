@@ -9,9 +9,10 @@ using System;
 
 public class LoginManager : MonoBehaviour
 {
-    [SerializeField] public TMP_InputField InputField_UserCode;
+    [SerializeField] public TMP_InputField InputField_ID;
     [SerializeField] public TMP_InputField InputField_PW;
     [SerializeField] public TMP_InputField InputField_PartnerUserCode;
+    public TMP_Text MyUserCode;
     public SceneTransitionManager sceneController;
     public GameObject loginCanvas;
     public GameObject msgCanvas;
@@ -26,14 +27,14 @@ public class LoginManager : MonoBehaviour
 
     public void OnLoginButtonClicked()
     {
-        string userCode = InputField_UserCode.text;
+        string id = InputField_ID.text;
         string pwd = InputField_PW.text;
 
-        StartCoroutine(LoginRequest(userCode, pwd));
+        StartCoroutine(LoginRequest(id, pwd));
     }
     public void OnMatchingButtonClicked()
     {
-        string userCode = InputField_UserCode.text;
+        string userCode = MyUserCode.text;
         string p_userCode = InputField_PartnerUserCode.text;
 
         StartCoroutine(MatchingRequest(p_userCode, userCode));
@@ -59,10 +60,10 @@ public class LoginManager : MonoBehaviour
         loadingCanvas.SetActive(false);
     }
 
-    private IEnumerator LoginRequest(string userCode, string pwd)
+    private IEnumerator LoginRequest(string id, string pwd)
     {
         WWWForm form = new WWWForm();
-        form.AddField("userCode", userCode);
+        form.AddField("id", id);
         form.AddField("pwd", pwd);
 
         using (UnityWebRequest www = UnityWebRequest.Post(loginUrl, form))
@@ -77,6 +78,7 @@ public class LoginManager : MonoBehaviour
             else
             {
                 string responseText = www.downloadHandler.text;
+                UserInfo userInfo = JsonUtility.FromJson<UserInfo>(responseText);
                 Debug.Log(responseText);
 
                 if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
@@ -87,10 +89,11 @@ public class LoginManager : MonoBehaviour
                 {
                     OpenMessageWindow("아이디와 비밀번호를 입력하세요.", loginCanvas);
                 }
-                else if(responseText.Equals("로그인 성공"))
+                else if(userInfo.message.Equals("로그인 성공"))
                 {
                     loginCanvas.SetActive(false);
                     matchingCanvas.SetActive(true);
+                    MyUserCode.SetText(userInfo.vr_userCode);
                 }
                 else
                 {
