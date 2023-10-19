@@ -47,7 +47,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 1
@@ -63,7 +63,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -602,8 +602,7 @@ ModelImporter:
     - name: LeftFinger01
       parentName: LeftFinger0
       position: {x: -0.00000016570091, y: 0.028033132, z: 0.00000002026558}
-      rotation: {x: -0.000000048428767, y: -0.0000003352761, z: -0.0000012679956,
-        w: 1}
+      rotation: {x: -0.000000048428767, y: -0.0000003352761, z: -0.0000012679956, w: 1}
       scale: {x: 1.0000001, y: 1.0000005, z: 0.9999997}
     - name: LeftFinger02
       parentName: LeftFinger01
@@ -743,8 +742,7 @@ ModelImporter:
     - name: RightFinger31
       parentName: RightFinger3
       position: {x: 0.000000030249357, y: 0.05070494, z: 0.000000019073486}
-      rotation: {x: 0.00000042840833, y: 0.000000052154057, z: -0.00000054482365,
-        w: 1}
+      rotation: {x: 0.00000042840833, y: 0.000000052154057, z: -0.00000054482365, w: 1}
       scale: {x: 1.0000002, y: 1.0000005, z: 1.0000001}
     - name: RightFinger32
       parentName: RightFinger31
@@ -759,8 +757,7 @@ ModelImporter:
     - name: RightFinger41
       parentName: RightFinger4
       position: {x: 0.000000063702466, y: 0.033952225, z: -0.0000000020861626}
-      rotation: {x: -0.000000026077027, y: -0.00000011920926, z: -0.0000006896442,
-        w: 1}
+      rotation: {x: -0.000000026077027, y: -0.00000011920926, z: -0.0000006896442, w: 1}
       scale: {x: 1.0000001, y: 1.0000004, z: 1.0000002}
     - name: RightFinger42
       parentName: RightFinger41

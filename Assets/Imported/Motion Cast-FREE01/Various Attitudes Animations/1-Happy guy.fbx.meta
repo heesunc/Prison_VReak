@@ -47,7 +47,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 1
@@ -63,7 +63,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -602,8 +602,7 @@ ModelImporter:
     - name: LeftFinger01
       parentName: LeftFinger0
       position: {x: 0.0000000010430813, y: 0.028033124, z: 0.000000007152557}
-      rotation: {x: -0.000000085681656, y: -0.00000030547372, z: -0.0000011622903,
-        w: 1}
+      rotation: {x: -0.000000085681656, y: -0.00000030547372, z: -0.0000011622903, w: 1}
       scale: {x: 0.99999976, y: 0.9999993, z: 1.0000001}
     - name: LeftFinger02
       parentName: LeftFinger01
