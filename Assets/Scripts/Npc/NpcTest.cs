@@ -32,6 +32,7 @@ public class NpcTest : MonoBehaviour
 
     [Header("게임 시작 전 준비")]
     public GameObject prisonDoor; // 감옥 문을 저장할 변수
+    public GameObject prisonDoorOutline;
     int door_speed = 0;
     public GameObject particlePrefab; // 파티클 프리팹을 저장할 변수
     public float yOffset = 1.0f; // Y 축으로 파티클을 올릴 거리
@@ -40,7 +41,9 @@ public class NpcTest : MonoBehaviour
     bool isWebUnlockDoor = false;
     bool isGameOver = false;
     public GameObject gameOverCanvas;
+    public GameObject webGameOverCanvas;
     public GameObject playerXRObject;
+    public GameObject CCTVObject;
 
     enum State
     {
@@ -97,7 +100,7 @@ public class NpcTest : MonoBehaviour
     // Update 함수는 매 프레임마다 호출됩니다.
     void Update()
     {
-        if (!isFrozen && !isGameOver) // NPC가 움직이지 않는 상태가 아니라면
+        if (!isFrozen && !isGameOver) // NPC가 움직이지 않는 상태가 아니라면 and 게임 오버 상태가 아니라면
         {
             if (state == State.Idle)
             {
@@ -111,17 +114,13 @@ public class NpcTest : MonoBehaviour
                 PlayAudio(audioRun, 1.0f);
                 npcSound.PlaySound(1.0f);
             }
+            // 게임 오버 처리
             else if (state == State.Attack)
             {
                 UpdateAttack();
                 PlayAudio(audioAttack, 1.0f);
-                // 발소리 끄기
-                rigid.velocity = Vector3.zero;
-                rigid.angularVelocity = Vector3.zero;
-                isGameOver = true;
-                gameOverCanvas.SetActive(true);
-                playerXRObject.GetComponent<ContinuousMoveProviderBase>().enabled = false;
-            
+                GameOverProc(gameOverCanvas, webGameOverCanvas);
+
             }
         }
 
@@ -129,6 +128,17 @@ public class NpcTest : MonoBehaviour
         {
             FreezeNPCFun();
         }
+    }
+
+    public void GameOverProc(GameObject vrCanvas, GameObject webCanvas)
+    {
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
+        isGameOver = true;
+        vrCanvas.SetActive(true);
+        webCanvas.SetActive(true);
+        playerXRObject.GetComponent<ContinuousMoveProviderBase>().enabled = false;
+        CCTVObject.GetComponent<CctvController>().enabled = false;
     }
 
     // 상태에 따라 오디오 재생 함수
@@ -166,12 +176,15 @@ public class NpcTest : MonoBehaviour
     // FreezeNPCFun 함수는 NPC를 일시 정지시키는 코루틴을 실행합니다.
     public void FreezeNPCFun()
     {
-        // 파티클을 생성할 위치 설정
-        Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);
-        // 파티클을 생성
-        Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
-        StartCoroutine(FreezeNPC());
-        Debug.Log("NPC를 일시 정지합니다!!!!!!!!!!!!!!!!!!!");
+        if (!isGameOver)
+        {
+            // 파티클을 생성할 위치 설정
+            Vector3 spawnPosition = transform.position + new Vector3(0, yOffset, 0);
+            // 파티클을 생성
+            Instantiate(particlePrefab, spawnPosition, Quaternion.identity);
+            StartCoroutine(FreezeNPC());
+            Debug.Log("NPC를 일시 정지합니다!!!!!!!!!!!!!!!!!!!");
+        }
     }
 
     // FreezeNPC 함수는 NPC를 일시 정지시키는 코루틴입니다.
@@ -291,6 +304,7 @@ public class NpcTest : MonoBehaviour
     {
         isFrozen = false;
         isWebUnlockDoor = true;
+        prisonDoorOutline.SetActive(true);
         prisonDoor.GetComponent<XRSimpleInteractable>().enabled = true;
         GameManager.Instance.SetStartTime(DateTime.Now);
     }

@@ -14,6 +14,9 @@ public class Ending_Scene : MonoBehaviour
     private string web_userCode;
     private string vr_userCode;
     bool isTriggerEntered = false;
+    public NpcTest npcTest;
+    public GameObject clearCanvas;
+    public GameObject webClearCanvas;
 
     private void Awake()
     {
@@ -74,8 +77,9 @@ public class Ending_Scene : MonoBehaviour
                 if (responseText.Equals("등록 완료"))
                 {
                     userInfoContainer.SetClearTime(clearTime);
-                    sceneController.GoToScene(0);
+                    npcTest.GameOverProc(clearCanvas, webClearCanvas);
                     Debug.Log("탈출!!");
+                    // TODO 로딩 창 출력(1초 이하), 로딩 후 랭킹 정보 뜨게
                 }
                 else if (responseText.Equals("정상적인 방이 아닙니다"))
                 {
