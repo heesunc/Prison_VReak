@@ -81,11 +81,11 @@ public class LoginManager : MonoBehaviour
                 UserInfo userInfo = JsonUtility.FromJson<UserInfo>(responseText);
                 Debug.Log(responseText);
 
-                if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
+                if (userInfo.message.Equals("로그인 정보가 일치하지 않습니다."))
                 {
                     OpenMessageWindow("로그인 정보가 일치하지 않습니다.", loginCanvas);
                 }
-                else if (responseText.Equals("아이디와 비밀번호를 입력하세요."))
+                else if (userInfo.message.Equals("아이디와 비밀번호를 입력하세요."))
                 {
                     OpenMessageWindow("아이디와 비밀번호를 입력하세요.", loginCanvas);
                 }
