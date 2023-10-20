@@ -10,6 +10,7 @@ public class PuzzleManager : MonoBehaviour
     public GameObject[] puzzleList;
     private GameObject selectedPuzzle;
     public GameObject exitDoor;
+    public GameObject exitDoorOutline;
     public GameObject puzzleButton;
     public AudioClip correctSound;
     public AudioClip incorrectSound;
@@ -41,7 +42,6 @@ public class PuzzleManager : MonoBehaviour
             redLightCoverUI.SetActive(true);
             greenLightCoverUI.SetActive(false);
             Debug.Log("퍼즐 해결");
-            // TODO 해결 사운드 실행
             puzzleAudio.clip= correctSound;
             puzzleAudio.Play();
             PuzzleSolveAfter();
@@ -51,7 +51,6 @@ public class PuzzleManager : MonoBehaviour
             redLightCoverUI.SetActive(false);
             greenLightCoverUI.SetActive(true);
             Debug.Log("퍼즐 틀림");
-            // TODO 오답 사운드 실행
             puzzleAudio.clip = incorrectSound;
             puzzleAudio.Play();
         }
@@ -71,6 +70,7 @@ public class PuzzleManager : MonoBehaviour
     public void PuzzleSolveAfter()
     {
         g_isPuzzleSolved = true;
+        exitDoorOutline.SetActive(true);
         exitDoor.GetComponent<XRSimpleInteractable>().enabled = true;
         StartCoroutine(PuzzleClose());
     }
