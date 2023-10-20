@@ -13,25 +13,13 @@ public class RankingManager : MonoBehaviour
     public GameObject webFieldPrefab; // WEBField 프리팹
     public GameObject timeFieldPrefab; // TimeField 프리팹
     public float yOffset; // 랭킹 항목 간격
-    UserInfo userInfo;
-    UserInfoContainer userInfoData;
     private List<GameObject> prefabInstances = new List<GameObject>();
-
     private string getAllRankingListUrl = "https://prisonvreak.store/vrGetAllRank";
-    private string getRankingListUrl = "";
+    
 
     public void AllRankingListProc()
     {
         StartCoroutine(GetAllRankingListRequest());
-    }
-    public void AfterClearRankingListProc()
-    {
-        userInfoData = FindObjectOfType<UserInfoContainer>();
-        if(userInfoData != null)
-        {
-            userInfo = userInfoData.GetUserInfo();
-        }
-        StartCoroutine(GetRankingListRequest(userInfo.clearTime));
     }
 
     private IEnumerator GetAllRankingListRequest(){
@@ -88,40 +76,6 @@ public class RankingManager : MonoBehaviour
     }
 
 //  ----------------------------- WIP -------------------------------  //
-    private IEnumerator GetRankingListRequest(string clearTime)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("clearTime", clearTime);
-
-        using (UnityWebRequest www = UnityWebRequest.Post(getRankingListUrl, form))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("랭킹 데이터 요청 실패: " + www.error);
-                //OpenMessageWindow("랭킹 데이터 요청 실패: " + www.error, loginCanvas);
-            }
-            else
-            {
-                string responseText = www.downloadHandler.text;
-                Debug.Log(responseText);
-
-                if (responseText.Equals("로그인 정보가 일치하지 않습니다."))
-                {
-                    //OpenMessageWindow("로그인 정보가 일치하지 않습니다.", loginCanvas);
-                }
-                else if (responseText.Equals("로그인 성공"))
-                {
-                    // 데이터 받아서 ui로 출력해주는 부분
-                }
-                else
-                {
-                    //OpenMessageWindow("알 수 없는 예외:LR2", loginCanvas);
-                }
-            }
-        }
-    }
 
     // ------------------------------------------ //
 
