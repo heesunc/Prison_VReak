@@ -131,93 +131,79 @@ public class Ending_Scene : MonoBehaviour
                 
                 List<RankData> rankDataList = JsonUtility.FromJson<RankDataList>("{\"rankingData\":" + responseText + "}").rankingData;
 
-                float currentYPosition = 30f; // 초기 Y 위치
+                float currentYPosition = 25f; // 초기 Y 위치
 
                 Debug.Log(rankDataList);
 
                 // 랭킹 아이템 UI 동적 생성
                 foreach (RankData data in rankDataList)
                 {
+                    GameObject web_rankField;
+                    GameObject web_vrField;
+                    GameObject web_webField;
+                    GameObject web_timeField;
 
-                    if(data.formatted_game_clear_time==formattedTime){
+                    GameObject rankField;
+                    GameObject vrField;
+                    GameObject webField;
+                    GameObject timeField;
+
+                    if (data.formatted_game_clear_time == formattedTime)
+                    {
 
                         // (웹이 보는 화면)필드 프리팹을 복제
-                        GameObject web_rankField = Instantiate(myRankFieldPrefab, webRankBackgroundCanvas.transform);
-                        GameObject web_vrField = Instantiate(myVrFieldPrefab, webRankBackgroundCanvas.transform);
-                        GameObject web_webField = Instantiate(myWebFieldPrefab, webRankBackgroundCanvas.transform);
-                        GameObject web_timeField = Instantiate(myTimeFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_rankField = Instantiate(myRankFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_vrField = Instantiate(myVrFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_webField = Instantiate(myWebFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_timeField = Instantiate(myTimeFieldPrefab, webRankBackgroundCanvas.transform);
 
                         // 필드 프리팹을 복제
-                        GameObject rankField = Instantiate(myRankFieldPrefab, rankBackgroundCanvas.transform);
-                        GameObject vrField = Instantiate(myVrFieldPrefab, rankBackgroundCanvas.transform);
-                        GameObject webField = Instantiate(myWebFieldPrefab, rankBackgroundCanvas.transform);
-                        GameObject timeField = Instantiate(myTimeFieldPrefab, rankBackgroundCanvas.transform);
-
-                        // (웹이 보는 화면)필요한 위치와 내용 설정
-                        SetFieldText(web_rankField, data.rank);
-                        SetFieldText(web_vrField, data.vr_nickname);
-                        SetFieldText(web_webField, data.web_nickname);
-                        SetFieldText(web_timeField, data.formatted_game_clear_time);
-                        // 필요한 위치와 내용 설정
-                        SetFieldText(rankField, data.rank);
-                        SetFieldText(vrField, data.vr_nickname);
-                        SetFieldText(webField, data.web_nickname);
-                        SetFieldText(timeField, data.formatted_game_clear_time);
-
-                        // (웹이 보는 화면)위치 조정
-                        web_rankField.transform.localPosition = new Vector3(-170f, currentYPosition, 0);
-                        web_vrField.transform.localPosition = new Vector3(-60f, currentYPosition, 0);
-                        web_webField.transform.localPosition = new Vector3(60f, currentYPosition, 0);
-                        web_timeField.transform.localPosition = new Vector3(170f, currentYPosition, 0);
-
-                        // 위치 조정
-                        rankField.transform.localPosition = new Vector3(-170f, currentYPosition, 0);
-                        vrField.transform.localPosition = new Vector3(-60f, currentYPosition, 0);
-                        webField.transform.localPosition = new Vector3(60f, currentYPosition, 0);
-                        timeField.transform.localPosition = new Vector3(170f, currentYPosition, 0);
-
-                        // 다음 항목의 위치 조정
-                        currentYPosition -= yOffset; // 다음 항목의 위치를 조절하여 겹치지 않게
+                        rankField = Instantiate(myRankFieldPrefab, rankBackgroundCanvas.transform);
+                        vrField = Instantiate(myVrFieldPrefab, rankBackgroundCanvas.transform);
+                        webField = Instantiate(myWebFieldPrefab, rankBackgroundCanvas.transform);
+                        timeField = Instantiate(myTimeFieldPrefab, rankBackgroundCanvas.transform);
                     }
-                    else{
+                    else
+                    {
                         // (웹이 보는 화면)필드 프리팹을 복제
-                        GameObject web_rankField = Instantiate(myRankFieldPrefab, webRankBackgroundCanvas.transform);
-                        GameObject web_vrField = Instantiate(myVrFieldPrefab, webRankBackgroundCanvas.transform);
-                        GameObject web_webField = Instantiate(myWebFieldPrefab, webRankBackgroundCanvas.transform);
-                        GameObject web_timeField = Instantiate(myTimeFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_rankField = Instantiate(rankFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_vrField = Instantiate(vrFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_webField = Instantiate(webFieldPrefab, webRankBackgroundCanvas.transform);
+                        web_timeField = Instantiate(timeFieldPrefab, webRankBackgroundCanvas.transform);
 
                         // 필드 프리팹을 복제
-                        GameObject rankField = Instantiate(myRankFieldPrefab, rankBackgroundCanvas.transform);
-                        GameObject vrField = Instantiate(myVrFieldPrefab, rankBackgroundCanvas.transform);
-                        GameObject webField = Instantiate(myWebFieldPrefab, rankBackgroundCanvas.transform);
-                        GameObject timeField = Instantiate(myTimeFieldPrefab, rankBackgroundCanvas.transform);
-
-                        // (웹이 보는 화면)필요한 위치와 내용 설정
-                        SetFieldText(web_rankField, data.rank);
-                        SetFieldText(web_vrField, data.vr_nickname);
-                        SetFieldText(web_webField, data.web_nickname);
-                        SetFieldText(web_timeField, data.formatted_game_clear_time);
-                        // 필요한 위치와 내용 설정
-                        SetFieldText(rankField, data.rank);
-                        SetFieldText(vrField, data.vr_nickname);
-                        SetFieldText(webField, data.web_nickname);
-                        SetFieldText(timeField, data.formatted_game_clear_time);
-
-                        // (웹이 보는 화면)위치 조정
-                        web_rankField.transform.localPosition = new Vector3(-170f, currentYPosition, 0);
-                        web_vrField.transform.localPosition = new Vector3(-60f, currentYPosition, 0);
-                        web_webField.transform.localPosition = new Vector3(60f, currentYPosition, 0);
-                        web_timeField.transform.localPosition = new Vector3(170f, currentYPosition, 0);
-
-                        // 위치 조정
-                        rankField.transform.localPosition = new Vector3(-170f, currentYPosition, 0);
-                        vrField.transform.localPosition = new Vector3(-60f, currentYPosition, 0);
-                        webField.transform.localPosition = new Vector3(60f, currentYPosition, 0);
-                        timeField.transform.localPosition = new Vector3(170f, currentYPosition, 0);
-
-                        // 다음 항목의 위치 조정
-                        currentYPosition -= yOffset; // 다음 항목의 위치를 조절하여 겹치지 않게
+                        rankField = Instantiate(rankFieldPrefab, rankBackgroundCanvas.transform);
+                        vrField = Instantiate(vrFieldPrefab, rankBackgroundCanvas.transform);
+                        webField = Instantiate(webFieldPrefab, rankBackgroundCanvas.transform);
+                        timeField = Instantiate(timeFieldPrefab, rankBackgroundCanvas.transform);
                     }
+
+                    // (웹이 보는 화면)필요한 위치와 내용 설정
+                    SetFieldText(web_rankField, data.rank);
+                    SetFieldText(web_vrField, data.vr_nickname);
+                    SetFieldText(web_webField, data.web_nickname);
+                    SetFieldText(web_timeField, data.formatted_game_clear_time);
+                    // 필요한 위치와 내용 설정
+                    SetFieldText(rankField, data.rank);
+                    SetFieldText(vrField, data.vr_nickname);
+                    SetFieldText(webField, data.web_nickname);
+                    SetFieldText(timeField, data.formatted_game_clear_time);
+
+                    // (웹이 보는 화면)위치 조정
+                    web_rankField.transform.localPosition = new Vector3(-170f, currentYPosition, 0);
+                    web_vrField.transform.localPosition = new Vector3(-60f, currentYPosition, 0);
+                    web_webField.transform.localPosition = new Vector3(60f, currentYPosition, 0);
+                    web_timeField.transform.localPosition = new Vector3(170f, currentYPosition, 0);
+
+                    // 위치 조정
+                    rankField.transform.localPosition = new Vector3(-170f, currentYPosition, 0);
+                    vrField.transform.localPosition = new Vector3(-60f, currentYPosition, 0);
+                    webField.transform.localPosition = new Vector3(60f, currentYPosition, 0);
+                    timeField.transform.localPosition = new Vector3(170f, currentYPosition, 0);
+
+                    // 다음 항목의 위치 조정
+                    currentYPosition -= yOffset; // 다음 항목의 위치를 조절하여 겹치지 않게
+                    
                 }
             }
         }
