@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CctvController : MonoBehaviour
@@ -21,6 +22,7 @@ public class CctvController : MonoBehaviour
     public Vector3 cctv_5_ro;
     public Vector3 cctv_6_ro;
     public GameObject prefab;
+    public TMP_Text camNumberText;
 
     public Vector3 position1;
     public Vector3 position2;
@@ -54,30 +56,36 @@ public class CctvController : MonoBehaviour
     {
         transform.position = cctv_1_po;
         transform.rotation = Quaternion.Euler(cctv_1_ro);
+        camNumberText.text = "CAM 01";
     }
     public void MoveCCTV2()
     {
         transform.position = cctv_2_po;
         transform.rotation = Quaternion.Euler(cctv_2_ro);
+        camNumberText.text = "CAM 02";
     }
     public void MoveCCTV3()
     {
         transform.position = cctv_3_po;
         transform.rotation = Quaternion.Euler(cctv_3_ro);
+        camNumberText.text = "CAM 03";
     }
     public void MoveCCTV4()
     {
         transform.position = cctv_4_po;
         transform.rotation = Quaternion.Euler(cctv_4_ro);
+        camNumberText.text = "CAM 04";
     }
     public void MoveCCTV5()
     {
         transform.position = cctv_5_po;
         transform.rotation = Quaternion.Euler(cctv_5_ro);
+        camNumberText.text = "CAM 05";
     }
     public void MoveCCTV6()
     {
         transform.position = cctv_6_po;
         transform.rotation = Quaternion.Euler(cctv_6_ro);
+        camNumberText.text = "CAM 06";
     }
 }

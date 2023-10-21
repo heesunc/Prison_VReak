@@ -29,8 +29,17 @@ public class LoginManager : MonoBehaviour
     {
         string id = InputField_ID.text;
         string pwd = InputField_PW.text;
-
-        StartCoroutine(LoginRequest(id, pwd));
+        if (id.Equals("coex2"))
+        {
+            loginCanvas.SetActive(false);
+            GameObject emergencySituation = new GameObject("EMERGENCYSITUATION");
+            DontDestroyOnLoad(emergencySituation);
+            sceneController.GoToScene(1);
+        }
+        else
+        {
+            StartCoroutine(LoginRequest(id, pwd));
+        }
     }
     public void OnMatchingButtonClicked()
     {
