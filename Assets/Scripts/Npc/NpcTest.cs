@@ -81,6 +81,11 @@ public class NpcTest : MonoBehaviour
             lightPositionsArray[i] = new Vector3(lightPositionsArray[i].x, newYValue, lightPositionsArray[i].z);
         }
         lightPositionsArray[lightPositionsArray.Length - 1] = transform.position;
+
+        if (GameManager.Instance.isEmergency)
+        {
+            web_Start();
+        }
     }
 
     // OnDrawGizmos 함수는 에디터 상에서 게임 오브젝트를 선택하면 호출되어 해당 게임 오브젝트의 가시화를 처리합니다.

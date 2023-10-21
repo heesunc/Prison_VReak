@@ -30,6 +30,8 @@ public class Ending_Scene : MonoBehaviour
     public NpcTest npcTest;
     public GameObject clearCanvas;
     public GameObject webClearCanvas;
+    public GameObject emergencyClearCanvas;
+    public TMP_Text clearTimeText;
 
     private void Awake()
     {
@@ -60,7 +62,15 @@ public class Ending_Scene : MonoBehaviour
 
             string totalMilliseconds = Math.Floor(clearTime.TotalMilliseconds).ToString();
 
-            StartCoroutine(RankInsertRequest(web_userCode, vr_userCode, totalMilliseconds));
+            if(GameManager.Instance.isEmergency)
+            {
+                npcTest.GameOverProc(emergencyClearCanvas, webClearCanvas);
+                clearTimeText.text = MillisecondsStringToTimeFormat(totalMilliseconds);
+            }
+            else
+            {
+                StartCoroutine(RankInsertRequest(web_userCode, vr_userCode, totalMilliseconds));
+            }
 
             Debug.Log("플레이 타임: " + totalMilliseconds);
         }

@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour
 
     private static GameManager instance;
 
+    public GameObject renderStreamingObj;
+    public GameObject npcObj;
+    public GameObject endingObj;
+    public bool isEmergency = false;
+
     public static GameManager Instance
     {
         get
@@ -36,4 +41,12 @@ public class GameManager : MonoBehaviour
         return startTime;
     }
 
+    private void Awake()
+    {
+        if(GameObject.Find("EMERGENCYSITUATION") != null)
+        {
+            renderStreamingObj.SetActive(false);
+            isEmergency = true;
+        }
+    }
 }
