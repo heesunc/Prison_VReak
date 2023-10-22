@@ -194,7 +194,9 @@ public class LoginManager : MonoBehaviour
             if (isMatchingSuccess)
             {
                 CloseLoadingWindow();
-                OpenMessageWindow("매칭 성공!", matchingCanvas);
+                msgCanvas.SetActive(true);
+                msgText.SetText("매칭 성공!");                
+                matchingCanvas.SetActive(false);
                 sceneController.GoToScene(1);
             }
              else

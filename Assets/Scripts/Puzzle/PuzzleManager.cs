@@ -53,6 +53,7 @@ public class PuzzleManager : MonoBehaviour
             Debug.Log("퍼즐 틀림");
             puzzleAudio.clip = incorrectSound;
             puzzleAudio.Play();
+            StartCoroutine(PuzzleIncorrectAfter(redLightCoverUI));
         }
     }
 
@@ -67,6 +68,13 @@ public class PuzzleManager : MonoBehaviour
             selectedPuzzle.SetActive(true);
         }
     }
+
+    private IEnumerator PuzzleIncorrectAfter(GameObject coverUI)
+    {
+        yield return new WaitForSeconds(2f);
+        coverUI.SetActive(true);
+    }
+
     public void PuzzleSolveAfter()
     {
         g_isPuzzleSolved = true;
