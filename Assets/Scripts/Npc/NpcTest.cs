@@ -143,7 +143,6 @@ public class NpcTest : MonoBehaviour
         vrCanvas.SetActive(true);
         webCanvas.SetActive(true);
         playerXRObject.GetComponent<ContinuousMoveProviderBase>().enabled = false;
-        CCTVObject.GetComponent<CctvController>().enabled = false;
     }
 
     // 상태에 따라 오디오 재생 함수
