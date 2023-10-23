@@ -32,8 +32,11 @@ public class LoginManager : MonoBehaviour
         if (id.Equals("coex2"))
         {
             loginCanvas.SetActive(false);
-            GameObject emergencySituation = new GameObject("EMERGENCYSITUATION");
-            DontDestroyOnLoad(emergencySituation);
+            if (!GameObject.Find("EMERGENCYSITUATION"))
+            {
+                GameObject emergencySituation = new GameObject("EMERGENCYSITUATION");
+                DontDestroyOnLoad(emergencySituation);
+            }
             sceneController.GoToScene(1);
         }
         else
@@ -195,8 +198,9 @@ public class LoginManager : MonoBehaviour
             {
                 CloseLoadingWindow();
                 msgCanvas.SetActive(true);
-                msgText.SetText("매칭 성공!");                
+                msgText.SetText("매칭 성공! 잠시만 기다려주세요.");                
                 matchingCanvas.SetActive(false);
+                yield return new WaitForSeconds(4f);
                 sceneController.GoToScene(1);
             }
              else
