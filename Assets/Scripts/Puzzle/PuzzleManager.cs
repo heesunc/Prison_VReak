@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class PuzzleManager : MonoBehaviour
 {
-    public static bool g_isPuzzleSolved = false;
+    public bool g_isPuzzleSolved = false;
     public static PuzzleManager instance;
     public GameObject[] puzzleList;
     private GameObject selectedPuzzle;
@@ -90,6 +90,7 @@ public class PuzzleManager : MonoBehaviour
             doorObj.GetComponent<AudioSource>().Play();
             StartCoroutine(RotateDoor(doorObj));
             doorObj.GetComponent<XRSimpleInteractable>().enabled = false;
+            //g_isPuzzleSolved = false;
         }
     }
 
