@@ -59,7 +59,7 @@ public class MapGenerator : MonoBehaviour
         CalculateRect();
 
         // 장애물 동적 생성
-        CreateRandomBlocks();
+        //CreateRandomBlocks();
 
         // npc 관련 navMesh
         surface.BuildNavMesh();
