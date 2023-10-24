@@ -254,6 +254,7 @@ public class MapGenerator : MonoBehaviour
     }
     //////////////////////////////
 
+    /*
     ////////// 장애물 동적 생성 //////////
     private void CreateRandomBlocks()
     {
@@ -346,7 +347,7 @@ public class MapGenerator : MonoBehaviour
         newBlock.transform.position = position;
     }
     /////////////////////////////////
-
+    */
     ////////// CCTV 5, 6번 위치 변수 //////////
     private void CreateCameraPosition()
     {
